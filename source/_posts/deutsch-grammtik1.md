@@ -4,13 +4,19 @@ date: 2020-04-21 15:54:32
 tags:
     - deutsh
 categories: Deutsch
+mathjax: true
 ---
 
 ## Konjugation der regelmäßigen Verben im Präsens
 
+
+$$
+a^2+b^2 = \alpha
+$$
+
 词干+现在时人称结尾
 
-![](/source/_posts/deutsch-grammtik1/image1.png)
+![](image1.png)
 
 
 - -t, -d, -ffn, -chn, -gn: + est/et 即辅音词尾加e再加
@@ -20,6 +26,5 @@ categories: Deutsch
 
 
 
->good to see you
-$$a^2+b^2 = \alpha$$
+
 ## Konjugation der unregelmäßigen Verben im Präsens
