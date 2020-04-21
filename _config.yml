@@ -52,6 +52,8 @@ highlight:
   wrap: true
   hljs: false
 
+
+
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
@@ -102,3 +104,12 @@ deploy:
   repo: https://github.com/adin-pro/adin-pro.github.io.git
   branch: master
 
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: true
+  total_time: true
+  exclude_codeblock: false
+  awl: 4
+  wpm: 200
+  suffix: "mins."
