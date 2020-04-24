@@ -9,6 +9,7 @@ mathjax: true
 
 ## Konjugation der regelmäßigen Verben im Präsens
 
+<!-- more -->
 
 $$
 a^2+b^2 = \alpha
