@@ -14,7 +14,7 @@ Coursera上的算法课程笔记,对应书本为Algorithm 4th Edition。这一�
 
 ## Dynamic connectivity
 
-Given a set of N objects
+Given a set of N objects 
 - union command: connect  two objects
 - Find/connected query: is there  a path connecting the two objects?
 
