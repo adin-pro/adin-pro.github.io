@@ -61,6 +61,17 @@ class Child(Father):
 
 ```
 
+### sort和sorted的区别
+
+这是两个内置的排序函数，区别在于sort直接改变原有的列表，sorted不改变原有的列表
+
+### json在python中的用法
+
+json模块使用前需要import
+
+主要的函数是json.dump（var，fd） 和 json.load（fd）
+
+
 ## numpy
 
 ### argsort使用关键字的排序
