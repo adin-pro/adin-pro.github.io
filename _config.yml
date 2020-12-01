@@ -121,11 +121,10 @@ search:
   field: post
   content: true
   format: html
-  limit: 100
+  limit: 10000
 
 
   algolia:
-  applicationID: XJU2E8SOOA
-  apiKey: c5bbe6ff834309673a3b6f18ba687142
-  indexName: adin
+  applicationID: 'LU6FJ0J83F'
+  indexName: 'adinIndex'
   chunkSize: 5000
