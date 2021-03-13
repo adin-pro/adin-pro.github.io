@@ -795,7 +795,49 @@ A^TA\hat{x}=A^Tb \\\\
 <p>$det A= \sum \pm a<em>{1\alpha}a</em>{2\beta}a<em>{3\gamma}…a</em>{n\omega}$</p>
 <p>以上就是行列式的公式,代数余子式$C<em>{ij}$<br>$cofactor of a</em>{ij}$指的是其中包含$a_{ij}$的项目,也就是把i行和j列选定的项, 行列式是否为正取决于$i+j$的正负</p>
 <p>行列式的另一种计算方式就是把某一行的元素乘以他们的代数余子式的和<br>$det A = a<em>{11}C</em>{11}+a<em>{12}C</em>{12}+a<em>{13}C</em>{13}$</p>
-<h2 id="克拉默法则与逆矩阵和体积"><a href="#克拉默法则与逆矩阵和体积" class="headerlink" title="克拉默法则与逆矩阵和体积"></a>克拉默法则与逆矩阵和体积</h2>]]></content>
+<h2 id="克拉默法则与逆矩阵和体积"><a href="#克拉默法则与逆矩阵和体积" class="headerlink" title="克拉默法则与逆矩阵和体积"></a>克拉默法则与逆矩阵和体积</h2><h2 id="特征值和特征向量"><a href="#特征值和特征向量" class="headerlink" title="特征值和特征向量"></a>特征值和特征向量</h2><p>定义式非常熟悉了</p>
+<script type="math/tex; mode=display">
+Ax = \lambda x</script><ul>
+<li>特征值的和等于矩阵的<strong>迹</strong></li>
+<li>特征值的乘积等于矩阵的<strong>行列式</strong></li>
+</ul>
+<p>投影矩阵的特征向量，分为在投影平面上的所有向量和垂直于投影平面的向量</p>
+<p>求解方式就是移项后行列式$det(A-\lambda I)=0$，可能会出现重根，重根比较麻烦（老师原话：重根是18.06痛苦的根源）</p>
+<p>特征向量是上面那个移项后矩阵的零空间成员（零向量有很多，只需要列出来一个）</p>
+<p>一个性质：如果给定的矩阵A加上若干个，例如m个单位矩阵，则特征向量不变，但是所有特征值都会同步加上m</p>
+<ul>
+<li><p>当系数矩阵是旋转矩阵（行列式为1的正交矩阵）的时候，它的特征值计算会出现<strong>复数</strong>，反对称的矩阵特征值是纯虚数，对称的矩阵特征值是实数</p>
+</li>
+<li><p>上三角矩阵的对角线元素就是特征值，退化矩阵，2x2的矩阵只有一个特征向量</p>
+</li>
+</ul>
+<h2 id="对角化和A的幂"><a href="#对角化和A的幂" class="headerlink" title="对角化和A的幂"></a>对角化和A的幂</h2><p>如果A矩阵有n个线性无关的特征向量，组成特征向量矩阵S</p>
+<script type="math/tex; mode=display">
+AS = S\Lambda</script><p>对角化矩阵的元素就是每个特征值</p>
+<ul>
+<li>对角化之后可以很方便的求A的幂</li>
+<li>所有的特征值绝对值小于1是一个使得矩阵幂“稳定”的条件，即结果会趋向于0</li>
+</ul>
+<p>那么哪些矩阵可以对角化？<br>即如何确保矩阵必然有n个线性无关的特征向量？</p>
+<ul>
+<li>所有的特征值不同</li>
+</ul>
+<p>斐波那契数列可以写成矩阵的形式，增长速度由特征值的最大值决定</p>
+<script type="math/tex; mode=display">
+u_{k+1} = Au_k</script><p>可以写成差分方程形式</p>
+<script type="math/tex; mode=display">
+[F_{k+2} , F_{k+1}]^T = A [F_{k+1} , F_k]^T</script><p>求解A的特征值就知道斐波那契数列的增长速度了</p>
+<h2 id="微分方程和exp-A"><a href="#微分方程和exp-A" class="headerlink" title="微分方程和exp(A)"></a>微分方程和exp(A)</h2><script type="math/tex; mode=display">
+\frac{du}{dt}=Au</script><p>解等于指数的特征值的组合（//TODO）</p>
+<p>exp(At)可以进行泰勒展开，如果A可以对角化，还可以写成<br>$Se^{\Lambda t}S^{-1}$</p>
+<h2 id="马尔可夫矩阵，傅里叶级数"><a href="#马尔可夫矩阵，傅里叶级数" class="headerlink" title="马尔可夫矩阵，傅里叶级数"></a>马尔可夫矩阵，傅里叶级数</h2><p>应用层面</p>
+<p>马尔可夫矩阵：</p>
+<ol>
+<li>所有的元素大于0</li>
+<li>所有列元素加起来等于1</li>
+<li>所有矩阵的幂仍是马尔可夫矩阵</li>
+</ol>
+]]></content>
       <categories>
         <category>数学</category>
       </categories>
@@ -897,7 +939,7 @@ x\begin{bmatrix}
 -2
 \end{bmatrix}</script><p>$\color{red}{矩阵\times列向量=列向量}$</p>
 <p>明显，以列向量线性组合的方式更简洁，更符合直观认识。</p>
-<h2 id="矩阵消元"><a href="#矩阵消元" class="headerlink" title="矩阵消元"></a>矩阵消元</h2><p>讲解的内容为高斯消元法，思路很简单，所设计到的都是<strong>行变换</strong></p>
+<h2 id="矩阵消元"><a href="#矩阵消元" class="headerlink" title="矩阵消元"></a>矩阵消元</h2><p>讲解的内容为高斯消元法，思路很简单，所涉及到的都是<strong>行变换</strong></p>
 <p>消元：</p>
 <ol>
 <li>如果(1,1)元素非0，将其作为第一列主元，保留第一行不变</li>
@@ -2654,7 +2696,43 @@ Y = CX+DU</script><blockquote>
 </blockquote>
 <h2 id="列出状态空间表达式"><a href="#列出状态空间表达式" class="headerlink" title="列出状态空间表达式"></a>列出状态空间表达式</h2><p>难点主要在于等式右侧有输入变量的导数项时，需要在状态变量里增加输入项。第一次看书上一个三阶方程的处理方法时，我对设置3个状态变量没有异议，但对于为什么要加一个额外的中间变量$x_4 = \dot x_3 - \beta_3 u$不理解，感觉多引入了一个待定系数。</p>
 <p>实际试了一下，如果只用$\beta_0 \beta_1 \beta_2$三个待定系数，将状态变量x代替y的导数回代，会得到四个方程（分别与输入项的系数相等），使得问题变成超正定（未知数少于方程），有可能无解。因此有必要多设置一个待定系数，保证可以求出唯一解。</p>
-<h2 id="补充内容"><a href="#补充内容" class="headerlink" title="补充内容"></a>补充内容</h2><h3 id="非线性系统的线性化"><a href="#非线性系统的线性化" class="headerlink" title="非线性系统的线性化"></a>非线性系统的线性化</h3><h3 id="线性变化矩阵"><a href="#线性变化矩阵" class="headerlink" title="线性变化矩阵"></a>线性变化矩阵</h3>]]></content>
+<p>除了待定系数法，还可以利用拉普拉斯变换将问题转化到频域，然后利用中间变量Z(s)将输入输出分离来求解状态空间表达式。</p>
+<h2 id="传递函数矩阵"><a href="#传递函数矩阵" class="headerlink" title="传递函数矩阵"></a>传递函数矩阵</h2><p>对状态空间表达式的一般形式做拉普拉斯变换，然后通过消去$X(s)$得到传递函数</p>
+<script type="math/tex; mode=display">G(s) = C[sI-A]^{-1}B+D = C\frac{adj[sI-A]}{det[sI-A]}B+D</script><ol>
+<li>无零极点对消时：A的特征值=传递函数的极点</li>
+<li>有零极点对消时：<pre><code>    A的特征值=传递函数的极点+对消的极点
+</code></pre></li>
+</ol>
+<p>$G(s)$是一个矩阵的时候，$G_{ij}$代表第$i$个输出值对第$j$个输入值的传递函数</p>
+<p><strong>正则的有理传递函数</strong>：$s-&gt;\infin$若传递函数（矩阵内元素）是有限常量，则称为传递函数正则。非正则的传递函数不可以应用，因为那样会放大高频噪声</p>
+<h2 id="离散系统的数学描述"><a href="#离散系统的数学描述" class="headerlink" title="离散系统的数学描述"></a>离散系统的数学描述</h2><p>离散系统也可以写出状态空间表达式，状态空间表达式里包含的不再是微分方程而是差分方程。</p>
+<script type="math/tex; mode=display">x(k+1)=Gx(k)+Hu(k)</script><p>我们可以用差分和微分的近似关系来分析一下G和A的关系</p>
+<script type="math/tex; mode=display">\dot x(kT) = \frac{x(k+1)-x(k)}{T} = Ax(k)+bu(k)</script><script type="math/tex; mode=display">x(k+1) = (I+AT)x(k)+bTu(k)</script><p>可以看到$G=I+AT,H=bT$，在T比较小的时候G可以近似为单位矩阵</p>
+<h2 id="线性变换"><a href="#线性变换" class="headerlink" title="线性变换"></a>线性变换</h2><p>选取不同的状态变量，能够获得不同的系数矩阵、输出矩阵等，线性变换的目的是将形形色色的矩阵统一成标准的、方便后续计算的矩阵-标准型矩阵。</p>
+<script type="math/tex; mode=display">
+\overline{x} = Px,\quad x = P^{-1}\overline{x}</script><script type="math/tex; mode=display">\overline{x} = PAP^{-1}\overline{x} + PBu</script><script type="math/tex; mode=display">y = CP^{-1}\overline{x}+Du</script><p>线性变换：</p>
+<ol>
+<li>不改变系统的特征值</li>
+<li>不改变系统的传递矩阵</li>
+</ol>
+<p>几种较好的标准型矩阵</p>
+<h3 id="对角型"><a href="#对角型" class="headerlink" title="对角型"></a>对角型</h3><p>使用特征向量矩阵S</p>
+<script type="math/tex; mode=display">\Lambda = S^{-1}AS = PAP^{-1}</script><h3 id="约当型"><a href="#约当型" class="headerlink" title="约当型"></a>约当型</h3><p>A存在重复的特征值，并且特征向量的数量小于n时，不能进行对角化，只能化为约当型矩阵$J$</p>
+<p>约当型矩阵的对角线是特征值，上三角阵</p>
+<h3 id="模态矩阵"><a href="#模态矩阵" class="headerlink" title="模态矩阵"></a>模态矩阵</h3><p>特征值为共轭复数的时候，矩阵可以变为模态阵</p>
+<p>若特征值$\lambda _1 = \sigma +j \omega, \quad \lambda _2 = \sigma -j \omega$</p>
+<p>模态阵的形式为：</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+\sigma & \omega \\
+-\omega & \sigma
+\end{pmatrix}</script><h2 id="组合系统"><a href="#组合系统" class="headerlink" title="组合系统"></a>组合系统</h2><p>涉及到两个系统的串联，并联，以及一个作为另一个的反馈</p>
+<ul>
+<li>串联时系统1的输出为系统2的输入</li>
+<li>并联时输入相同，输出等于两者各自输出之和</li>
+<li><strong>反馈时</strong>需要避免<strong>代数环</strong>的出现，两个系统中不能都有输出矩阵，否则无法求出结果</li>
+</ul>
+]]></content>
       <categories>
         <category>控制理论</category>
       </categories>

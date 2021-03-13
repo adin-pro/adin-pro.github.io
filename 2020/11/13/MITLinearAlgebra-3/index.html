@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/2020/11/13/MITLinearAlgebra-3/detcom.png">
 <meta property="article:published_time" content="2020-11-13T11:55:47.000Z">
-<meta property="article:modified_time" content="2020-11-17T04:51:56.000Z">
+<meta property="article:modified_time" content="2021-03-13T09:15:24.550Z">
 <meta property="article:author" content="Adin">
 <meta property="article:tag" content="线性代数">
 <meta name="twitter:card" content="summary">
@@ -222,7 +222,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-17 12:51:56" itemprop="dateModified" datetime="2020-11-17T12:51:56+08:00">2020-11-17</time>
+                <time title="修改时间：2021-03-13 17:15:24" itemprop="dateModified" datetime="2021-03-13T17:15:24+08:00">2021-03-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,7 +283,49 @@
 <p>$det A= \sum \pm a<em>{1\alpha}a</em>{2\beta}a<em>{3\gamma}…a</em>{n\omega}$</p>
 <p>以上就是行列式的公式,代数余子式$C<em>{ij}$<br>$cofactor of a</em>{ij}$指的是其中包含$a_{ij}$的项目,也就是把i行和j列选定的项, 行列式是否为正取决于$i+j$的正负</p>
 <p>行列式的另一种计算方式就是把某一行的元素乘以他们的代数余子式的和<br>$det A = a<em>{11}C</em>{11}+a<em>{12}C</em>{12}+a<em>{13}C</em>{13}$</p>
-<h2 id="克拉默法则与逆矩阵和体积"><a href="#克拉默法则与逆矩阵和体积" class="headerlink" title="克拉默法则与逆矩阵和体积"></a>克拉默法则与逆矩阵和体积</h2>
+<h2 id="克拉默法则与逆矩阵和体积"><a href="#克拉默法则与逆矩阵和体积" class="headerlink" title="克拉默法则与逆矩阵和体积"></a>克拉默法则与逆矩阵和体积</h2><h2 id="特征值和特征向量"><a href="#特征值和特征向量" class="headerlink" title="特征值和特征向量"></a>特征值和特征向量</h2><p>定义式非常熟悉了</p>
+<script type="math/tex; mode=display">
+Ax = \lambda x</script><ul>
+<li>特征值的和等于矩阵的<strong>迹</strong></li>
+<li>特征值的乘积等于矩阵的<strong>行列式</strong></li>
+</ul>
+<p>投影矩阵的特征向量，分为在投影平面上的所有向量和垂直于投影平面的向量</p>
+<p>求解方式就是移项后行列式$det(A-\lambda I)=0$，可能会出现重根，重根比较麻烦（老师原话：重根是18.06痛苦的根源）</p>
+<p>特征向量是上面那个移项后矩阵的零空间成员（零向量有很多，只需要列出来一个）</p>
+<p>一个性质：如果给定的矩阵A加上若干个，例如m个单位矩阵，则特征向量不变，但是所有特征值都会同步加上m</p>
+<ul>
+<li><p>当系数矩阵是旋转矩阵（行列式为1的正交矩阵）的时候，它的特征值计算会出现<strong>复数</strong>，反对称的矩阵特征值是纯虚数，对称的矩阵特征值是实数</p>
+</li>
+<li><p>上三角矩阵的对角线元素就是特征值，退化矩阵，2x2的矩阵只有一个特征向量</p>
+</li>
+</ul>
+<h2 id="对角化和A的幂"><a href="#对角化和A的幂" class="headerlink" title="对角化和A的幂"></a>对角化和A的幂</h2><p>如果A矩阵有n个线性无关的特征向量，组成特征向量矩阵S</p>
+<script type="math/tex; mode=display">
+AS = S\Lambda</script><p>对角化矩阵的元素就是每个特征值</p>
+<ul>
+<li>对角化之后可以很方便的求A的幂</li>
+<li>所有的特征值绝对值小于1是一个使得矩阵幂“稳定”的条件，即结果会趋向于0</li>
+</ul>
+<p>那么哪些矩阵可以对角化？<br>即如何确保矩阵必然有n个线性无关的特征向量？</p>
+<ul>
+<li>所有的特征值不同</li>
+</ul>
+<p>斐波那契数列可以写成矩阵的形式，增长速度由特征值的最大值决定</p>
+<script type="math/tex; mode=display">
+u_{k+1} = Au_k</script><p>可以写成差分方程形式</p>
+<script type="math/tex; mode=display">
+[F_{k+2} , F_{k+1}]^T = A [F_{k+1} , F_k]^T</script><p>求解A的特征值就知道斐波那契数列的增长速度了</p>
+<h2 id="微分方程和exp-A"><a href="#微分方程和exp-A" class="headerlink" title="微分方程和exp(A)"></a>微分方程和exp(A)</h2><script type="math/tex; mode=display">
+\frac{du}{dt}=Au</script><p>解等于指数的特征值的组合（//TODO）</p>
+<p>exp(At)可以进行泰勒展开，如果A可以对角化，还可以写成<br>$Se^{\Lambda t}S^{-1}$</p>
+<h2 id="马尔可夫矩阵，傅里叶级数"><a href="#马尔可夫矩阵，傅里叶级数" class="headerlink" title="马尔可夫矩阵，傅里叶级数"></a>马尔可夫矩阵，傅里叶级数</h2><p>应用层面</p>
+<p>马尔可夫矩阵：</p>
+<ol>
+<li>所有的元素大于0</li>
+<li>所有列元素加起来等于1</li>
+<li>所有矩阵的幂仍是马尔可夫矩阵</li>
+</ol>
+
     </div>
 
     
@@ -366,7 +408,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#行列式与代数余子式"><span class="nav-number">1.</span> <span class="nav-text">行列式与代数余子式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#克拉默法则与逆矩阵和体积"><span class="nav-number">2.</span> <span class="nav-text">克拉默法则与逆矩阵和体积</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#行列式与代数余子式"><span class="nav-number">1.</span> <span class="nav-text">行列式与代数余子式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#克拉默法则与逆矩阵和体积"><span class="nav-number">2.</span> <span class="nav-text">克拉默法则与逆矩阵和体积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征值和特征向量"><span class="nav-number">3.</span> <span class="nav-text">特征值和特征向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对角化和A的幂"><span class="nav-number">4.</span> <span class="nav-text">对角化和A的幂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微分方程和exp-A"><span class="nav-number">5.</span> <span class="nav-text">微分方程和exp(A)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#马尔可夫矩阵，傅里叶级数"><span class="nav-number">6.</span> <span class="nav-text">马尔可夫矩阵，傅里叶级数</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

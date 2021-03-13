@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/05/02/%E7%8E%B0%E4%BB%A3%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%EF%BC%881%EF%BC%89%E7%BB%AA%E8%AE%BA%E4%B8%8E%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1/bode.jpg">
 <meta property="og:image" content="http://yoursite.com/2020/05/02/%E7%8E%B0%E4%BB%A3%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%EF%BC%881%EF%BC%89%E7%BB%AA%E8%AE%BA%E4%B8%8E%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1/sys.gif">
 <meta property="article:published_time" content="2020-05-02T14:53:15.000Z">
-<meta property="article:modified_time" content="2021-03-05T08:51:21.992Z">
+<meta property="article:modified_time" content="2021-03-13T13:08:03.501Z">
 <meta property="article:author" content="Adin">
 <meta property="article:tag" content="校内课程">
 <meta property="article:tag" content="控制理论">
@@ -224,7 +224,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-05 16:51:21" itemprop="dateModified" datetime="2021-03-05T16:51:21+08:00">2021-03-05</time>
+                <time title="修改时间：2021-03-13 21:08:03" itemprop="dateModified" datetime="2021-03-13T21:08:03+08:00">2021-03-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -353,7 +353,43 @@ Y = CX+DU</script><blockquote>
 </blockquote>
 <h2 id="列出状态空间表达式"><a href="#列出状态空间表达式" class="headerlink" title="列出状态空间表达式"></a>列出状态空间表达式</h2><p>难点主要在于等式右侧有输入变量的导数项时，需要在状态变量里增加输入项。第一次看书上一个三阶方程的处理方法时，我对设置3个状态变量没有异议，但对于为什么要加一个额外的中间变量$x_4 = \dot x_3 - \beta_3 u$不理解，感觉多引入了一个待定系数。</p>
 <p>实际试了一下，如果只用$\beta_0 \beta_1 \beta_2$三个待定系数，将状态变量x代替y的导数回代，会得到四个方程（分别与输入项的系数相等），使得问题变成超正定（未知数少于方程），有可能无解。因此有必要多设置一个待定系数，保证可以求出唯一解。</p>
-<h2 id="补充内容"><a href="#补充内容" class="headerlink" title="补充内容"></a>补充内容</h2><h3 id="非线性系统的线性化"><a href="#非线性系统的线性化" class="headerlink" title="非线性系统的线性化"></a>非线性系统的线性化</h3><h3 id="线性变化矩阵"><a href="#线性变化矩阵" class="headerlink" title="线性变化矩阵"></a>线性变化矩阵</h3>
+<p>除了待定系数法，还可以利用拉普拉斯变换将问题转化到频域，然后利用中间变量Z(s)将输入输出分离来求解状态空间表达式。</p>
+<h2 id="传递函数矩阵"><a href="#传递函数矩阵" class="headerlink" title="传递函数矩阵"></a>传递函数矩阵</h2><p>对状态空间表达式的一般形式做拉普拉斯变换，然后通过消去$X(s)$得到传递函数</p>
+<script type="math/tex; mode=display">G(s) = C[sI-A]^{-1}B+D = C\frac{adj[sI-A]}{det[sI-A]}B+D</script><ol>
+<li>无零极点对消时：A的特征值=传递函数的极点</li>
+<li>有零极点对消时：<pre><code>    A的特征值=传递函数的极点+对消的极点
+</code></pre></li>
+</ol>
+<p>$G(s)$是一个矩阵的时候，$G_{ij}$代表第$i$个输出值对第$j$个输入值的传递函数</p>
+<p><strong>正则的有理传递函数</strong>：$s-&gt;\infin$若传递函数（矩阵内元素）是有限常量，则称为传递函数正则。非正则的传递函数不可以应用，因为那样会放大高频噪声</p>
+<h2 id="离散系统的数学描述"><a href="#离散系统的数学描述" class="headerlink" title="离散系统的数学描述"></a>离散系统的数学描述</h2><p>离散系统也可以写出状态空间表达式，状态空间表达式里包含的不再是微分方程而是差分方程。</p>
+<script type="math/tex; mode=display">x(k+1)=Gx(k)+Hu(k)</script><p>我们可以用差分和微分的近似关系来分析一下G和A的关系</p>
+<script type="math/tex; mode=display">\dot x(kT) = \frac{x(k+1)-x(k)}{T} = Ax(k)+bu(k)</script><script type="math/tex; mode=display">x(k+1) = (I+AT)x(k)+bTu(k)</script><p>可以看到$G=I+AT,H=bT$，在T比较小的时候G可以近似为单位矩阵</p>
+<h2 id="线性变换"><a href="#线性变换" class="headerlink" title="线性变换"></a>线性变换</h2><p>选取不同的状态变量，能够获得不同的系数矩阵、输出矩阵等，线性变换的目的是将形形色色的矩阵统一成标准的、方便后续计算的矩阵-标准型矩阵。</p>
+<script type="math/tex; mode=display">
+\overline{x} = Px,\quad x = P^{-1}\overline{x}</script><script type="math/tex; mode=display">\overline{x} = PAP^{-1}\overline{x} + PBu</script><script type="math/tex; mode=display">y = CP^{-1}\overline{x}+Du</script><p>线性变换：</p>
+<ol>
+<li>不改变系统的特征值</li>
+<li>不改变系统的传递矩阵</li>
+</ol>
+<p>几种较好的标准型矩阵</p>
+<h3 id="对角型"><a href="#对角型" class="headerlink" title="对角型"></a>对角型</h3><p>使用特征向量矩阵S</p>
+<script type="math/tex; mode=display">\Lambda = S^{-1}AS = PAP^{-1}</script><h3 id="约当型"><a href="#约当型" class="headerlink" title="约当型"></a>约当型</h3><p>A存在重复的特征值，并且特征向量的数量小于n时，不能进行对角化，只能化为约当型矩阵$J$</p>
+<p>约当型矩阵的对角线是特征值，上三角阵</p>
+<h3 id="模态矩阵"><a href="#模态矩阵" class="headerlink" title="模态矩阵"></a>模态矩阵</h3><p>特征值为共轭复数的时候，矩阵可以变为模态阵</p>
+<p>若特征值$\lambda _1 = \sigma +j \omega, \quad \lambda _2 = \sigma -j \omega$</p>
+<p>模态阵的形式为：</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+\sigma & \omega \\
+-\omega & \sigma
+\end{pmatrix}</script><h2 id="组合系统"><a href="#组合系统" class="headerlink" title="组合系统"></a>组合系统</h2><p>涉及到两个系统的串联，并联，以及一个作为另一个的反馈</p>
+<ul>
+<li>串联时系统1的输出为系统2的输入</li>
+<li>并联时输入相同，输出等于两者各自输出之和</li>
+<li><strong>反馈时</strong>需要避免<strong>代数环</strong>的出现，两个系统中不能都有输出矩阵，否则无法求出结果</li>
+</ul>
+
     </div>
 
     
@@ -437,7 +473,7 @@ Y = CX+DU</script><blockquote>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#绪论"><span class="nav-number">1.</span> <span class="nav-text">绪论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#现代控制理论的特点和优势"><span class="nav-number">1.1.</span> <span class="nav-text">现代控制理论的特点和优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#现代控制理论的几个模块"><span class="nav-number">1.2.</span> <span class="nav-text">现代控制理论的几个模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自控里幅值裕度和相角裕度在说什么"><span class="nav-number">1.3.</span> <span class="nav-text">自控里幅值裕度和相角裕度在说什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判断我的系统是否接近0-dB，-180度？"><span class="nav-number">1.4.</span> <span class="nav-text">如何判断我的系统是否接近0 dB，-180度？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制系统的数学模型"><span class="nav-number">2.</span> <span class="nav-text">控制系统的数学模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#状态空间表达式"><span class="nav-number">2.1.</span> <span class="nav-text">状态空间表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关概念"><span class="nav-number">2.1.1.</span> <span class="nav-text">相关概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#状态空间表达式的几个特点"><span class="nav-number">2.1.2.</span> <span class="nav-text">状态空间表达式的几个特点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态变量图"><span class="nav-number">2.2.</span> <span class="nav-text">状态变量图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建模思路"><span class="nav-number">2.3.</span> <span class="nav-text">建模思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列出状态空间表达式"><span class="nav-number">3.</span> <span class="nav-text">列出状态空间表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充内容"><span class="nav-number">4.</span> <span class="nav-text">补充内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非线性系统的线性化"><span class="nav-number">4.1.</span> <span class="nav-text">非线性系统的线性化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性变化矩阵"><span class="nav-number">4.2.</span> <span class="nav-text">线性变化矩阵</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#绪论"><span class="nav-number">1.</span> <span class="nav-text">绪论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#现代控制理论的特点和优势"><span class="nav-number">1.1.</span> <span class="nav-text">现代控制理论的特点和优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#现代控制理论的几个模块"><span class="nav-number">1.2.</span> <span class="nav-text">现代控制理论的几个模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自控里幅值裕度和相角裕度在说什么"><span class="nav-number">1.3.</span> <span class="nav-text">自控里幅值裕度和相角裕度在说什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判断我的系统是否接近0-dB，-180度？"><span class="nav-number">1.4.</span> <span class="nav-text">如何判断我的系统是否接近0 dB，-180度？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制系统的数学模型"><span class="nav-number">2.</span> <span class="nav-text">控制系统的数学模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#状态空间表达式"><span class="nav-number">2.1.</span> <span class="nav-text">状态空间表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关概念"><span class="nav-number">2.1.1.</span> <span class="nav-text">相关概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#状态空间表达式的几个特点"><span class="nav-number">2.1.2.</span> <span class="nav-text">状态空间表达式的几个特点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态变量图"><span class="nav-number">2.2.</span> <span class="nav-text">状态变量图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建模思路"><span class="nav-number">2.3.</span> <span class="nav-text">建模思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列出状态空间表达式"><span class="nav-number">3.</span> <span class="nav-text">列出状态空间表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传递函数矩阵"><span class="nav-number">4.</span> <span class="nav-text">传递函数矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#离散系统的数学描述"><span class="nav-number">5.</span> <span class="nav-text">离散系统的数学描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性变换"><span class="nav-number">6.</span> <span class="nav-text">线性变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对角型"><span class="nav-number">6.1.</span> <span class="nav-text">对角型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约当型"><span class="nav-number">6.2.</span> <span class="nav-text">约当型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模态矩阵"><span class="nav-number">6.3.</span> <span class="nav-text">模态矩阵</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合系统"><span class="nav-number">7.</span> <span class="nav-text">组合系统</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
