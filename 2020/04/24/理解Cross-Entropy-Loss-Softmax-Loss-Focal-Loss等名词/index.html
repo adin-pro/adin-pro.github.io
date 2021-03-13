@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Cross-Entropy Loss 中文翻译为交叉熵损失，是一种常用的损失函数，但在不同的论文与机器学习框架中常会被叫做不同的名字，本文将对这些令人迷惑的名称以及一些其他常见的损失函数进行说明。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解Cross-Entropy Loss, Softmax Loss, Focal Loss等名词">
+<meta property="og:url" content="http://yoursite.com/2020/04/24/%E7%90%86%E8%A7%A3Cross-Entropy-Loss-Softmax-Loss-Focal-Loss%E7%AD%89%E5%90%8D%E8%AF%8D/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="Cross-Entropy Loss 中文翻译为交叉熵损失，是一种常用的损失函数，但在不同的论文与机器学习框架中常会被叫做不同的名字，本文将对这些令人迷惑的名称以及一些其他常见的损失函数进行说明。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/04/24/%E7%90%86%E8%A7%A3Cross-Entropy-Loss-Softmax-Loss-Focal-Loss%E7%AD%89%E5%90%8D%E8%AF%8D/intro.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/24/%E7%90%86%E8%A7%A3Cross-Entropy-Loss-Softmax-Loss-Focal-Loss%E7%AD%89%E5%90%8D%E8%AF%8D/multiclass_multilabel.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/24/%E7%90%86%E8%A7%A3Cross-Entropy-Loss-Softmax-Loss-Focal-Loss%E7%AD%89%E5%90%8D%E8%AF%8D/softmax_CE_pipeline.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/24/%E7%90%86%E8%A7%A3Cross-Entropy-Loss-Softmax-Loss-Focal-Loss%E7%AD%89%E5%90%8D%E8%AF%8D/sigmoid_CE_pipeline.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/24/%E7%90%86%E8%A7%A3Cross-Entropy-Loss-Softmax-Loss-Focal-Loss%E7%AD%89%E5%90%8D%E8%AF%8D/focal-loss.png">
+<meta property="article:published_time" content="2020-04-24T09:22:42.000Z">
+<meta property="article:modified_time" content="2020-09-14T10:54:24.000Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/04/24/%E7%90%86%E8%A7%A3Cross-Entropy-Loss-Softmax-Loss-Focal-Loss%E7%AD%89%E5%90%8D%E8%AF%8D/intro.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/04/24/%E7%90%86%E8%A7%A3Cross-Entropy-Loss-Softmax-Loss-Focal-Loss%E7%AD%89%E5%90%8D%E8%AF%8D/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>理解Cross-Entropy Loss, Softmax Loss, Focal Loss等名词 | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/24/%E7%90%86%E8%A7%A3Cross-Entropy-Loss-Softmax-Loss-Focal-Loss%E7%AD%89%E5%90%8D%E8%AF%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          理解Cross-Entropy Loss, Softmax Loss, Focal Loss等名词
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-24 17:22:42" itemprop="dateCreated datePublished" datetime="2020-04-24T17:22:42+08:00">2020-04-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-14 18:54:24" itemprop="dateModified" datetime="2020-09-14T18:54:24+08:00">2020-09-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>Cross-Entropy Loss</strong> 中文翻译为交叉熵损失，是一种常用的损失函数，但在不同的论文与机器学习框架中常会被叫做不同的名字，本文将对这些令人迷惑的名称以及一些其他常见的损失函数进行说明。</p>
+<a id="more"></a>
+<p><img src="intro.png" width = "800" title = '概要' alt="概要"/></p>
+<p>首先说明一些概念</p>
+<h2 id="分类任务"><a href="#分类任务" class="headerlink" title="分类任务"></a>分类任务</h2><p>按照标签类型不同进行区分</p>
+<h3 id="Multi-Class-Classification多类别分类"><a href="#Multi-Class-Classification多类别分类" class="headerlink" title="Multi-Class Classification多类别分类"></a>Multi-Class Classification多类别分类</h3><p><strong>每个目标只属于一个类别</strong>。若总计有数目为$C$的类别，CNN网络的输出（Scores）将会是一个维度为$C$的向量$s$。输入样本对应的标签或真实值（groundtruth）是一个one-hot vector，只有目标类别为1，其余$C-1$类均为0。</p>
+<h3 id="Multi-Label-Classification多标签分类"><a href="#Multi-Label-Classification多标签分类" class="headerlink" title="Multi-Label Classification多标签分类"></a>Multi-Label Classification多标签分类</h3><p>s<br><strong>每个目标可以属于多个类别</strong>。例如，某样本可以同时属于human和woman两个类别。若总计有数目为$C$的类别，CNN网络的输出（Scores）与上述任务相同，是一个$C$维的向量$s$。不同的是，输入样本的标签将有多个1值，代表目标属于多个种类。</p>
+<p><img src='multiclass_multilabel.png' width = '800' title = 'types of tasks'></p>
+<h2 id="输出层激活函数"><a href="#输出层激活函数" class="headerlink" title="输出层激活函数"></a>输出层激活函数</h2><p>通常在计算loss之前会作用在CNN结果向量$s$上的激活函数</p>
+<h3 id="Sigmoid"><a href="#Sigmoid" class="headerlink" title="Sigmoid"></a>Sigmoid</h3><p>一种常见的激活函数，效果是可以将任意数值限制在（0，1）区间之内。使用时会作用于向量$s$的每一个元素$s_{i}$也被称为<strong>logistic function</strong>。</p>
+<script type="math/tex; mode=display">
+f(s_{i}) = \frac{1}{1+e^{-s_{i}}}</script><h3 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h3><p>首先需要明确的是，单独的Softmax是一种函数而非一种loss。它的效果是让输入向量$s$的每一个元素$s_{i}$都处于（0，1）区间之内，并且各元素之和为1。</p>
+<script type="math/tex; mode=display">
+f(s_{i}) = \frac{e^{s_{i}}}{\sum^{C}_{j} e^{s_{j}}}</script><p>上式中，$C$为输出向量维度</p>
+<blockquote>
+<p>训练过程和预测中都会在输出向量后使用激活函数</p>
+</blockquote>
+<h2 id="各种Loss函数"><a href="#各种Loss函数" class="headerlink" title="各种Loss函数"></a>各种Loss函数</h2><h3 id="Cross-Entropy-Loss交叉熵损失函数"><a href="#Cross-Entropy-Loss交叉熵损失函数" class="headerlink" title="Cross-Entropy Loss交叉熵损失函数"></a>Cross-Entropy Loss交叉熵损失函数</h3><p>事实上，这里讨论所有Loss的都是Cross-Entropy家族里面的成员。交叉熵损失CE Loss定义为：</p>
+<script type="math/tex; mode=display">
+CE = -\sum_{i}^{C}t_{i}log(s_{i})</script><p>其中$t<em>{i}$和$s</em>{i}$代表的是label向量$t$和CNN预测的向量$s$的对应元素。在计算CE损失前，通常会有一个激活函数(sigmoid/softmax)$f$作用于输出向量上。</p>
+<p>在二元分类问题中（即目标只需判断属于或不属于，$C=2$）,CE Loss也会被写作Binary Cross-Entropy Loss:</p>
+<script type="math/tex; mode=display">
+BCE = -\sum_{i=1}^{C=2}t_{i}log(f(s_{i})) = -t_{1}log(f(s_{1}))-(1-t_{1})log(1-f(s_{1}))</script><p><strong>Logistic Loss</strong>和<strong>Multinomial Logistic Loss</strong>是Cross-Entropy Loss的别称。</p>
+<p>对应机器学习框架中一些<strong>不带有激活函数</strong>的：</p>
+<ul>
+<li>Caffe：Multinomial Logistic Loss Layer。仅限于Multi-Class Classification问题，不支持Multi-Labels。</li>
+<li>PyTorch：BCELoss。仅限于二元分类。</li>
+<li>TensorFlow：log_loss</li>
+</ul>
+<h3 id="Categorical-Cross-Entropy-Loss分类交叉熵损失函数"><a href="#Categorical-Cross-Entropy-Loss分类交叉熵损失函数" class="headerlink" title="Categorical Cross-Entropy Loss分类交叉熵损失函数"></a>Categorical Cross-Entropy Loss分类交叉熵损失函数</h3><p>该损失函数也被叫做Softmax Loss，可以认为是Softmax和Cross-Entropy Loss两个函数的叠加。专门用于处理Multi-Class问题，输出向量的每一个元素代表每一种类别的概率。</p>
+<p><img src='softmax_CE_pipeline.png' width = '800' title = 'softmax loss'></p>
+<p>由于Multi-Class的label是一个one-hot vector，因此计算损失的时候只需要计算$t<em>{i}=t</em>{p}=1$那一项，其余的交叉熵由于label元素为0而乘积都为0，不需要计算</p>
+<script type="math/tex; mode=display">
+CE = -log\left ( \frac{e^{s_{p}}}{\sum_{j}^{C} e^{s_{j}}} \right )</script><p>上式中$s_{p}$是输出结果中对应真实类别的那一项</p>
+<p>定义了Softmax Loss后就会进行反向传播的梯度计算，虽然Loss中的分母只有$s<em>{p}$ , 但是需要对输出层每一个neuron计算gradient，因为损失分母中仍然存在着这些项目。梯度计算分为对非零元素$s</em>{p}$以及对其他零元素</p>
+<p>对$s_{p}$</p>
+<script type="math/tex; mode=display">
+\frac{\partial}{\partial{s_{p}}}\left(-log\left ( \frac{e^{s_{p}}}{\sum_{j}^{C}s^{s_{j}}}\right)\right) = \left(\frac{e^{s_{n}}}{\sum_{j}^{C}e^{s_{j}}}-1 \right)</script><p>对$s_{n}$</p>
+<script type="math/tex; mode=display">
+\frac{\partial}{\partial s_{n}} \left (-log\left ( \frac{e^{s_{p}}}{\sum_{j}^{C} e^{s_{j}}} \right ) \right ) = \left ( \frac{e^{s_{n}}}{\sum_{j}^{C}e^{s_{j}}}\right )</script><p>对应机器学习框架中：</p>
+<ul>
+<li>Caffe：SoftmaxWithLoss Layer。仅限于Multi-Class Classification问题，不支持Multi-Labels。</li>
+<li>PyTorch：CrossEntropyLoss。仅限Multi-Class问题</li>
+<li>TensorFlow：softmax_cross_entropy。仅限Multi-Class问题</li>
+</ul>
+<h3 id="Binary-Cross-Entropy-Loss"><a href="#Binary-Cross-Entropy-Loss" class="headerlink" title="Binary Cross-Entropy Loss"></a>Binary Cross-Entropy Loss</h3><p>前面已经简单提到了BCE这种形式，它也被叫做Sigmoid Cross-Entropy Loss。</p>
+<script type="math/tex; mode=display">
+BCE = -\sum_{i=1}^{C=2}t_{i}log(f(s_{i})) = -t_{1}log(f(s_{1}))-(1-t_{1})log(1-f(s_{1}))</script><p><img src='sigmoid_CE_pipeline.png' width = '800' title = 'sigmoid loss'></p>
+<p>形式是比较清晰明了的，输出和真实值实际上只有一个$s<em>{1}$和$t</em>{1}$，但是因为是二分类问题，在$label t<em>{1}=0$的时候也要计算损失，因而存在一个隐含的元素$s</em>{2}, s<em>{1}+s</em>{2}=1$</p>
+<p>计算梯度：</p>
+<script type="math/tex; mode=display">
+\frac{\partial}{\partial s_{i}} (CE(f(s_{i}))) = t_{1}(f(s_{1})-1)+ (1-t_{1})f(s_{1})</script><h3 id="Focal-Loss"><a href="#Focal-Loss" class="headerlink" title="Focal Loss"></a>Focal Loss</h3><p><strong>Focal Loss</strong>是由Facebook Lin et al.提出的一种损失函数，RetinaNet使用了这种损失函数。Focal Loss是一种交叉熵损失函数，它能够根据分类结果调整损失函数各部分的权重。基本思路是：如果样本已经被CNN正确的标注，那么它对于Loss的贡献或者说权重比例将会降低，作者认为这种策略可以帮助算法集中精力在哪些被错误分类的样本上。</p>
+<p>Focal Loss使用了sigmoid激活函数，因此可以FL也可以被视作一个Binary Cross-Entropy Loss。FL定义如下：</p>
+<script type="math/tex; mode=display">
+FL = -\sum_{i=1}^{C=2}(1-s_{i})^{\gamma}t_{i}log(s_{i})</script><p>$\gamma&gt;=0$是一个调节因子，$\gamma=0$时FL退化为BCE</p>
+<p><img src='focal-loss.png' width = '800' title = 'focal-loss'></p>
+<p>由图上可以看出，对于概率越小的情况，Focal Loss中的$\gamma$对于正确分类样本的Loss降低越为明显。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文提及的诸多LossFunction都由最基本的Cross-Entropy Loss演化得到，在不同的框架中他们有着不同的名字。</p>
+<ul>
+<li>Cross-Entropy Loss<ul>
+<li>别名:Logistic Loss &amp; Multinomial Logistic Loss,最基本的形式</li>
+</ul>
+</li>
+<li>Categorical Cross-Entropy Loss<ul>
+<li>别名:Softmax Loss = Softmax+CE</li>
+</ul>
+</li>
+<li>Binary Cross-Entropy Loss<ul>
+<li>别名:Sigmoid Cross-Entropy Loss = Sigmoid+CE</li>
+</ul>
+</li>
+<li>Focal Loss<ul>
+<li>在CE每一个项目前增加了系数因子</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/25/Coursera%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0Union-Find/" rel="next" title="Coursera算法笔记Union-Find">
+      Coursera算法笔记Union-Find <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分类任务"><span class="nav-number">1.</span> <span class="nav-text">分类任务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-Class-Classification多类别分类"><span class="nav-number">1.1.</span> <span class="nav-text">Multi-Class Classification多类别分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-Label-Classification多标签分类"><span class="nav-number">1.2.</span> <span class="nav-text">Multi-Label Classification多标签分类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出层激活函数"><span class="nav-number">2.</span> <span class="nav-text">输出层激活函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid"><span class="nav-number">2.1.</span> <span class="nav-text">Sigmoid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Softmax"><span class="nav-number">2.2.</span> <span class="nav-text">Softmax</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各种Loss函数"><span class="nav-number">3.</span> <span class="nav-text">各种Loss函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cross-Entropy-Loss交叉熵损失函数"><span class="nav-number">3.1.</span> <span class="nav-text">Cross-Entropy Loss交叉熵损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Categorical-Cross-Entropy-Loss分类交叉熵损失函数"><span class="nav-number">3.2.</span> <span class="nav-text">Categorical Cross-Entropy Loss分类交叉熵损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Binary-Cross-Entropy-Loss"><span class="nav-number">3.3.</span> <span class="nav-text">Binary Cross-Entropy Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Focal-Loss"><span class="nav-number">3.4.</span> <span class="nav-text">Focal Loss</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

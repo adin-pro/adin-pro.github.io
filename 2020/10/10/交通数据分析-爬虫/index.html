@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="《交通数据分析》课程中关于爬虫部分的内容，简单记录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="交通数据分析-爬虫">
+<meta property="og:url" content="http://yoursite.com/2020/10/10/%E4%BA%A4%E9%80%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-%E7%88%AC%E8%99%AB/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="《交通数据分析》课程中关于爬虫部分的内容，简单记录。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-10T07:38:17.000Z">
+<meta property="article:modified_time" content="2020-10-10T09:00:04.000Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="爬虫">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/10/10/%E4%BA%A4%E9%80%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-%E7%88%AC%E8%99%AB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>交通数据分析-爬虫 | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/10/%E4%BA%A4%E9%80%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-%E7%88%AC%E8%99%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          交通数据分析-爬虫
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-10-10 15:38:17 / 修改时间：17:00:04" itemprop="dateCreated datePublished" datetime="2020-10-10T15:38:17+08:00">2020-10-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A0%A1%E5%86%85%E8%AF%BE%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">校内课程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>《交通数据分析》课程中关于爬虫部分的内容，简单记录。</p>
+<a id="more"></a>
+<h2 id="HTTP与Web"><a href="#HTTP与Web" class="headerlink" title="HTTP与Web"></a>HTTP与Web</h2><p>HTTP是client与server之间的通讯协议，从server获取资源。</p>
+<p>client发送URL（统一资源定位符）</p>
+<ul>
+<li>URL: Uniform Resource Locator</li>
+<li>URI: Uniform Resource Identifier</li>
+<li>URI可以是ftp，http，tel<ul>
+<li>URL是URI的子集</li>
+</ul>
+</li>
+</ul>
+<p><strong>URI绝对格式</strong><br>协议名称：登录信息@服务器地址:端口号（门）/带层次的文件路径？查询字符串#片段标识符（网页中相应片段）</p>
+<h2 id="网页数据采集"><a href="#网页数据采集" class="headerlink" title="网页数据采集"></a>网页数据采集</h2><p>流程：</p>
+<ol>
+<li>发现<strong>网址规律</strong>，构建URL</li>
+<li>构建headers，cookies参数</li>
+<li>对目标网址发送请求（<em>伪装为浏览器访问</em>）</li>
+<li>解析返回的响应数据</li>
+<li>保存数据，重复3-5步骤</li>
+</ol>
+<p><a href="https://shanghai.8684.cn/" target="_blank" rel="noopener">https://shanghai.8684.cn/</a> 交通数据网站</p>
+<h3 id="网站爬取"><a href="#网站爬取" class="headerlink" title="网站爬取"></a>网站爬取</h3><p>使用request包对内容爬取</p>
+<p>响应码：200成功，4XX客户端错误，5XX服务器错误</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    url = <span class="string">'https://shanghai.8684.cn/'</span></span><br><span class="line">    r = requests.get(url)</span><br><span class="line">    print(r.status_code)</span><br></pre></td></tr></table></figure>
+<p><strong>注意项目：</strong></p>
+<ul>
+<li>Encoding：utf-8</li>
+<li>HTML Response</li>
+<li>r.text是相应内容</li>
+</ul>
+<p><strong>为了伪装成浏览器，加上headers，params等</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    url = <span class="string">'https://shanghai.8684.cn/so.php'</span></span><br><span class="line">    parameters = &#123;<span class="string">'q'</span>:<span class="string">'同济大学'</span>,<span class="string">'q1'</span>:<span class="string">'东方明珠'</span>,<span class="string">'k'</span>:<span class="string">'p2p'</span>&#125;</span><br><span class="line">    headers = &#123;<span class="string">'User-Agent'</span>:...&#125; <span class="comment"># 根据浏览器类型来</span></span><br><span class="line">    r = requests.get(url,headers=headers,params=parameters)</span><br><span class="line">    print(r.status_code)</span><br></pre></td></tr></table></figure>
+<h3 id="数据解析"><a href="#数据解析" class="headerlink" title="数据解析"></a>数据解析</h3><p>返回了一大堆数据，要进行数据的解析，分为HTML和JSON解析</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">soup = BeautifulSoup(html, <span class="string">'lxml'</span>)</span><br><span class="line">res = soup.findAll(<span class="string">'span'</span>,&#123;<span class="string">'class'</span>:<span class="string">'author'</span>&#125;) <span class="comment">#查找条件，得到一个列表</span></span><br><span class="line"></span><br><span class="line">print(res)</span><br><span class="line"></span><br><span class="line">output: [<span class="string">'&lt;span class='</span>autho<span class="string">r'&gt;我叫作者&lt;/span&gt;'</span>]</span><br><span class="line"></span><br><span class="line">soup = BeautifulSoup(html, <span class="string">'lxml'</span>)</span><br><span class="line">res = soup.findAll(<span class="string">'span'</span>,&#123;<span class="string">'class'</span>:<span class="string">'author'</span>&#125;).findChildern(text=<span class="literal">True</span>) <span class="comment">#查找条件，得到一个列表</span></span><br><span class="line"></span><br><span class="line">print(res)</span><br><span class="line"></span><br><span class="line">output: [<span class="string">'我叫作者'</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="数据解析re"><a href="#数据解析re" class="headerlink" title="数据解析re"></a>数据解析re</h4><p>正则表达式解析</p>
+<p>用re.compile去写一个正则表达式pattern</p>
+<p>pattern = re.compile(string)</p>
+<ul>
+<li>re.findall(pattern, string) # 返回列表</li>
+<li>re.match(pattern,string)</li>
+</ul>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    url = <span class="string">'https://shanghai.8684.cn/so.php'</span></span><br><span class="line">    parameters = &#123;<span class="string">'q'</span>:<span class="string">'同济大学'</span>,<span class="string">'q1'</span>:<span class="string">'东方明珠'</span>,<span class="string">'k'</span>:<span class="string">'p2p'</span>&#125;</span><br><span class="line">    headers = &#123;<span class="string">'User-Agent'</span>:<span class="string">'Chrome/85.0.4183.121 Safari/537.36'</span>&#125;</span><br><span class="line">    r = requests.get(url,headers=headers,params=parameters).text</span><br><span class="line">    soup = BeautifulSoup(r,<span class="string">'lxml'</span>)</span><br><span class="line">    <span class="comment">#res = soup.find_all('div')</span></span><br><span class="line">    res = soup.findAll(<span class="string">'div'</span>,&#123;<span class="string">'class'</span>:<span class="string">'plan-head'</span>&#125;)</span><br><span class="line">    print(res)</span><br></pre></td></tr></table></figure>
+<p>结果如下<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[&lt;div class="plan-head"&gt;&lt;span class="plan-no"&gt;方案1&lt;/span&gt;&lt;p&gt;途经8个站点，共换乘1次，步行342米，全程约39分&lt;/p&gt;&lt;/div&gt;, &lt;div class="plan-head"&gt;&lt;span class="plan-no"&gt;方案2&lt;/span&gt;&lt;p&gt;途经7个站点，共换乘1次，步行392米，全程约47分&lt;/p&gt;&lt;/div&gt;, &lt;div class="plan-head"&gt;&lt;span class="plan-no"&gt;方案3&lt;/span&gt;&lt;p&gt;途经14个站点，共换乘1次，步行154米，全程约1小时18分&lt;/p&gt;&lt;/div&gt;, &lt;div class="plan-head"&gt;&lt;span class="plan-no"&gt;方案4&lt;/span&gt;&lt;p&gt;途经7个站点，共换乘1次，步行650米，全程约53分&lt;/p&gt;&lt;/div&gt;, &lt;div class="plan-head"&gt;&lt;span class="plan-no"&gt;方案5&lt;/span&gt;&lt;p&gt;途经13个站点，共换乘2次，步行49米，全程约1小时15分&lt;/p&gt;&lt;/div&gt;, &lt;div class="plan-head"&gt;&lt;span class="plan-no"&gt;方案6&lt;/span&gt;&lt;p&gt;途经14个站点，共换乘2次，步行1米，全程约1小时20分&lt;/p&gt;&lt;/div&gt;, &lt;div class="plan-head"&gt;&lt;span class="plan-no"&gt;方案7&lt;/span&gt;&lt;p&gt;途经13个站点，共换乘2次，步行154米，全程约1小时18分&lt;/p&gt;&lt;/div&gt;, &lt;div class="plan-head"&gt;&lt;span class="plan-no"&gt;方案8&lt;/span&gt;&lt;p&gt;途经15个站点，共换乘2次，步行1米，全程约1小时25分&lt;/p&gt;&lt;/div&gt;, &lt;div class="plan-head"&gt;&lt;span class="plan-no"&gt;方案9&lt;/span&gt;&lt;p&gt;途经23个站点，共换乘1次，步行169米，全程约2小时03分&lt;/p&gt;&lt;/div&gt;, &lt;div class="plan-head"&gt;&lt;span class="plan-no"&gt;方案10&lt;/span&gt;&lt;p&gt;途经11个站点，共换乘1次，步行870米，全程约1小时17分&lt;/p&gt;&lt;/div&gt;]</span><br><span class="line"></span><br><span class="line">Process finished <span class="keyword">with</span> exit code <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="多重循环采集数据"><a href="#多重循环采集数据" class="headerlink" title="多重循环采集数据"></a>多重循环采集数据</h3><p>爬虫是一个多重循环</p>
+<p>需要注意为了robust：加入try异常机制</p>
+<ul>
+<li>注意潜在的错误信息<ul>
+<li>list列表为空</li>
+<li>设计随机暂停（time.sleep()）可以搞一个正态分布<ul>
+<li>模拟正常浏览行为</li>
+</ul>
+</li>
+<li>多准备一些IP地址（代理服务器）</li>
+</ul>
+</li>
+</ul>
+<h3 id="通过API获取数据"><a href="#通过API获取数据" class="headerlink" title="通过API获取数据"></a>通过API获取数据</h3><p>合法公开接口</p>
+<p>API申请：</p>
+<ul>
+<li>百度开放平台</li>
+<li>注册</li>
+<li>控制台应用</li>
+<li>定义IP限制</li>
+<li>得到api_key密钥</li>
+</ul>
+<p>通过开发文档了解API规则</p>
+<h3 id="手机APP接口获取"><a href="#手机APP接口获取" class="headerlink" title="手机APP接口获取"></a>手机APP接口获取</h3><p>电脑端：Fiddler等</p>
+<ul>
+<li>捕获HTPPS</li>
+<li>基本界面</li>
+<li>设置断点<ul>
+<li>修改request</li>
+<li>修改response</li>
+</ul>
+</li>
+<li>过滤会话</li>
+<li>编码</li>
+</ul>
+<p>安卓：</p>
+<ul>
+<li>Wireshark</li>
+<li>Package Capture</li>
+<li>Share for root</li>
+</ul>
+<h3 id="VPS"><a href="#VPS" class="headerlink" title="VPS"></a>VPS</h3><p>Virtual Private Server虚拟专用服务器</p>
+<p>物理设备上的虚拟机</p>
+<p>阿里云、腾讯云</p>
+<p>VULTR、DigitalOcean</p>
+<p>选择哪个？：分析海底光缆拓扑</p>
+<p>使用SSH</p>
+<p>windows：Xshell/PuTTY</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"># 爬虫</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E5%88%97%E8%A1%A8/" rel="prev" title="数据结构：列表">
+      <i class="fa fa-chevron-left"></i> 数据结构：列表
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/13/MITLinearAlgebra-2/" rel="next" title="MITLinearAlgebra(2)">
+      MITLinearAlgebra(2) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP与Web"><span class="nav-number">1.</span> <span class="nav-text">HTTP与Web</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网页数据采集"><span class="nav-number">2.</span> <span class="nav-text">网页数据采集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网站爬取"><span class="nav-number">2.1.</span> <span class="nav-text">网站爬取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据解析"><span class="nav-number">2.2.</span> <span class="nav-text">数据解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据解析re"><span class="nav-number">2.2.1.</span> <span class="nav-text">数据解析re</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多重循环采集数据"><span class="nav-number">2.3.</span> <span class="nav-text">多重循环采集数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过API获取数据"><span class="nav-number">2.4.</span> <span class="nav-text">通过API获取数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手机APP接口获取"><span class="nav-number">2.5.</span> <span class="nav-text">手机APP接口获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VPS"><span class="nav-number">2.6.</span> <span class="nav-text">VPS</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

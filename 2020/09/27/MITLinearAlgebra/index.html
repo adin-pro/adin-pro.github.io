@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="MIT Prof. Gilbert Strang 的公开课，讲解线性代数的知识，这里做一个小笔记，简单记录每个课堂里的重点。  方程组的几何解释 矩阵的消元和LU分解 列空间与零空间 求解Ax&#x3D;b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MITLinearAlgebra">
+<meta property="og:url" content="http://yoursite.com/2020/09/27/MITLinearAlgebra/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="MIT Prof. Gilbert Strang 的公开课，讲解线性代数的知识，这里做一个小笔记，简单记录每个课堂里的重点。  方程组的几何解释 矩阵的消元和LU分解 列空间与零空间 求解Ax&#x3D;b">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-27T01:04:38.000Z">
+<meta property="article:modified_time" content="2021-03-13T05:58:47.047Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="线性代数">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/09/27/MITLinearAlgebra/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MITLinearAlgebra | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/27/MITLinearAlgebra/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MITLinearAlgebra
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-27 09:04:38" itemprop="dateCreated datePublished" datetime="2020-09-27T09:04:38+08:00">2020-09-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-13 13:58:47" itemprop="dateModified" datetime="2021-03-13T13:58:47+08:00">2021-03-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">数学</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>MIT Prof. Gilbert Strang 的公开课，讲解线性代数的知识，这里做一个小笔记，简单记录每个课堂里的重点。</p>
+<ul>
+<li>方程组的几何解释</li>
+<li>矩阵的消元和LU分解</li>
+<li>列空间与零空间</li>
+<li>求解Ax=b</li>
+</ul>
+<a id="more"></a>
+<p>完整链接:<br><a href="/2020/09/27/MITLinearAlgebra/" title="MITLinearAlgebra">MITLinearAlgebra</a><br><a href="/2020/11/13/MITLinearAlgebra-2/" title="MITLinearAlgebra(2)">MITLinearAlgebra(2)</a><br><a href="/2020/11/13/MITLinearAlgebra-3/" title="MITLinearAlgebra(3)">MITLinearAlgebra(3)</a></p>
+<h2 id="方程组的几何解释"><a href="#方程组的几何解释" class="headerlink" title="方程组的几何解释"></a>方程组的几何解释</h2><p>以三维的方程组为例(随便写的)</p>
+<script type="math/tex; mode=display">
+
+5x + 4y -  z = 0\\\\</script><script type="math/tex; mode=display">
+2x +  y - 3z = 1\\\\</script><script type="math/tex; mode=display">
+3x - 4y - 2z =-2\\\\</script><script type="math/tex; mode=display">
+A=
+\begin{pmatrix}
+
+5 & 4& -1\\
+2 & 1& -3\\
+3 &-4& -2\\
+\end{pmatrix}</script><ul>
+<li>row picture：逐行解释，满足每行方程的点在三维空间里能够形成一个二维的平面，三个平面的交点就是满足方程组的解</li>
+<li>column picture：把系数矩阵A视作三个列向量，原方程视作三个三维列向量的线性组合</li>
+</ul>
+<script type="math/tex; mode=display">
+
+x\begin{bmatrix}
+5&\\
+2&\\
+3
+\end{bmatrix}
+
++y\begin{bmatrix}
+4&\\
+1&\\
+-4
+\end{bmatrix}
+
++z\begin{bmatrix}
+-1&\\
+-3&\\
+-2
+\end{bmatrix}</script><p>$\color{red}{矩阵\times列向量=列向量}$</p>
+<p>明显，以列向量线性组合的方式更简洁，更符合直观认识。</p>
+<h2 id="矩阵消元"><a href="#矩阵消元" class="headerlink" title="矩阵消元"></a>矩阵消元</h2><p>讲解的内容为高斯消元法，思路很简单，所设计到的都是<strong>行变换</strong></p>
+<p>消元：</p>
+<ol>
+<li>如果(1,1)元素非0，将其作为第一列主元，保留第一行不变</li>
+<li>通过矩阵行加法，将第一列其余元素变为0</li>
+<li>查看第二列，若(2,2)元素为0，寻找非零主元pivot，找到后将其所在行与第二行交换，使用矩阵行加法将其余行的第二列元素变为0</li>
+<li>重复上述消元步骤，直至将A变化为上三角矩阵U</li>
+</ol>
+<p>回代：</p>
+<ol>
+<li>对$Ax=b$等式右侧的$b$列向量运用同样的上述变换</li>
+<li>先计算出最后一维的解，再依次求解所有的变量解</li>
+</ol>
+<p>那么上述的行变换过程如何用矩阵表示呢？</p>
+<p>需要首先明确的是，行变换需要的是左乘，与上一节右乘列向量得到列向量类似，有</p>
+<p>$\color{red}{行向量\times矩阵=行向量}$</p>
+<p>一个行向量的左乘就代表一次矩阵$A$行向量的线性组合，产生一个新的行向量。每一次每一列的消元，就是n次的矩阵A行向量的线性组合，形成的是$n$个新的行向量。</p>
+<p>因此，每一列的消元都是左乘一个跟$A$一样维度的方阵，如果对上面的三维矩阵$A$，将方阵的下标写成每次要消去的第一个元素的代号，那么可以将两次消元的方阵写作$E<em>{(2,1)}和E</em>{(3,2)}$，他们的乘积$E$就是这次表示消元所需要的矩阵。</p>
+<script type="math/tex; mode=display">
+A=
+\begin{pmatrix}
+
+5 & 4& -1\\
+2 & 1& -3\\
+3 &-4& -2\\
+\end{pmatrix}</script><p>下面简要说明其中一个方阵的书写思路，也就是线性组合的思路</p>
+<script type="math/tex; mode=display">
+E_{(2,1)}第一行负责计算新矩阵的第一行\\保持不变所以是{1，0，0},以此类推\\新第二行是旧的第二行减去0.4倍的第一行\\新第三行是旧第三行减去0.6倍的旧第一行\\
+E_{(2,1)}=
+\begin{pmatrix}
+
+1 & 0&  0\\
+-0.4 & 1& 0\\
+-0.6 &0& 1\\
+\end{pmatrix}</script><p>上述是行变换的矩阵，如果需要计算列变换对应的矩阵，和上面的思路是一致的，只不过矩阵变成了右乘。</p>
+<p><strong><em>矩阵消元法也会有失败的时候，也就是最后发现某一列找不到主元元素了，即剩余的元素都是0</em></strong></p>
+<p><em>一般不会去直接计算E，而是去计算各方阵的逆</em>（原因好像没解释）</p>
+<h2 id="矩阵的乘法和逆矩阵"><a href="#矩阵的乘法和逆矩阵" class="headerlink" title="矩阵的乘法和逆矩阵"></a>矩阵的乘法和逆矩阵</h2><h3 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h3><script type="math/tex; mode=display">A\times B=C</script><p>矩阵乘法的四种方法：</p>
+<ol>
+<li>点乘对应A行B列得到C中的某一个元素</li>
+<li>A中列向量的线性组合，A分别与B中每个列向量相乘</li>
+<li>B中行向量的线性组合，B分别与A中每个行向量相乘</li>
+<li>A和B中对应列对应行分别的乘积，得到若干个矩阵，矩阵相加为结果（一列乘一行得到一个矩阵，很特殊，每一行和每一列都是线性相关）</li>
+</ol>
+<p>矩阵还可以分块乘积</p>
+<h3 id="逆矩阵"><a href="#逆矩阵" class="headerlink" title="逆矩阵"></a>逆矩阵</h3><p>这里讨论的都是方阵的逆矩阵，方阵的逆矩阵左右乘都可以，非方阵的不可以</p>
+<p>可逆的，非奇异的<br>invertible，nonsingular</p>
+<p><strong>什么样的方阵是不可逆的：</strong></p>
+<ul>
+<li>行列式为0的矩阵</li>
+<li>矩阵的行向量或者列向量存在线性相关</li>
+<li>存在非零向量$x$，使得$Ax=0$成立</li>
+</ul>
+<blockquote>
+<p>第三个的简单证明，使用反证法，若存在$A^{-1}$，则若$Ax=0$成立，那么$A^{-1}Ax=Ix=0 \Rightarrow x=0$，矛盾</p>
+</blockquote>
+<p><strong>使用Gauss-Jordan思路求逆矩阵：</strong></p>
+<ol>
+<li>将原矩阵$A$与单位矩阵$I$组合形成增广矩阵$[A|I]$</li>
+<li>对增广矩阵进行高斯消元，使用行变换方法，将左半部分转化为上三角矩阵</li>
+<li>使用jordan思路，反向行变换，将上三角矩阵变成单位阵，则此时右半部分即为$A^{-1}$</li>
+</ol>
+<h2 id="矩阵的LU分解"><a href="#矩阵的LU分解" class="headerlink" title="矩阵的LU分解"></a>矩阵的LU分解</h2><p>本节内容：</p>
+<ul>
+<li>逆矩阵和转置矩阵的基本知识</li>
+<li>如何理解A=LU分解</li>
+<li>A的高斯消去需要多少步骤</li>
+<li>permutation置换矩阵是啥以及它的性质</li>
+</ul>
+<h3 id="逆矩阵和转置的一些基本知识"><a href="#逆矩阵和转置的一些基本知识" class="headerlink" title="逆矩阵和转置的一些基本知识"></a>逆矩阵和转置的一些基本知识</h3><script type="math/tex; mode=display">
+
+(AB)^{-1} = B^{-1}A^{-1} \\\\</script><script type="math/tex; mode=display">
+(AB)^{T} = B^{T}A^{T}  \\\\</script><script type="math/tex; mode=display">
+(A^{T})^{-1} = (A^{-1})^{T} \\\\</script><h3 id="LU分解"><a href="#LU分解" class="headerlink" title="LU分解"></a>LU分解</h3><blockquote>
+<p>前提：<br>矩阵是方阵（LU分解主要是针对方阵）；<br>矩阵是可逆的，也就是该矩阵是满秩矩阵，每一行都是独立向量；<br>消元过程中没有0主元出现，也就是消元过程中不能出现行交换的初等变换。</p>
+</blockquote>
+<p>意义：单次LU分解量不小，但是可以反复利用LU</p>
+<blockquote>
+<p>看起来比高斯消元经历了更多的步骤，那为什么又说LU分解更快呢？在实践中，b是输出，输出又经常变动，从Ax = b频繁地变成Ax = b’，此时高斯消元就需要全部重新计算（高斯消元用增广矩阵消元，变化过程是[A, b]→[U, b’]），这对大型矩阵来说及其耗时。反观LU分解，因为它不依赖于b，所以计算一次后就可以存储U和L-1，在输出变化后也只是需要简单的相乘。实际上，由于L已经是整理过的斜对角全是1的下三角矩阵，所以用高斯-诺当消元法对L求逆非常简单。</p>
+</blockquote>
+<script type="math/tex; mode=display">
+EA = U\\\\</script><script type="math/tex; mode=display">
+L = E^{-1}\\\\</script><script type="math/tex; mode=display">
+A = LU \\\\</script><p>U代表upper上三角矩阵，L代表lower下三角矩阵。<br>如果将U继续分解为DU,可以得到新的分解LDU，下三角乘对角乘上三角。</p>
+<script type="math/tex; mode=display">
+
+A = LDU</script><p>推荐LU分解的原因在于，利用单个的消元矩阵$E<em>{2,1},E</em>{3,1}$这种直接去求$E$其实很麻烦，因为会涉及到复杂的矩阵乘法运算，后续的步骤会受到前序消元的影响，不能直接通过理解写出$E$。</p>
+<p>而L矩阵因为是逆矩阵的乘积，顺序从最后一行返回第一行，每一个都不会受到前序矩阵的影响，因此能够直接把单个的消元矩阵的元素拼接到一起形成一个下三角矩阵。</p>
+<blockquote>
+<p>如果没有行交换操作，则消元矩阵的因子可以直接写入矩阵L。没有多余的交叉项出现是LU分解要优于EA=U这种形式的原因之一。</p>
+</blockquote>
+<h3 id="消元法的计算量"><a href="#消元法的计算量" class="headerlink" title="消元法的计算量"></a>消元法的计算量</h3><p>将线性组合每进行一次行元素的乘和加减作为一次操作，例如将第一行某一个元素乘以两倍，再用第二行对应元素减去，这个算一次操作。</p>
+<p>第一列除了第一个元素外消成0，这个流程总共需要大约$n^2$次操作，一个矩阵完成消元需要$\sum^{N}_{i} i^2$次，拿微积分公式近似计算一下发现需要$1/3N^{3}$次计算操作。</p>
+<p>等号右侧向量b的行变换大致需要nxn次运算。</p>
+<h3 id="置换矩阵"><a href="#置换矩阵" class="headerlink" title="置换矩阵"></a>置换矩阵</h3><p>表示row exchange行交换的矩阵，行交换在高斯消元法里用于寻找主元，</p>
+<p>直接用单位矩阵的各种行交换矩阵就可以表示出置换矩阵的样子。</p>
+<p>对于n阶的方阵，总共有n！个置换矩阵，置换矩阵的逆矩阵也是置换矩阵，同时也是置换矩阵的转置矩阵。即如果置换矩阵是对称矩阵，则其是三矩阵一体，原矩阵=逆矩阵=转置矩阵。</p>
+<h2 id="转置-置换-向量空间"><a href="#转置-置换-向量空间" class="headerlink" title="转置-置换-向量空间"></a>转置-置换-向量空间</h2><p>symmetric matrix</p>
+<script type="math/tex; mode=display">
+
+M^{T} = M</script><p>任何转置矩阵乘以本身得到的都是对称矩阵$R^{T}R=(R^{T}R)^{T}$</p>
+<p>$R^{T}R$ is always symmetric</p>
+<h3 id="向量空间"><a href="#向量空间" class="headerlink" title="向量空间"></a>向量空间</h3><p>对于其中向量进行线性计算（加法和数乘）封闭（closed）的空间$R^{n}$显然是向量空间<br>0向量必须是向量空间中的一部分<br>向量子空间是向量空间中的一部分，本质上感觉是对n-1维基向量重新展开的结果，比如在$R^{2}$中过零点的直线。（不，这不一样，不是一维的）</p>
+<p><strong>subspace of $R^{2}$</strong>:</p>
+<ul>
+<li>$R^{2}$</li>
+<li>any line through origin</li>
+<li>zero vector only</li>
+</ul>
+<p>比较特殊的是零向量空间，这个空间里只有0向量，所以线性计算都能成立，是个单矢量空间</p>
+<h3 id="列空间和零空间"><a href="#列空间和零空间" class="headerlink" title="列空间和零空间"></a>列空间和零空间</h3><p>用矩阵中的列向量作为基向量，形成spin得到的子空间称为列空间C（A），column space</p>
+<p>两个向量子空间，P和L，那么两个子空间的并集并非向量空间，因为对加法不封闭。两个空间的交集则是子空间，因为所包含的向量无论做加法还是数乘都一定在这个交集里面。</p>
+<script type="math/tex; mode=display">
+
+A=
+\begin{pmatrix}
+
+1 & 1& 2\\
+2 & 1& 3\\
+3 & 1& 4\\
+4 & 1& 5\\ 
+\end{pmatrix}</script><p>对于$Ax=b$，当b属于A的列空间时有解。<br>观察矩阵A，发现第三列是前两列的线性组合，这里将前两列称作主列，并说这三列是线性相关的，去掉非主列不影响列空间的规模。</p>
+<h4 id="零空间"><a href="#零空间" class="headerlink" title="零空间"></a>零空间</h4><p>null space of A： add solutions to $Ax=0$使得方程成立的解组成的空间是零空间</p>
+<ul>
+<li>nullspace certainly contains zero零空间包含零向量，的确是个向量空间</li>
+<li>对于A矩阵来说，零空间得到了一条直线 [c,c-c]</li>
+<li>a line in $R^3$</li>
+<li>零空间是向量空间的检验，和向量与数乘后向量依然满足$Ax=0$的方程，证明非常明显$A(w+v)=0, A(kw)=0$<h4 id="解空间？"><a href="#解空间？" class="headerlink" title="解空间？"></a>解空间？</h4>？？？对于$Ax=b,b\ne0$这个方程的解不构成向量空间，最容易证明的是这个解里面不包含0。解是一个不通过零点的直线。</li>
+</ul>
+<h3 id="解Ax-0主变量和特解"><a href="#解Ax-0主变量和特解" class="headerlink" title="解Ax=0主变量和特解"></a>解Ax=0主变量和特解</h3><script type="math/tex; mode=display">
+A=
+\begin{pmatrix}
+1 & 2& 2&2 \\
+2 & 4& 6&8 \\
+3 & 6& 8&10 \\
+\end{pmatrix}</script><p>随着消元法进行，零空间不改变，改变了列空间。</p>
+<script type="math/tex; mode=display">
+得到了一个echelon form
+staircase form阶梯形矩阵
+U=
+\begin{pmatrix}
+1 & 2& 2&2 \\
+0 & 0& 2&4 \\
+0 & 0& 0&0 \\
+\end{pmatrix}</script><p>这里引入了<strong>Rank</strong>的定义：表示Ux=0中阶梯型矩阵U主元（<strong>pivot variable</strong>）的个数。主元所在的列称作主列（<strong>pivot column</strong>），其余列为自由列（<strong>free column</strong>），自由列对应的变量元素（<strong>free variable</strong>）可以自由的取值，我们要求解的只有主元的值。</p>
+<ul>
+<li><strong>任意对free variable赋值可以得到special solution特解</strong>，特解的线性组合就是null space。</li>
+<li>每一个自由变量对应一个特解。</li>
+<li>自由变量有多少呢？自由变量=列数n-主元r，r个主变量代表只有r个方程起作用，那么（n-r）个自由变量可以得到（n-r）个特解。</li>
+</ul>
+<h4 id="进一步简化"><a href="#进一步简化" class="headerlink" title="进一步简化"></a>进一步简化</h4><p>矩阵R = Reduced row echelon matrix<br>做向上消元，使得主元上下都是0，主元化1</p>
+<script type="math/tex; mode=display">
+R=
+\begin{pmatrix}
+1 & 2& 0&-2 \\
+0 & 0& 1&2 \\
+0 & 0& 0&0 \\
+\end{pmatrix}</script><p>包含所有信息的最简形式，所有主元为1，形成一个单位矩阵。$Rx=0$仍然是零空间的向量。<br>移动R中列，得到</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+I&F\\
+0&0\\
+\end{pmatrix}</script><p>N零空间矩阵nullspace matrix<br>为了$RN=0$</p>
+<script type="math/tex; mode=display">
+N=
+\begin{pmatrix}
+-F\\
+I\\
+\end{pmatrix}</script><p>N就是其中的一个特解，这里可以清晰看到通过简化行矩阵，可以清楚的写出零空间特解。<br><em>这里有点迷惑，因为感觉这样会造成解元素顺序的混乱。。。</em></p>
+<h2 id="求解Ax-b，complete-solution"><a href="#求解Ax-b，complete-solution" class="headerlink" title="求解Ax=b，complete solution"></a>求解Ax=b，complete solution</h2><script type="math/tex; mode=display">
+Augmented Matrix=
+\begin{pmatrix}
+1& 2& 2& 2& b1\\
+2& 4& 6& 8& b2\\
+3& 6& 8& 10& b3\\
+\end{pmatrix}</script><p>为了有解b1，b2，b3需要满足条件。</p>
+<h3 id="可解性"><a href="#可解性" class="headerlink" title="可解性"></a>可解性</h3><p>如何可以让Ax=b有解？</p>
+<ul>
+<li>仅当b属于C（A）的时候有解</li>
+<li>如何A的<strong>行向量组合</strong>得到了0，那么b的组合也要等于0</li>
+</ul>
+<p>求解过程：</p>
+<ol>
+<li>找出一个特解<ol>
+<li>将自由向量置0</li>
+<li>求解Ax=b中的主元素</li>
+</ol>
+</li>
+<li>可以加上nullspace中的任意向量</li>
+<li>最终结果就是全解<br>（与线性微分方程惊人一致，这种形式存在于各种线性方程中）<br>$X<em>{complete}=X</em>{p}+c<em>{1}Xn</em>{1}+c<em>{2}Xn</em>{2}$<br>零空间是一个二维向量子空间，但是x的全解的空间不是向量空间，因为不过0点。</li>
+</ol>
+<p><strong>扩展思考可解性</strong><br>m*n matrix A of rank r<br>know:</p>
+<ul>
+<li>$r\le m$</li>
+<li>$r\le n$</li>
+</ul>
+<p>讨论满秩情况<br><strong>full column rank</strong><br>没有自由向量，全都是主元，就意味着没有零空间的特解。N（A）只有零向量。$Ax=b$的解只有一个特解$X_{unique}$。</p>
+<p><em>列满秩情况如果解存在则解唯一</em><br>b在A列空间中的时候有解</p>
+<p><strong>full row rank</strong> </p>
+<ul>
+<li>对任意b都会有解，对于b没有要求，每一行都有主元，<em>不会有零行</em>。</li>
+<li>自由变量数目为n-m个free variables</li>
+</ul>
+<ol>
+<li><p><strong>r=n=m</strong><br>满秩方阵<br>R = I 有唯一解</p>
+</li>
+<li><p>r=n &lt; m<br>R = [I;0] 没有解或者唯一解</p>
+</li>
+<li><p>r=m &lt; n<br>R = [I F] 有解 I和F会交叉出现，无穷多解</p>
+</li>
+<li><p>r &lt; m, r &lt; n<br>R = [I F; 0 0]<br>0或者无穷多解</p>
+</li>
+</ol>
+<p>是否有解在于Ax=b的特解是否存在，而是否有无穷解则看零空间是否只含零向量（是否有自由变量）。</p>
+<p><strong>Rank里包含了所有解数量的信息</strong></p>
+<a href="/2020/11/13/MITLinearAlgebra-2/" title="MITLinearAlgebra(2)">MITLinearAlgebra(2)</a>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag"># 线性代数</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/26/UNIX-LINUX%E5%A4%A7%E5%AD%A6%E6%8C%87%E5%8D%97/" rel="prev" title="UNIX/LINUX大学指南">
+      <i class="fa fa-chevron-left"></i> UNIX/LINUX大学指南
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/29/ML2020Note-1/" rel="next" title="ML2020Note-1">
+      ML2020Note-1 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#方程组的几何解释"><span class="nav-number">1.</span> <span class="nav-text">方程组的几何解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵消元"><span class="nav-number">2.</span> <span class="nav-text">矩阵消元</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵的乘法和逆矩阵"><span class="nav-number">3.</span> <span class="nav-text">矩阵的乘法和逆矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#乘法"><span class="nav-number">3.1.</span> <span class="nav-text">乘法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逆矩阵"><span class="nav-number">3.2.</span> <span class="nav-text">逆矩阵</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵的LU分解"><span class="nav-number">4.</span> <span class="nav-text">矩阵的LU分解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#逆矩阵和转置的一些基本知识"><span class="nav-number">4.1.</span> <span class="nav-text">逆矩阵和转置的一些基本知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LU分解"><span class="nav-number">4.2.</span> <span class="nav-text">LU分解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消元法的计算量"><span class="nav-number">4.3.</span> <span class="nav-text">消元法的计算量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#置换矩阵"><span class="nav-number">4.4.</span> <span class="nav-text">置换矩阵</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转置-置换-向量空间"><span class="nav-number">5.</span> <span class="nav-text">转置-置换-向量空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#向量空间"><span class="nav-number">5.1.</span> <span class="nav-text">向量空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列空间和零空间"><span class="nav-number">5.2.</span> <span class="nav-text">列空间和零空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#零空间"><span class="nav-number">5.2.1.</span> <span class="nav-text">零空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解空间？"><span class="nav-number">5.2.2.</span> <span class="nav-text">解空间？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解Ax-0主变量和特解"><span class="nav-number">5.3.</span> <span class="nav-text">解Ax&#x3D;0主变量和特解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进一步简化"><span class="nav-number">5.3.1.</span> <span class="nav-text">进一步简化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#求解Ax-b，complete-solution"><span class="nav-number">6.</span> <span class="nav-text">求解Ax&#x3D;b，complete solution</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可解性"><span class="nav-number">6.1.</span> <span class="nav-text">可解性</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

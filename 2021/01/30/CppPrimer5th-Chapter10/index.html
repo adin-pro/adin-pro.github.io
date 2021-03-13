@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="《C++ Primer 5th》第十章中的重要知识点，这一章的内容是介绍STL相关的泛型算法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CppPrimer5th-Chapter10">
+<meta property="og:url" content="http://yoursite.com/2021/01/30/CppPrimer5th-Chapter10/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="《C++ Primer 5th》第十章中的重要知识点，这一章的内容是介绍STL相关的泛型算法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/01/30/CppPrimer5th-Chapter10/find.png">
+<meta property="article:published_time" content="2021-01-30T06:51:05.000Z">
+<meta property="article:modified_time" content="2021-02-06T15:13:26.083Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="基础知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/01/30/CppPrimer5th-Chapter10/find.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/01/30/CppPrimer5th-Chapter10/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CppPrimer5th-Chapter10 | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/30/CppPrimer5th-Chapter10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CppPrimer5th-Chapter10
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-30 14:51:05" itemprop="dateCreated datePublished" datetime="2021-01-30T14:51:05+08:00">2021-01-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-06 23:13:26" itemprop="dateModified" datetime="2021-02-06T23:13:26+08:00">2021-02-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>《C++ Primer 5th》第十章中的重要知识点，这一章的内容是介绍STL相关的泛型算法。<br><a id="more"></a></p>
+<p>泛型算法是为了丰富容器的操作而设计出的算法，定义在 <em>algorithm &amp; numeric</em>之中。<br>算法输入通常不是整个容器，而是与容器相关的迭代器。</p>
+<p><img src='find.png' width=700 title='find algorithm'></p>
+<p>泛型算法的操作都是在适配器之上进行的，因此不会对容器本身进行操作，他们自身不能改变容器的大小。</p>
+<p>算法可以分为只读，改变元素，以及重新排序</p>
+<h2 id="只读算法"><a href="#只读算法" class="headerlink" title="只读算法"></a>只读算法</h2><p>以numeric中的accumulate算法为例，算法要求迭代器指向容器元素类型与函数第三参数的类型一致，第三参数为初值，当为int时代表累加，当是字符串的的时候表示容器内各字符串相连在一起。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">vector&lt;int&gt; vec</span></span><br><span class="line"><span class="comment">vector&lt;string&gt; v</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">int</span> sum = accumulate(vec.cbgein(), vec.cend(), <span class="number">0</span>); <span class="comment">// right, int</span></span><br><span class="line"><span class="built_in">string</span>  sum = accumulate(v.cbegin(), v.cend(), str(<span class="string">""</span>) ); <span class="comment">// right, string</span></span><br><span class="line"><span class="built_in">string</span> sum = accumulate(v.cbegin(), v.cend(), <span class="string">""</span>); <span class="comment">// wrong, const char* is not compatiable with string</span></span><br></pre></td></tr></table></figure><br>这里需要注意的是字符串字面值类型为const char * 而非 string，因此不能直接将字符串字面值作为第三参数。</p>
+<h3 id="迭代器参数数目"><a href="#迭代器参数数目" class="headerlink" title="迭代器参数数目"></a>迭代器参数数目</h3><p>当涉及到对两个容器序列的操作的时候，有些算法会使用三个迭代器参数，有些算法使用四个迭代器参数。三个参数的算法例如equal，前两个参数为第一个序列的首末迭代器，第三个参数为第二个序列的首迭代器，这时候算法默认两个迭代器的长度一致；四参数算法则完整的读取两个序列的首末迭代器。</p>
+<h2 id="写容器算法"><a href="#写容器算法" class="headerlink" title="写容器算法"></a>写容器算法</h2><p>需要保证写入的内存都是有定义的，否则为非法操作<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">fill(vec.begin(), vec.end(), <span class="number">0</span>); <span class="comment">// 将每个元素重置为0</span></span><br><span class="line">fill_n(vec.begin(), <span class="number">10</span>, <span class="number">0</span>); <span class="comment">// 将begin开始的10个元素置0，存在风险，容器有可能为空</span></span><br><span class="line"><span class="comment">/*使用back_insert获取尾部迭代器*/</span></span><br><span class="line"><span class="keyword">auto</span> it = back_inserter(vec);</span><br><span class="line">*it = <span class="number">40</span>; <span class="comment">// OK</span></span><br><span class="line">fill_n(back_inserter(vec), <span class="number">10</span>, <span class="number">0</span>); <span class="comment">// OK</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="重排元素算法"><a href="#重排元素算法" class="headerlink" title="重排元素算法"></a>重排元素算法</h2><blockquote>
+<p>某些算法会重排容器中元素的顺序，一个明显的例子是sort。调用sort会重排输入序列中的元素，使之有序，它是利用元素类型的&lt;运算符来实现排序的。</p>
+</blockquote>
+<p>重排算法不能对容器本身的元素进行删除操作，具体对元素的删除还需要直接对容器进行操作。</p>
+<h2 id="定制算法"><a href="#定制算法" class="headerlink" title="定制算法"></a>定制算法</h2><p>某些算法，在运行时会调用容器元素的操作符，例如sort默认调用小于号运算符。对于那些没有定义相应运算符的元素，或者当我们希望自由选择使用的运算符的时候，我们可以使用自定义函数并作为参数传入算法的方式来解决。这个参数或者说自定义函数被称作<strong>谓词</strong>（predicate）</p>
+<blockquote>
+<p>谓词是一个可调用的表达式，其返回结果是一个能用作条件的值。标准库算法所使用的谓词分为两类：一元谓词（unary predicate，意味着它们只接受单一参数）和二元谓词（binary predicate，意味着它们有两个参数）。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*一个二元谓词isShorter，比较两个字符串的长度大小*/</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isShorter</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp; s1, <span class="keyword">const</span> <span class="built_in">string</span> &amp; s2)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> s1.size() &lt; s2.size();</span><br><span class="line">&#125;</span><br><span class="line">sort(words.begin(), words.end(), isShorter); <span class="comment">// 按由短到长的顺序将words排序</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h2></blockquote>
+<p>「lambda函数」是一个对象。因为它可以像函数一样被调用，类不能被调用，只有对象才可以。</p>
+<p>更准确地说，「lambda函数」就是一个「函数对象」。</p>
+<p>lambda的语法其实一个语法糖，编译器会将它“翻译”成一个函数对象，然后再编译。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[capture <span class="built_in">list</span>] (parameters) -&gt; <span class="keyword">return</span> type &#123;function body&#125;</span><br><span class="line"><span class="comment">/*lambda isShorter*/</span></span><br><span class="line"><span class="keyword">auto</span> f = [](<span class="keyword">const</span> <span class="built_in">string</span>&amp;s1, <span class="keyword">const</span> <span class="built_in">string</span>&amp;s2) -&gt; <span class="keyword">bool</span> &#123;<span class="keyword">return</span> s1.size()&lt;s2.size();&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>lambda函数没有默认参数值，因此实参与形参数目必须一致</strong><br>lambda表达式可以使用所在的函数中的局部变量，只要在捕获列表中“捕获”即可，这种方式可以让部分只接受一元谓词的算法也适配多参数的<em>多元谓词</em></p>
+<h2 id="bind函数"><a href="#bind函数" class="headerlink" title="bind函数"></a>bind函数</h2><p>使用c++11中的bind函数与placeholder也可以解决一元谓词变多元的问题。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> g = bind(f, a, b, _1, c, _2);</span><br><span class="line"><span class="comment">// g函数有两个参数，f函数有五个参数，调用g的时候可以将g的参数作为f的参数传入，实际起作用的是f函数</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 基础知识</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/29/CppPrimer5th-Chapter9/" rel="prev" title="CppPrimer5th-Chapter9">
+      <i class="fa fa-chevron-left"></i> CppPrimer5th-Chapter9
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/06/CppPrimer5th-Chapter11/" rel="next" title="CppPrimer5th-Chapter11">
+      CppPrimer5th-Chapter11 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#只读算法"><span class="nav-number">1.</span> <span class="nav-text">只读算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器参数数目"><span class="nav-number">1.1.</span> <span class="nav-text">迭代器参数数目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写容器算法"><span class="nav-number">2.</span> <span class="nav-text">写容器算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重排元素算法"><span class="nav-number">3.</span> <span class="nav-text">重排元素算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定制算法"><span class="nav-number">4.</span> <span class="nav-text">定制算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambda表达式"><span class="nav-number">5.</span> <span class="nav-text">lambda表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bind函数"><span class="nav-number">6.</span> <span class="nav-text">bind函数</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

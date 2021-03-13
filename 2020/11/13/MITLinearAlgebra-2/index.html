@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="MIT线性代数笔记的第二部分  线性相关性与线性空间 四个子空间 图和网络 正交空间与子空间投影 求解最小二乘的矩阵">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MITLinearAlgebra(2)">
+<meta property="og:url" content="http://yoursite.com/2020/11/13/MITLinearAlgebra-2/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="MIT线性代数笔记的第二部分  线性相关性与线性空间 四个子空间 图和网络 正交空间与子空间投影 求解最小二乘的矩阵">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/11/13/MITLinearAlgebra-2/1dproj.bmp">
+<meta property="og:image" content="http://yoursite.com/2020/11/13/MITLinearAlgebra-2/2dproj.bmp">
+<meta property="article:published_time" content="2020-11-13T11:08:51.000Z">
+<meta property="article:modified_time" content="2021-03-13T06:07:18.793Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="线性代数">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/11/13/MITLinearAlgebra-2/1dproj.bmp">
+
+<link rel="canonical" href="http://yoursite.com/2020/11/13/MITLinearAlgebra-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MITLinearAlgebra(2) | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/13/MITLinearAlgebra-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MITLinearAlgebra(2)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-13 19:08:51" itemprop="dateCreated datePublished" datetime="2020-11-13T19:08:51+08:00">2020-11-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-13 14:07:18" itemprop="dateModified" datetime="2021-03-13T14:07:18+08:00">2021-03-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">数学</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>MIT线性代数笔记的第二部分</p>
+<ul>
+<li>线性相关性与线性空间</li>
+<li>四个子空间</li>
+<li>图和网络</li>
+<li>正交空间与子空间投影</li>
+<li>求解最小二乘的矩阵</li>
+</ul>
+<a id="more"></a>
+<p>完整链接:<br><a href="/2020/09/27/MITLinearAlgebra/" title="MITLinearAlgebra">MITLinearAlgebra</a><br><a href="/2020/11/13/MITLinearAlgebra-2/" title="MITLinearAlgebra(2)">MITLinearAlgebra(2)</a><br><a href="/2020/11/13/MITLinearAlgebra-3/" title="MITLinearAlgebra(3)">MITLinearAlgebra(3)</a></p>
+<h2 id="线性相关性、基、维数"><a href="#线性相关性、基、维数" class="headerlink" title="线性相关性、基、维数"></a>线性相关性、基、维数</h2><p>线性无关的是“向量组”而不是矩阵</p>
+<blockquote>
+<p>若矩阵A的m &lt; n<br>Ax=0 未知数大于方程数，存在某些自由变量，也就是存在零空间的特解，至少n-m个</p>
+</blockquote>
+<h3 id="线性无关"><a href="#线性无关" class="headerlink" title="线性无关"></a>线性无关</h3><p>如果向量组的非零系数线性组合不存在零向量，则这一组向量线性无关。易知，零向量与所有向量线性相关。<br><strong>如果矩阵A的零空间null space包含非零向量，说明他们线性相关。</strong>例如二维空间里，三个向量一定是线性相关的，把他们组成一个矩阵A，这是一个2*3矩阵，明显存在自由变量，也就是零空间存在特解。</p>
+<h3 id="生成向量空间span"><a href="#生成向量空间span" class="headerlink" title="生成向量空间span"></a>生成向量空间span</h3><p><strong>span</strong>生成一个空间是使用线性无关向量组去线性组合。这个空间包含这些向量的线性组合。</p>
+<p><strong>基</strong>，basis，指能够生成向量空间的一组线性无关的向量。</p>
+<p>给定向量空间，各组基向量的个数都是一致的。这个个数称作<strong>空间维数</strong>。</p>
+<p><strong>Rank=#pivots columns=dimension of column space</strong></p>
+<p>请注意，这里并非是<em>矩阵的维度</em>而是<em>列空间的维度</em></p>
+<p>一个问题：null space的维度是多少？零空间在表示怎样这些列向量能够线性相关。维度是<strong>自由变量的数目</strong>。</p>
+<p>dim N（A）= #free variables = n-r</p>
+<h2 id="第十讲-四个基本子空间"><a href="#第十讲-四个基本子空间" class="headerlink" title="第十讲-四个基本子空间"></a>第十讲-四个基本子空间</h2><ul>
+<li>列空间$C(A)$</li>
+<li>零空间$N(A)$</li>
+<li>行空间$C(A^{T})$row space</li>
+<li>左零空间$N(A^T)$left null space</li>
+</ul>
+<ol>
+<li>列空间的维度为r，基是主列向量</li>
+<li>行空间与列空间的维度相同，也是r，基是矩阵R的前r行</li>
+<li>零空间的维度为n-r，基是自由变量对应自由向量</li>
+<li>左零空间的维度是m-r，也是能让行向量线性相关得到零向量的一组向量</li>
+</ol>
+<p>C(A)和N(A^T)在R^m空间里，N(A)和C(A^T)在R^m中</p>
+<p>3<em>3的矩阵也可以找出一组基，形成一个矩阵空间，有点像把向量空间扩展到了矩阵空间，我们给他取个更好的名字不如叫<em>*线性空间</em></em>吧。</p>
+<h2 id="矩阵空间-秩1矩阵-小世界图"><a href="#矩阵空间-秩1矩阵-小世界图" class="headerlink" title="矩阵空间 秩1矩阵 小世界图"></a>矩阵空间 秩1矩阵 小世界图</h2><h3 id="新空间"><a href="#新空间" class="headerlink" title="新空间"></a>新空间</h3><p>all 3 by 3 matrices组成矩阵空间M，里面的矩阵满足加法和数乘，基也是3*3矩阵，9个<br>也包括各种子空间subspaces: symmetric matrices, upper triangular matrices, lower …<br>那么这些子空间的维度是多少呢？<br>对称矩阵S维度为6，对角矩阵维度为3，上三角维度U为6</p>
+<p><strong>一个规律</strong></p>
+<script type="math/tex; mode=display">
+dim(S\cap U)+ dim(S+U) = dim(S)+dim(U)\\[4px]
+3+9 = 6+6\\</script><p>扩展到各种函数的组合，他们都是广义的向量</p>
+<h3 id="秩1矩阵"><a href="#秩1矩阵" class="headerlink" title="秩1矩阵"></a>秩1矩阵</h3><p>就像积木的基本组成，但是两个秩1矩阵相加不能得到一个确定维度的矩阵，可能秩为1，可能秩为2</p>
+<script type="math/tex; mode=display">
+S = all v in R^4 with v1+v2+v3+v4=0(各分量相加为0)\\\\
+那么S的维度是3\\\\
+S = nullspace of A=[1 1 1 1], rank(A)=1=r\\\\
+Rank(N(A))=n-r=3\\\\
+dim C(A) = 1\\\\
+dim C(A^T) = 1\\\\
+dim N(A^T)=0</script><h3 id="小世界图"><a href="#小世界图" class="headerlink" title="小世界图"></a>小世界图</h3><p>图graph是点和边的集合，可以用矩阵来表示图的连接<br>small world小世界是说六度空间理论</p>
+<h2 id="图和网络"><a href="#图和网络" class="headerlink" title="图和网络"></a>图和网络</h2><p>开始关注线性代数的应用</p>
+<ul>
+<li>Graphs&amp;Networks</li>
+<li>Incidence Matrices关联矩阵</li>
+<li>Kirchhoff’s laws基尔霍夫电流定律<br>所有实际应用中的矩阵其实都有一些结构特征，在处理矩阵的时候要注意利用这些矩阵的特征。</li>
+</ul>
+<p>图的封闭边可以构成一个loop</p>
+<script type="math/tex; mode=display">
+
+A = 
+\begin{pmatrix}
+-1& 1& 0& 0\\
+0& -1& 1& 0\\
+-1 &0 &1 &0\\
+-1 &0 &0 &1\\
+0 &0 &-1 &1\\
+\end{pmatrix}</script><p>用关联矩阵表示图：</p>
+<ol>
+<li>行为有向边edge，列为节点node，出点为-1，入点为1</li>
+<li>线性相关的几个行向量可以代表<strong>环loop</strong></li>
+<li>关联矩阵的零空间nullspace反应线性相关，也就代表环的组成</li>
+</ol>
+<p>$Ax = 0$如果把这个想成电路，x想象成节点上的电势，零空间代表使得各处电势相等的情况。回路的电势差为0。</p>
+<p>节点代表电势，边代表电流</p>
+<p>基尔霍夫电流定律：$A^Ty=0$各个节点流出的电流和等于流入的电流和。</p>
+<p><strong>树是没有环的图，在矩阵中是线性无关的A^T的列空间向量，也就是没能组成环的一堆边</strong></p>
+<p>dim(N(A^T)) = m -r<br>num of loops = #edges-（#nodes-1）<br>rank=n-1</p>
+<p><strong>欧拉公式</strong> #nodes-#edges+#loops=1<br><em>使用线性代数证明了欧拉公式</em></p>
+<p><strong>应用数学中的最基本方程</strong><br>$A^{T}CAx=f$</p>
+<h2 id="正交空间"><a href="#正交空间" class="headerlink" title="正交空间"></a>正交空间</h2><h3 id="两向量正交"><a href="#两向量正交" class="headerlink" title="两向量正交"></a>两向量正交</h3><p>两个向量x, y的正交条件就是内积为0</p>
+<script type="math/tex; mode=display">
+x^{T}y = 0</script><p>如果存在两个向量空间S和T, S中的任意向量都与T中的任意向量正交, 则两空间互为正交空间.</p>
+<p>零空间和行空间是正交空间, 列空间和左零空间是正交空间</p>
+<h3 id="A-TA的重要性质"><a href="#A-TA的重要性质" class="headerlink" title="A^TA的重要性质"></a>A^TA的重要性质</h3><blockquote>
+<p>如果Ax=b无解, 那么如何”求解”出一个解</p>
+</blockquote>
+<p>这种问题在矩阵A, m&gt;n的时候很常见, 方程的个数超过了未知量的个数, 很容易无解(超正定问题?)</p>
+<p>A^TA是对称矩阵, 有可能是可逆矩阵,是求解这种无解问题的答案</p>
+<h2 id="子空间投影与投影矩阵"><a href="#子空间投影与投影矩阵" class="headerlink" title="子空间投影与投影矩阵"></a>子空间投影与投影矩阵</h2><p>先考虑一维的情况</p>
+<p><img src='1dproj.bmp' width='600' title='一维投影情况'></p>
+<script type="math/tex; mode=display">
+向量B投影至向量A所在直线 \\[4px]
+E = B - P 为误差向量\\[4px]
+P = Ax, x是标量\\[4px]
+由于E与A垂直或者说正交\\[4px]
+E^{T}A=0 \rightarrow (B-Ax)^{T}A=0 \\[4px]
+ B^{T}A - xA^{T}A = 0 \rightarrow x = \frac{B^{T}A}{A^{T}A}\\[4px]
+ P = xA = Ax = A\frac{A^TB}{A^TA} = Proj*B</script><p>对一维场景来说$A^TB=B^TA$，并且可以用投影矩阵$Proj$来与向量$B$相乘得到投影的量</p>
+<p>再来看一下二维乃至N维的情况</p>
+<p><img src='2dproj.bmp' width='600' title='二维平面投影的情况' ></p>
+<p>这里$A_1$和$A_2$两个向量组成了平面，$B$向量要投影到这个平面空间里，按照上述的一维正交情况，假设投影后的向量$P$用$A1，A2$表示为$P = c_1A_1+c_2A_2$,我们可以迅速写出如下方程</p>
+<script type="math/tex; mode=display">
+A1^{T}(B-(c_1A_1+c_2A_2))=0\\\\
+A2^{T}(B-(c_1A_1+c_2A_2))=0\\\\</script><p>以上两个向量正交的表达化成矩阵形式可以用平面对应的列空间的矩阵A来表示</p>
+<script type="math/tex; mode=display">
+A^T(B-Ax)=0</script><p>经过一番移项乘逆矩阵整理</p>
+<script type="math/tex; mode=display">
+P = Ax =A(A^TA)^{-1} A^TB = Proj*B</script><p>那么这样我们就得到了二维乃至扩展到多维空间上的投影表达式<br>那么这种投影的用处是什么呢?</p>
+<p>对于$Ax=B$, 对于A是瘦长矩阵的情形下, 常常没有解, 也就是B不在A的列空间里面, 那么这时候, 我们把B投影到A的列空间里面, 可以得到一个列空间里最像B的向量, 也就近似解出x</p>
+<blockquote>
+<p>这里不能展开求逆括号，因$A$会存在不可逆的情况, 如果可逆了当然可以展开, 那么就相当于把B投影到一个$R^N$的空间里, 只会得到他自己</p>
+</blockquote>
+<p>这里的投影矩阵具有$Proj^2 = Proj$的性质, 展开即可验证</p>
+<h2 id="正交矩阵与Gram-Schmit正交化"><a href="#正交矩阵与Gram-Schmit正交化" class="headerlink" title="正交矩阵与Gram-Schmit正交化"></a>正交矩阵与Gram-Schmit正交化</h2><h3 id="正交矩阵的基本定义"><a href="#正交矩阵的基本定义" class="headerlink" title="正交矩阵的基本定义"></a>正交矩阵的基本定义</h3><p>正交矩阵的定义是, 其中包含的列向量两两正交(orthonormal vectors)同时每个向量的二范数为1</p>
+<p>正交矩阵(符号为Q, orthogonal matrix)能够带来很多优良的性质,比如说当Q是一个方阵的时候$Q^TQ=I$, 再比如Q的投影矩阵是$Q(Q^TQ)^{-1}Q^T = QQ^T$, 形式会比较简单, 再比如对于$Ax=b$A是瘦长矩阵时, 如果A是一个正交矩阵, 两边可以左乘A转置, 左边可以直接化为单位矩阵</p>
+<script type="math/tex; mode=display">
+A^TA\hat{x}=A^Tb \\\\
+\hat{x} = A^Tb</script><p>同时, $\hat{x}$在第$i$个维度上的投影就等于$q_i^{T}b$</p>
+<h3 id="Gram-Schmit方法"><a href="#Gram-Schmit方法" class="headerlink" title="Gram-Schmit方法"></a>Gram-Schmit方法</h3><p>Gram负责求解出方向满足要求的vector, Schmit负责把该向量的范数变成1(就是除以范数值即可)</p>
+<p>假设现在有a, b两个向量,那么让他们变成orthonormal vector的方法就是Gram-Schmit, a只需要保持原来的方向不变为a’, b减去在a上的投影得到b’就可以做到与a正交, 之后再把a’和b’进行schmit变换就可以(投影矩阵P如上面所讲$b’=b-Pa$)</p>
+<p>如果有了第三个向量c, 也想与前两个构成正交矩阵, 则让c减去c在a’和b’上的投影, 以此类推, 每一个新的向量都是基于前述正交基向量来得到的</p>
+<p><strong>这部分需要看课本再好好学一学啊</strong></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag"># 线性代数</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/10/%E4%BA%A4%E9%80%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-%E7%88%AC%E8%99%AB/" rel="prev" title="交通数据分析-爬虫">
+      <i class="fa fa-chevron-left"></i> 交通数据分析-爬虫
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/13/MITLinearAlgebra-3/" rel="next" title="MITLinearAlgebra(3)">
+      MITLinearAlgebra(3) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线性相关性、基、维数"><span class="nav-number">1.</span> <span class="nav-text">线性相关性、基、维数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性无关"><span class="nav-number">1.1.</span> <span class="nav-text">线性无关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成向量空间span"><span class="nav-number">1.2.</span> <span class="nav-text">生成向量空间span</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第十讲-四个基本子空间"><span class="nav-number">2.</span> <span class="nav-text">第十讲-四个基本子空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵空间-秩1矩阵-小世界图"><span class="nav-number">3.</span> <span class="nav-text">矩阵空间 秩1矩阵 小世界图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新空间"><span class="nav-number">3.1.</span> <span class="nav-text">新空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#秩1矩阵"><span class="nav-number">3.2.</span> <span class="nav-text">秩1矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小世界图"><span class="nav-number">3.3.</span> <span class="nav-text">小世界图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图和网络"><span class="nav-number">4.</span> <span class="nav-text">图和网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正交空间"><span class="nav-number">5.</span> <span class="nav-text">正交空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#两向量正交"><span class="nav-number">5.1.</span> <span class="nav-text">两向量正交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-TA的重要性质"><span class="nav-number">5.2.</span> <span class="nav-text">A^TA的重要性质</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子空间投影与投影矩阵"><span class="nav-number">6.</span> <span class="nav-text">子空间投影与投影矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正交矩阵与Gram-Schmit正交化"><span class="nav-number">7.</span> <span class="nav-text">正交矩阵与Gram-Schmit正交化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正交矩阵的基本定义"><span class="nav-number">7.1.</span> <span class="nav-text">正交矩阵的基本定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gram-Schmit方法"><span class="nav-number">7.2.</span> <span class="nav-text">Gram-Schmit方法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

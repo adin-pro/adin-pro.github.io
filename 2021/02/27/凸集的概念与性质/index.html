@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="凸集是最优化理论中的重要概念，是凸优化理论的前置知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="凸集的概念与性质">
+<meta property="og:url" content="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="凸集是最优化理论中的重要概念，是凸优化理论的前置知识">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/convexfunc.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/convexcollec.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/convexcom.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/halfortho.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/fangshe.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/touying.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/sep.png">
+<meta property="og:image" content="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/support.png">
+<meta property="article:published_time" content="2021-02-27T04:41:50.000Z">
+<meta property="article:modified_time" content="2021-03-07T03:09:01.085Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="最优化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/convexfunc.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>凸集的概念与性质 | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/27/%E5%87%B8%E9%9B%86%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%80%A7%E8%B4%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          凸集的概念与性质
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-27 12:41:50" itemprop="dateCreated datePublished" datetime="2021-02-27T12:41:50+08:00">2021-02-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-07 11:09:01" itemprop="dateModified" datetime="2021-03-07T11:09:01+08:00">2021-03-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">最优化</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>凸集是最优化理论中的重要概念，是凸优化理论的前置知识</p>
+<a id="more"></a>
+<p>如果目标函数是一个凸函数，可行集是一个凸集，那么这种优化问题可以视作是凸优化问题</p>
+<h2 id="为什么要研究凸优化"><a href="#为什么要研究凸优化" class="headerlink" title="为什么要研究凸优化"></a>为什么要研究凸优化</h2><p><strong>凸优化问题有一些比较好的性质</strong></p>
+<ol>
+<li><p>对凸函数来说，一定能找到最优解，平稳点就是最优解；非凸函数不能得到这种结论<br><img src='convexfunc.png' width=600 title='凸函数的好处'></p>
+</li>
+<li><p>可行集是凸集的话</p>
+</li>
+</ol>
+<p><img src='convexcollec.png' width=600 title='凸集的特点'></p>
+<p>凸集上最优点的充分必要条件是，该点的负梯度，与，任一点与该点的内积小于零（夹角大于90度）<br>非凸集上没有这种条件</p>
+<p>综上，凸优化问题中可以有比较好的性质可以利用，可以设计有效的算法（如<strong>内点法</strong>）来解决凸优化问题</p>
+<h2 id="凸集的基本定义"><a href="#凸集的基本定义" class="headerlink" title="凸集的基本定义"></a>凸集的基本定义</h2><p>对于任意的$x,y \in C$与任意的$\lambda \in [0,1]$有</p>
+<script type="math/tex; mode=display">
+\lambda x + (1-\lambda)y \in C</script><p>集合两点的连线仍然属于集合</p>
+<h3 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h3><p><img src='convexcom.png' width=600 title='凸组合和凸包'></p>
+<p>有几种组合，线性、仿射、非负和凸组合，凸包是一种凸组合。凸包可以让非凸的集合填满，填成凸集合。</p>
+<h2 id="常见的凸集合"><a href="#常见的凸集合" class="headerlink" title="常见的凸集合"></a>常见的凸集合</h2><ul>
+<li>超平面</li>
+</ul>
+<script type="math/tex; mode=display">
+H = \{x | a^Tx=b\} (a\ne 0)</script><ul>
+<li>半空间</li>
+</ul>
+<script type="math/tex; mode=display">
+H = \{ x | a^Tx \le b \} (a\ne 0)</script><ul>
+<li>多面体<ul>
+<li>不等式和线性等式刻画的都是多面体<script type="math/tex; mode=display">
+\{x|a_i^Tx\le b_i, i=1,2...m\}</script></li>
+</ul>
+</li>
+</ul>
+<script type="math/tex; mode=display">
+\{x|a_i^Tx =  b_i, i=1,2...m\}</script><ul>
+<li>球体 Euclidean</li>
+</ul>
+<script type="math/tex; mode=display">
+B(x_c, r) = \{ x| \parallel x -x_c \parallel \le r\}</script><ul>
+<li><p>椭球 Ellipsoid</p>
+<ul>
+<li>注意矩阵的逆，P为正定矩阵，椭球的半轴是矩阵的特征值开根号<script type="math/tex; mode=display">
+\{ x| ( x -x_c )^T P^{-1} (x -x_c) \le 1\}</script></li>
+</ul>
+</li>
+<li><p>二阶锥 Second-order cone，ice-cream cone</p>
+<ul>
+<li>x是前n-1个元素，t是最后一个元素<script type="math/tex; mode=display">
+\{ (x,t) | \parallel x \parallel _2 < t\}</script></li>
+</ul>
+</li>
+<li><p>半定矩阵锥</p>
+</li>
+</ul>
+<p><img src='halfortho.png' width=600 title='半定矩阵锥'></p>
+<p>这个图形表示x，y，z满足上述公式的单的集合，半正定矩阵形成的集合</p>
+<h2 id="保持凸性的运算"><a href="#保持凸性的运算" class="headerlink" title="保持凸性的运算"></a>保持凸性的运算</h2><p>交集可以保证凸性，并集不能保证。加减法也可以保证。</p>
+<p>仿射变换保证凸性：</p>
+<p>仿射变换是一种线性变换, 凸集仿射后得到的还是一个凸集</p>
+<p><img src='fangshe.png' width=600 title='仿射'></p>
+<h3 id="投影定理"><a href="#投影定理" class="headerlink" title="投影定理"></a>投影定理</h3><p><img src='touying.png' width=600 title='投影'></p>
+<h3 id="点与凸集的分离"><a href="#点与凸集的分离" class="headerlink" title="点与凸集的分离"></a>点与凸集的分离</h3><p>用超平面分离两个点，或者是两个闭凸集<br><img src='sep.png' width=600 title='分离'></p>
+<p>一个超平面能够让整个闭凸集位于超平面的一侧<br><img src='support.png' width=600 title='支撑超平面'></p>
+<h2 id="Farkas引理"><a href="#Farkas引理" class="headerlink" title="Farkas引理"></a>Farkas引理</h2><p>给定矩阵$A_{m\times n}$和n维向量$c$，以下两个问题只存在一个解</p>
+<ol>
+<li><script type="math/tex; mode=display">Ax<0,c^Tx>0</script></li>
+<li><script type="math/tex; mode=display">A^Ty = c, y\ge 0</script></li>
+</ol>
+<p>如果把$A$看作是一个凸集内多个n维行向量的集合，则上述两个定理分别是让$c$位于凸集内和凸集外，在凸集外可以用点和凸集的分离定理来证明这个引理。</p>
+<p>或者用画图的方式，大于小于零分别是向量夹角大于或者小于180度。画一画就看出来不可能同时有解。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"># 数学</a>
+              <a href="/tags/%E6%9C%80%E4%BC%98%E5%8C%96/" rel="tag"># 最优化</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/26/%E4%BD%BF%E7%94%A8python%E8%B0%83%E7%94%A8c-%E7%BC%96%E5%86%99%E7%9A%84dll%E6%96%87%E4%BB%B6/" rel="prev" title="使用python调用c#编写的dll文件">
+      <i class="fa fa-chevron-left"></i> 使用python调用c#编写的dll文件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/27/%E7%94%B1%E7%B1%BB%E5%9C%B0%E5%9D%80%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95/" rel="next" title="由类地址强制转换访问私有变量的方法">
+      由类地址强制转换访问私有变量的方法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要研究凸优化"><span class="nav-number">1.</span> <span class="nav-text">为什么要研究凸优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#凸集的基本定义"><span class="nav-number">2.</span> <span class="nav-text">凸集的基本定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一些概念"><span class="nav-number">2.1.</span> <span class="nav-text">一些概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的凸集合"><span class="nav-number">3.</span> <span class="nav-text">常见的凸集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保持凸性的运算"><span class="nav-number">4.</span> <span class="nav-text">保持凸性的运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#投影定理"><span class="nav-number">4.1.</span> <span class="nav-text">投影定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点与凸集的分离"><span class="nav-number">4.2.</span> <span class="nav-text">点与凸集的分离</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Farkas引理"><span class="nav-number">5.</span> <span class="nav-text">Farkas引理</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

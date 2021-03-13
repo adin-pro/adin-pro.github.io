@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="《Harley Hanh’s Guide to UNIX&amp;LINUX》是一本给UNIX&#x2F;LINUX初学者学习的读物，内容比较活泼有趣，这里记录一些有趣的知识点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UNIX&#x2F;LINUX大学指南">
+<meta property="og:url" content="http://yoursite.com/2020/09/26/UNIX-LINUX%E5%A4%A7%E5%AD%A6%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="《Harley Hanh’s Guide to UNIX&amp;LINUX》是一本给UNIX&#x2F;LINUX初学者学习的读物，内容比较活泼有趣，这里记录一些有趣的知识点。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-26T02:52:48.000Z">
+<meta property="article:modified_time" content="2020-11-13T11:05:54.000Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="基础知识">
+<meta property="article:tag" content="UNIX&#x2F;LINUX">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/09/26/UNIX-LINUX%E5%A4%A7%E5%AD%A6%E6%8C%87%E5%8D%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>UNIX/LINUX大学指南 | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/26/UNIX-LINUX%E5%A4%A7%E5%AD%A6%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UNIX/LINUX大学指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-26 10:52:48" itemprop="dateCreated datePublished" datetime="2020-09-26T10:52:48+08:00">2020-09-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-13 19:05:54" itemprop="dateModified" datetime="2020-11-13T19:05:54+08:00">2020-11-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UNIX-LINUX/" itemprop="url" rel="index"><span itemprop="name">UNIX/LINUX</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>《Harley Hanh’s Guide to UNIX&amp;LINUX》是一本给UNIX/LINUX初学者学习的读物，内容比较活泼有趣，这里记录一些有趣的知识点。</p>
+<a id="more"></a>
+<h2 id="什么是UNIX和LINUX"><a href="#什么是UNIX和LINUX" class="headerlink" title="什么是UNIX和LINUX"></a>什么是UNIX和LINUX</h2><p>UNIX是贝尔实验室的产品，版权在AT&amp;T手里，但是因为版权问题一直受到广大程序员的不满，不断尝试突破原本System的限制，BSD和Linux都可以说是这种开放精神的产物。</p>
+<p>UNIX是一种多用户、多任务处理的操作系统。包括一个类UNIX内核，许多类UNIX实用工具和一个类UNIX shell组成。</p>
+<p>Linux是任何使用Linux内核的Unix的名称。（遵循GNU的GPL协议）</p>
+<p>从我理解的角度，目前的UNIX=BSD发行版+LINUX发行版+SystemV发行版（存疑）。</p>
+<blockquote>
+<p> 类UNIX这个术语很怪异也解释不清楚是什么东西，但是大家看到了都明白在说什么哈哈哈</p>
+</blockquote>
+<hr>
+<h2 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h2><h3 id="登录与基本用户相关"><a href="#登录与基本用户相关" class="headerlink" title="登录与基本用户相关"></a>登录与基本用户相关</h3><ul>
+<li>查看日期：date，cal,calendar</li>
+<li>与登录状态相关：who，w，whoami，passwd，last</li>
+<li>系统状态：hostname，uname，uptime</li>
+<li>注销：logoout，exit，login（不一定完全注销），^D（强行注销）</li>
+<li>echo $TERM 查看终端类型，stty显示或改变终端设置，tty查看终端内部名称<ul>
+<li>tty是teletype终端输入（其实就是键盘）的缩写</li>
+<li>print也是因为之前的终端输出是打印纸带而命名的</li>
+</ul>
+</li>
+</ul>
+<h3 id="Unix键盘信号"><a href="#Unix键盘信号" class="headerlink" title="Unix键盘信号"></a>Unix键盘信号</h3><blockquote>
+<p>键盘映射系统可以适用于任何类型键盘，这种映射可以被改变，理解并改变是Unix CLI（Command Line Interface）的使用者必备技能。</p>
+</blockquote>
+<p>stty -a可以显示目前的映射（set terminal -all）</p>
+<h4 id="键入过程中的信号"><a href="#键入过程中的信号" class="headerlink" title="键入过程中的信号"></a>键入过程中的信号</h4><ul>
+<li>erase删除最后一个字符</li>
+<li>werase删除最后一个键入的单词(maybe word-erase?)</li>
+<li>kill删除整行</li>
+</ul>
+<p><em>Backspace</em> 或者 <em>Delete</em> <em>^H</em> 负责发送erase信号</p>
+<p><em>^W</em>会触发werase信号</p>
+<p><em>^X</em>或者<em>^U</em>触发清除整行的kill信号，在WSL中测试为<em>^U</em></p>
+<blockquote>
+<p>kill信号并不会停止程序，它只删除刚键入的一行，为了停止需要^C中断信号</p>
+</blockquote>
+<h4 id="Backspace从何处来"><a href="#Backspace从何处来" class="headerlink" title="Backspace从何处来"></a>Backspace从何处来</h4><p>以前的打印机终端的输入输出都是打印纸带孔，每一个孔代表2进制的一位0/1，如果输入错误了，不能像现在的屏幕直接删掉，而是要先回位（输入^H，回位Backspace，BS命令），然后<em>Rubout</em>（擦掉，发送DEL命令），使得穿孔机8位都打孔置1，使得该忽略该字符。（127无效？）</p>
+<p>^H后来由Backspace按键代替，Rubout由Delete代替</p>
+<p><em>后来混乱了，Backspace直接映射到了erase，乱七八糟的我也看不懂。现在PC上的delete和当时的delete也完全不是一个东西了，没有映射到erase。</em></p>
+<p><strong>按下^/在我的WSL中是撤销操作</strong></p>
+<h4 id="神秘字符-H"><a href="#神秘字符-H" class="headerlink" title="神秘字符^H"></a>神秘字符^H</h4><blockquote>
+<p>如果发现自己狂按backspace没有出现删除效果，而是出来了好几个^H，代表在你的远程主机那里，^?被映射位erase信号，你发送的都是无效的指令。</p>
+</blockquote>
+<p>为了测试这个东西，我用了书上的stty erase ^H命令，将主机的映射改变了，结果发现WSL的终端上backspace映射的是^?，导致我现在按下backspace会出来一堆^?，着实可爱</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adin@LAPTOP-VA1IGCFC:~$ stty erase ^H</span><br><span class="line">adin@LAPTOP-VA1IGCFC:~$ ^?^?^?^?^?^?</span><br></pre></td></tr></table></figure>
+<p>为了解决这个问题，我还是改回去了 stty erase ^?</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adin@LAPTOP-VA1IGCFC:~$ stty erase ^?</span><br></pre></td></tr></table></figure>
+<h4 id="停止与启动程序"><a href="#停止与启动程序" class="headerlink" title="停止与启动程序"></a>停止与启动程序</h4><ul>
+<li>intr：</li>
+</ul>
+<p>一些程序为了防止误操作，把^C命令给禁止了，比如vi，所以在编辑的时候经常会出现奇奇怪怪的神秘映射后字符。</p>
+<ul>
+<li>quit：</li>
+</ul>
+<p>quit是当年用于调试用的老命令，停止程序加复制一份内存保留，以便后续分析当时的原因，文件命名为core（内存的老名字），称作<strong>磁芯文件</strong></p>
+<p>命令是^\，但在WSL上测试发现什么都没有发生（可能是时机不对，在bash没有运行的时候单独按没反应）</p>
+<ul>
+<li>stop：</li>
+</ul>
+<p>^S发送stop信号用于终止屏幕的显示，在大篇幅疯狂滚动的时候会有用，当然更好的是less命令</p>
+<ul>
+<li>start</li>
+</ul>
+<p>^Q发送start命令，和之前的stop对应着，恢复屏幕的输出，如果屏幕</p>
+<h4 id="终止信号eof"><a href="#终止信号eof" class="headerlink" title="终止信号eof"></a>终止信号eof</h4><p>这个比较熟悉了^D发送输入终止信号，end of file，同时也是注销shell的命令</p>
+<p>可以使用环境变量{IGNOREEOF}来封闭eof信号，数字代表连续按下多少次才能注销</p>
+<h4 id="返回与换行"><a href="#返回与换行" class="headerlink" title="返回与换行"></a>返回与换行</h4><p>也是为了适配以前打印机打印纸换行问题的信号，对应键盘上的^M（返回）和^J（换行），这两个都可以代替回车</p>
+<h3 id="立即使用程序吧"><a href="#立即使用程序吧" class="headerlink" title="立即使用程序吧"></a>立即使用程序吧</h3><h4 id="查找which-type-whence"><a href="#查找which-type-whence" class="headerlink" title="查找which type whence"></a>查找which type whence</h4><p>which和type适用bash</p>
+<p>whence适用korn shell</p>
+<h4 id="一些辅助功能"><a href="#一些辅助功能" class="headerlink" title="一些辅助功能"></a>一些辅助功能</h4><ul>
+<li>lock：锁定终端15min，或者自己指定时间，只能用当前user或者root的密码才能解锁</li>
+<li>leave：提醒结束工作，设定离开时间，超过时间后每分钟催促你一次</li>
+<li>bc：计算器bc -l启动库函数，scale小数，ibase/obase输入输出基</li>
+</ul>
+<h4 id="说明书和bang"><a href="#说明书和bang" class="headerlink" title="说明书和bang"></a>说明书和bang</h4><p><strong>RTFM：Read The Fucking Manual</strong></p>
+<p>man开启说明书，/pattern搜索</p>
+<p>！命令称作bang字符命令，可以暂停当前程序向shell发送一条命令，在读manual的时候可以去做别的事情</p>
+<p>man其实是一个包含9个章节的手册，默认输入命令会打开它们在第一章节里的内容，如果需要看其他部分，可以在 man命令后面跟上数字</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">adin@LAPTOP-VA1IGCFC:~$ man 2 <span class="built_in">which</span></span><br><span class="line">No manual entry <span class="keyword">for</span> <span class="built_in">which</span> <span class="keyword">in</span> section 2</span><br><span class="line">See <span class="string">'man 7 undocumented'</span> <span class="keyword">for</span> <span class="built_in">help</span> when manual pages are not available.</span><br><span class="line">adin@LAPTOP-VA1IGCFC:~$ man 2 <span class="built_in">kill</span></span><br></pre></td></tr></table></figure>
+<p>上述打开了kill在第二章节系统调用中的内容，which命令没出现在第二章节所以打不开</p>
+<p><strong>破折号被叫做dash，ls -l发音 L-S-dash—L</strong></p>
+<h2 id="命令特征"><a href="#命令特征" class="headerlink" title="命令特征"></a>命令特征</h2><p>shell分为两大类，Bourn Shell和C-Shell，Bash是Bourn Again Shell（Born-Again），属于前者族系，两者在语法上有所不同</p>
+<p>命令 选项 参数</p>
+<p>ls <strong>options</strong> <em>filename…</em></p>
+<ol>
+<li>方括号里面的是可选择的</li>
+<li>不在方括号里的是必须写的</li>
+<li>黑体字必须原样输入</li>
+<li>斜体字使用适当内容替换</li>
+<li>接省略号…代表可以重复任意多次</li>
+<li>如果一个单独的选项和参数放在一起，则必须同时使用或者不用</li>
+<li>竖线分开的多个项目代表选择</li>
+</ol>
+<ul>
+<li>echo $SHELL 查看当前shell</li>
+<li>less /etc/shells 查看系统上装的所有shell</li>
+<li>每次执行shell脚本的时候，实际上是启动了一个新的shell</li>
+</ul>
+<h3 id="环境、进程和变量"><a href="#环境、进程和变量" class="headerlink" title="环境、进程和变量"></a>环境、进程和变量</h3><ul>
+<li>环境：一组用来存放信息的变量</li>
+<li>变量：一个用来存储数据的<strong>实体</strong>，不能数字打头，分为全局和局部变量，默认为局部shell变量，使用export可以导出到环境中,unset用于复位（清除）变量</li>
+<li>进程：父子进程之间有全局变量的作用</li>
+</ul>
+<p>env和printenv命令可以显示环境变量，set显示shell变量与它们的值</p>
+<p><strong>元字符</strong>：类似&lt;&gt;这种具有特殊含义的标点字符称为元字符，元字符在双引号中会解释为普通字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adin@LAPTOP-VA1IGCFC:~$ <span class="built_in">echo</span> I am <span class="variable">$USER</span></span><br><span class="line">I am adin</span><br><span class="line">adin@LAPTOP-VA1IGCFC:~$ <span class="built_in">echo</span> I am &lt;<span class="variable">$USER</span>&gt;</span><br><span class="line">-bash: syntax error near unexpected token `newline<span class="string">'</span></span><br><span class="line"><span class="string">adin@LAPTOP-VA1IGCFC:~$ echo "I am &lt;$USER&gt;"</span></span><br><span class="line"><span class="string">I am &lt;adin&gt;</span></span><br></pre></td></tr></table></figure>
+<p>set -o | +o <em>switchname</em>这种可以改变shell本身的设置，比如ignoreeof，一般用户比较少修改，默认配置在bashrc文件中</p>
+<hr>
+<h2 id="使用shell：命令和定制"><a href="#使用shell：命令和定制" class="headerlink" title="使用shell：命令和定制"></a>使用shell：命令和定制</h2><h3 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h3><p>各种各样的字母数字字符alphanumeric character，包括空格，制表符，回车等等。其中重要的一类称作通配符globbing，用于文件名的扩展。</p>
+<p>在引号之内就“引用”了元字符，会取消转义。反斜杠\也是重要的转义字符，使用双引号的时候会保留 $ ‘ \这三个的特殊含义。而单引号会把所有元字符的意义覆盖，变成纯粹的文本。也因此，单引号称作<strong>强引用</strong>，双引号对应称作<strong>弱引用</strong>。</p>
+<h3 id="shell提示"><a href="#shell提示" class="headerlink" title="shell提示"></a>shell提示</h3><p>修改环境变量PS1可以改变提示行的格式，编写该格式的时候可以使用<em>特殊码</em>，例如\u代表$USER，\h代表hostname</p>
+<h3 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h3><p>fc -l可以展示历史命令，！num可以执行对应事件的编号</p>
+<p>fc -s p=q可以让q命令以p命令的参数重新执行一遍</p>
+<p>^R可以让用户输入一个模式，然后history去寻找与之匹配的格式</p>
+<h3 id="别名"><a href="#别名" class="headerlink" title="别名"></a>别名</h3><p>alias 可以起别名；<br>unalias取消别名</p>
+<h2 id="使用shell：初始化文件"><a href="#使用shell：初始化文件" class="headerlink" title="使用shell：初始化文件"></a>使用shell：初始化文件</h2><p>两个特殊文件也就是初始化文件：</p>
+<ul>
+<li>登陆文件login file：每次登录时自动执行的命令 .profile</li>
+<li>环境文件environment file：在新shell启动时自动执行的命令 .bashrc(bash run commands)</li>
+<li><p>这个其实也算第三个特殊文件，登出文件logout file，可以在注销的时候执行一些命令 .profile_logout</p>
+</li>
+<li><p>交互式shell：输入命令行时，又分为登录shell和非登录shell</p>
+</li>
+<li>非交互式shell：执行shell脚本时</li>
+</ul>
+<p><strong>打开一个终端不需要登录，属于非登录shell，</strong>打开虚拟控制台则需要登录。打开<strong>ssh需要登录</strong>，在shell打开一个新sh不需要登录。</p>
+<p>登录shell执行登录文件和环境文件，非登录shell只执行环境文件。但是bash默认模式只执行登陆文件，而不执行环境文件？？？？</p>
+<h2 id="管线命令与标准IO"><a href="#管线命令与标准IO" class="headerlink" title="管线命令与标准IO"></a>管线命令与标准IO</h2><h3 id="标准IO"><a href="#标准IO" class="headerlink" title="标准IO"></a>标准IO</h3><ul>
+<li>标准输入 0&lt; &lt;&lt;</li>
+<li>标准输出 1&gt; &gt;&gt;</li>
+<li>标准错误 2&gt; &gt;&gt;<br>控制 noclobber的选项开关，<em>可以控制是否对已有文件进行修改</em></li>
+<li>‘&gt;| 强制重写’</li>
+<li>2&amp;&gt;1 将标准错误定向到标准输出</li>
+</ul>
+<h3 id="管线命令"><a href="#管线命令" class="headerlink" title="管线命令"></a>管线命令</h3><p>tee是分流命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat names1 names2 names3 | tee d1 d2 <span class="comment"># 把管线输入赋给d1 d2两个文件</span></span><br><span class="line">who | tee -a d1 <span class="comment"># 追加模式</span></span><br></pre></td></tr></table></figure><br>以上所有命令都会在标准输出（屏幕）上额外显示一份</p>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><blockquote>
+<p>过滤器就是能够从标准输入读取文本数据并向标准输出写入文本数据（每次一行）的程序。通常，大多数过滤器都被设计成工具，出色地完成一件事情。</p>
+</blockquote>
+<ul>
+<li>cat就是把输入变成输出<ul>
+<li>cat &gt; data 把键盘输入内容输出到data</li>
+<li>cat &lt; data 显示文件内容</li>
+<li>cat后面可以跟多个文件，依次读入并输出，起到catenate的作用</li>
+<li><strong>Warning</strong>cat输入和输出文件如果一样，会将文件内容清空报错</li>
+</ul>
+</li>
+<li>split划分文件，有点像cat逆操作<ul>
+<li>默认创建1000行一个的文件</li>
+<li>split -l n file，以n行每个创建切分文件，默认命名为xaa，xab等</li>
+</ul>
+</li>
+<li>tac与cat的碰瓷，输出前将文本反转<ul>
+<li>cat -n data | tac | tac两极反转就整回来啦</li>
+</ul>
+</li>
+<li>rev又一个反转的命令，但是不想tac逐行反转，rev是逐字符反转</li>
+<li>head/tail 平平无奇的显示头尾的命令</li>
+<li>colrm col1 col2 &lt; file 删除指定行</li>
+</ul>
+<h3 id="比较和抽取"><a href="#比较和抽取" class="headerlink" title="比较和抽取"></a>比较和抽取</h3><ul>
+<li>cmp file1 file2</li>
+<li>comm file1 file2 需要排序文件</li>
+<li>diff file1 file2 表示如何操作可以把文件1变成文件2<ul>
+<li>文件1使用&lt; 文件2使用 &gt;</li>
+<li>c改变,d删除,a添加</li>
+<li>相当多的选项可以展示两个文件的区别</li>
+</ul>
+</li>
+<li>sdiff,并排展示,把两个文件都列出来</li>
+</ul>
+<h4 id="差分和补丁"><a href="#差分和补丁" class="headerlink" title="差分和补丁"></a>差分和补丁</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff foo-2.0.c foo-2.1.c &gt; foo-diff-2.1</span><br></pre></td></tr></table></figure>
+<p>输出文件包含一列指示,可以将2.0版本更新到2.1版本,这种方式叫做<strong>差分</strong><br>使用patch命令可以完成补丁的修补</p>
+<p>实际中应用版本控制系统VCS, 不需要自己控制项目的差分补丁</p>
+<ul>
+<li><p>cut指令作用与colrm相反,它会将指定的列从文件中抽取并且删除掉其他内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cut -c 1-8, 5-16 info</span><br></pre></td></tr></table></figure>
+<p>这种破折号表示范围也是左闭右开的</p>
+</li>
+<li><p>paste合并数据列,和cat合并的能力有点类似, 这个可以水平合并, cat是竖直方向合并</p>
+</li>
+</ul>
+<h3 id="统计与格式化"><a href="#统计与格式化" class="headerlink" title="统计与格式化"></a>统计与格式化</h3><ul>
+<li>nl提供在文本中插入行号,并输出</li>
+<li>wc word count统计字符数量,输出顺序: 行—line 单词—word 字符—character,可以输入多份文件,多份文件会计算各个项目的总数</li>
+<li>expand将制表符变成空格, vim中 :set list可以可视化展示tab和space</li>
+<li>unexpand将空格变成制表符</li>
+<li>fold可以折叠文本,保证每行字符数量不超过指定值</li>
+<li>fmt格式化段落,让段落文字每句话之间的空格变得规范(例如法国式间距里每个句子后面空两个空格)</li>
+<li>pr为了给要打印的东西编号,按页格式化文本/按列格式化文本,是为了当年程序员们打印纸带的时候排版用的</li>
+</ul>
+<h3 id="选取排序组合以及变换"><a href="#选取排序组合以及变换" class="headerlink" title="选取排序组合以及变换"></a>选取排序组合以及变换</h3><ul>
+<li><p>grep最牛的过滤器<br>搜索包含特定pattern的行, 中间的re代表regular expression<br><strong>G</strong>lobal search the <strong>R</strong>egular <strong>E</strong>xpression and <strong>P</strong>rint the line</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep [-cilLnsvwx] pattern [file...]</span><br></pre></td></tr></table></figure>
+<p><em>讨论若干个重要的命令参数</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ls -F| grep -c <span class="string">'/'</span> <span class="comment">#统计目录的个数</span></span><br><span class="line">grep -i pattern file <span class="comment">#忽略大小写区别</span></span><br><span class="line">grep -<span class="keyword">in</span> pattern file <span class="comment">#忽略大小写,注明结果所在行ignore</span></span><br><span class="line">grep -l pattern file1 file2 ... <span class="comment">#只显示包含模式的文件名称,适用于多个文件寻找</span></span><br><span class="line">grep -w pattern file <span class="comment">#必须完全匹配</span></span><br><span class="line">grep -v pattern file <span class="comment">#显示不包含模式的行!!!!</span></span><br><span class="line">grep -r pattern dir <span class="comment">#在整个目录里面查找</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>fgrep是快速grep(已废弃deprecated,现在grep也很快),egrep是扩展grep(使用扩展正则表达式)</p>
+</li>
+<li>look没有看懂,功能比grep简单很多,不能读取标准输入,但是快,适合优化的时候使用</li>
+</ul>
+<h4 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h4><ul>
+<li>sort排序数据或者查看数据是否有序</li>
+<li>sort -o names &gt; names 可以实现对于源文件的排序,不至于出现cat names &gt; names清空自己这种情况</li>
+<li>sort通常就用做管线命令的一部分排个序</li>
+<li>sort -c查看是否有序</li>
+<li>sort -r反序</li>
+<li>sort -u唯一unique</li>
+<li><p>sort -n排序数字</p>
+</li>
+<li><p>uniq与重复行相关的操作</p>
+</li>
+<li><p>join会把两个<strong>已排序文件</strong>中键值相同的文本合并</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 基础知识</a>
+              <a href="/tags/UNIX-LINUX/" rel="tag"># UNIX/LINUX</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/23/C-%E8%8D%89%E7%A8%BF%E6%9C%AC/" rel="prev" title="C++草稿本">
+      <i class="fa fa-chevron-left"></i> C++草稿本
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/27/MITLinearAlgebra/" rel="next" title="MITLinearAlgebra">
+      MITLinearAlgebra <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是UNIX和LINUX"><span class="nav-number">1.</span> <span class="nav-text">什么是UNIX和LINUX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行"><span class="nav-number">2.</span> <span class="nav-text">命令行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#登录与基本用户相关"><span class="nav-number">2.1.</span> <span class="nav-text">登录与基本用户相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unix键盘信号"><span class="nav-number">2.2.</span> <span class="nav-text">Unix键盘信号</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#键入过程中的信号"><span class="nav-number">2.2.1.</span> <span class="nav-text">键入过程中的信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Backspace从何处来"><span class="nav-number">2.2.2.</span> <span class="nav-text">Backspace从何处来</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#神秘字符-H"><span class="nav-number">2.2.3.</span> <span class="nav-text">神秘字符^H</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#停止与启动程序"><span class="nav-number">2.2.4.</span> <span class="nav-text">停止与启动程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#终止信号eof"><span class="nav-number">2.2.5.</span> <span class="nav-text">终止信号eof</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回与换行"><span class="nav-number">2.2.6.</span> <span class="nav-text">返回与换行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#立即使用程序吧"><span class="nav-number">2.3.</span> <span class="nav-text">立即使用程序吧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查找which-type-whence"><span class="nav-number">2.3.1.</span> <span class="nav-text">查找which type whence</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一些辅助功能"><span class="nav-number">2.3.2.</span> <span class="nav-text">一些辅助功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说明书和bang"><span class="nav-number">2.3.3.</span> <span class="nav-text">说明书和bang</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令特征"><span class="nav-number">3.</span> <span class="nav-text">命令特征</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境、进程和变量"><span class="nav-number">3.1.</span> <span class="nav-text">环境、进程和变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用shell：命令和定制"><span class="nav-number">4.</span> <span class="nav-text">使用shell：命令和定制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#元字符"><span class="nav-number">4.1.</span> <span class="nav-text">元字符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell提示"><span class="nav-number">4.2.</span> <span class="nav-text">shell提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#历史"><span class="nav-number">4.3.</span> <span class="nav-text">历史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#别名"><span class="nav-number">4.4.</span> <span class="nav-text">别名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用shell：初始化文件"><span class="nav-number">5.</span> <span class="nav-text">使用shell：初始化文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管线命令与标准IO"><span class="nav-number">6.</span> <span class="nav-text">管线命令与标准IO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标准IO"><span class="nav-number">6.1.</span> <span class="nav-text">标准IO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管线命令"><span class="nav-number">6.2.</span> <span class="nav-text">管线命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过滤器"><span class="nav-number">7.</span> <span class="nav-text">过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#比较和抽取"><span class="nav-number">7.1.</span> <span class="nav-text">比较和抽取</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#差分和补丁"><span class="nav-number">7.1.1.</span> <span class="nav-text">差分和补丁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#统计与格式化"><span class="nav-number">7.2.</span> <span class="nav-text">统计与格式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选取排序组合以及变换"><span class="nav-number">7.3.</span> <span class="nav-text">选取排序组合以及变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#排序"><span class="nav-number">7.3.1.</span> <span class="nav-text">排序</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

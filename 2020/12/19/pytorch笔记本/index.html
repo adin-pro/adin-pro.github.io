@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录一下pytorch中需要复习的一些零碎知识点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch笔记本">
+<meta property="og:url" content="http://yoursite.com/2020/12/19/pytorch%E7%AC%94%E8%AE%B0%E6%9C%AC/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="记录一下pytorch中需要复习的一些零碎知识点">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/19/pytorch%E7%AC%94%E8%AE%B0%E6%9C%AC/storage.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/19/pytorch%E7%AC%94%E8%AE%B0%E6%9C%AC/autograd.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/19/pytorch%E7%AC%94%E8%AE%B0%E6%9C%AC/optim.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/19/pytorch%E7%AC%94%E8%AE%B0%E6%9C%AC/graph.png">
+<meta property="article:published_time" content="2020-12-19T14:23:47.000Z">
+<meta property="article:modified_time" content="2020-12-21T10:50:38.316Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="pytorch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/19/pytorch%E7%AC%94%E8%AE%B0%E6%9C%AC/storage.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/19/pytorch%E7%AC%94%E8%AE%B0%E6%9C%AC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>pytorch笔记本 | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/19/pytorch%E7%AC%94%E8%AE%B0%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pytorch笔记本
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-19 22:23:47" itemprop="dateCreated datePublished" datetime="2020-12-19T22:23:47+08:00">2020-12-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-21 18:50:38" itemprop="dateModified" datetime="2020-12-21T18:50:38+08:00">2020-12-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>记录一下pytorch中需要复习的一些零碎知识点</p>
+<a id="more"></a>
+<h2 id="从Tensor开始"><a href="#从Tensor开始" class="headerlink" title="从Tensor开始"></a>从Tensor开始</h2><h3 id="Tensor的存储结构"><a href="#Tensor的存储结构" class="headerlink" title="Tensor的存储结构"></a>Tensor的存储结构</h3><p>python原本的存储是不连续，例如list中的每一个元素并不像c++中的数组是连续存放在内存中。而numpy与pytorch会将array以及tensor放置在连续内存单元里面，通过修改索引来构造各种维度</p>
+<p>如图所示，与Tensor存储相关的有三个量，尺寸size、存储偏移offset以及步长stride（每一个维度的长度）。这种表示方式比较灵活，在进行reshape操作的时候只需要修改offset和stride即可，而不需要重新构造新的张量。<br><img src='storage.png' width='600' title='Tensor storage'></p>
+<p>需要注意，直接使用等号将某一个张量A赋值给新的张量B，两者仍将指向同一段内存地址，修改B会反过来影响A。</p>
+<p><strong>元素的存储是逐行保留的</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">points = torch.tensor([[<span class="number">1.0</span>, <span class="number">4.0</span>], [<span class="number">2.0</span>, <span class="number">1.0</span>], [<span class="number">3.0</span>, <span class="number">5.0</span>]])</span><br><span class="line">second_point = points[<span class="number">1</span>]</span><br><span class="line">second_point[<span class="number">0</span>] = <span class="number">10.0</span></span><br><span class="line">points</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">tensor([[ <span class="number">1.</span>,  <span class="number">4.</span>],</span><br><span class="line">        [<span class="number">10.</span>,  <span class="number">1.</span>],</span><br><span class="line">        [ <span class="number">3.</span>,  <span class="number">5.</span>]])</span><br></pre></td></tr></table></figure>
+<p>如果想避免这种情况，去创建一个新的Tensor独占空间，需要使用clone()函数</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">points = torch.tensor([[<span class="number">1.0</span>, <span class="number">4.0</span>], [<span class="number">2.0</span>, <span class="number">1.0</span>], [<span class="number">3.0</span>, <span class="number">5.0</span>]])</span><br><span class="line">**second_point = points[<span class="number">1</span>].clone()**</span><br><span class="line">second_point[<span class="number">0</span>] = <span class="number">10.0</span></span><br><span class="line">points</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">tensor([[<span class="number">1.</span>, <span class="number">4.</span>],</span><br><span class="line">        [<span class="number">2.</span>, <span class="number">1.</span>],</span><br><span class="line">        [<span class="number">3.</span>, <span class="number">5.</span>]])</span><br></pre></td></tr></table></figure>
+<p>转置前后可以使用id()函数验证两者的内存空间一致, <strong>但是转置之后的Tensor数据存放不再连续。</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">id(points.storage()) == id(points_t.storage())</span><br><span class="line"></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line">points.contiguous(), points_t.contiguous()</span><br><span class="line"></span><br><span class="line"><span class="literal">True</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h3 id="Tensor数据类型"><a href="#Tensor数据类型" class="headerlink" title="Tensor数据类型"></a>Tensor数据类型</h3><ul>
+<li>torch.float32或torch.float —— 32位浮点数</li>
+<li>torch.float64或torch.double —— 64位双精度浮点数</li>
+<li>torch.float16或torch.half —— 16位半精度浮点数</li>
+<li>torch.int8 —— 带符号8位整数</li>
+<li>torch.uint8 —— 无符号8位整数</li>
+<li>torch.int16或torch.short —— 带符号16位整数</li>
+<li>torch.int32或torch.int —— 带符号32位整数</li>
+<li>torch.int64或torch.long —— 带符号64位整数</li>
+</ul>
+<p>使用dtype参数构造新Tensor<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">double_points = torch.ones(<span class="number">10</span>, <span class="number">2</span>, dtype=torch.double)</span><br><span class="line">short_points = torch.tensor([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]], dtype=torch.short)</span><br></pre></td></tr></table></figure><br>Tensor元素的类型可以在创建时使用to()或者某种type的函数进行生成<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">double_points = torch.zeros(<span class="number">10</span>, <span class="number">2</span>).double()</span><br><span class="line">short_points = torch.ones(<span class="number">10</span>, <span class="number">2</span>).short()</span><br><span class="line"><span class="keyword">or</span></span><br><span class="line">double_points = torch.zeros(<span class="number">10</span>, <span class="number">2</span>).to(torch.double)</span><br><span class="line">short_points = torch.ones(<span class="number">10</span>, <span class="number">2</span>).to(dtype=torch.short)</span><br></pre></td></tr></table></figure><br>任何时刻都可以使用type()，转换Tensor类型，注意type()是返回tensor而不是直接在调用对象上进行改变，因此想改变某个tensor的类型，需要进行赋值操作，即<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = a.type(torch.float)</span><br><span class="line">a = a.to(torch.int8)</span><br></pre></td></tr></table></figure></p>
+<h3 id="与Numpy互通"><a href="#与Numpy互通" class="headerlink" title="与Numpy互通"></a>与Numpy互通</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tensor --&gt; numpy</span><br><span class="line">points = torch.ones(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">points_np = points.numpy()</span><br><span class="line"></span><br><span class="line">numpy --&gt; Tensor</span><br><span class="line">points = torch.from_numpy(points_np)</span><br></pre></td></tr></table></figure>
+<p>当Tensor的设备为cpu的时候，numpy数组和tensor直接共用数据缓冲区，修改任何一个都会影响另一个，而当Tensor的设备为GPU的时候，numpy数组会从显存被拷贝至内存区中</p>
+<h3 id="保存与读取Tensor"><a href="#保存与读取Tensor" class="headerlink" title="保存与读取Tensor"></a>保存与读取Tensor</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">torch.save(points, <span class="string">'../../data/chapter2/ourpoints.t'</span>)</span><br><span class="line">points = torch.load(<span class="string">'../../data/chapter2/ourpoints.t'</span>)</span><br><span class="line"></span><br><span class="line">保存后的格式是文本文件</span><br><span class="line"><span class="number">504</span>b <span class="number">0304</span> <span class="number">0000</span> <span class="number">0808</span> <span class="number">0000</span> <span class="number">0000</span> <span class="number">0000</span> <span class="number">0000</span></span><br><span class="line"><span class="number">0000</span> <span class="number">0000</span> <span class="number">0000</span> <span class="number">0000</span> <span class="number">0000</span> <span class="number">1000</span> <span class="number">1200</span> <span class="number">6172</span></span><br><span class="line"><span class="number">6368</span> <span class="number">6976</span> <span class="number">652</span>f <span class="number">6461</span> <span class="number">7461</span> <span class="number">2e70</span> <span class="number">6</span>b6c <span class="number">4642</span></span><br><span class="line"><span class="number">0e00</span> <span class="number">5</span>a5a <span class="number">5</span>a5a <span class="number">5</span>a5a <span class="number">5</span>a5a <span class="number">5</span>a5a <span class="number">5</span>a5a <span class="number">5</span>a5a</span><br><span class="line"><span class="number">8002</span> <span class="number">6374</span> <span class="number">6</span>f72 <span class="number">6368</span> <span class="number">2e5</span>f <span class="number">7574</span> <span class="number">696</span>c <span class="number">730</span>a</span><br><span class="line"><span class="number">5</span>f72 <span class="number">6562</span> <span class="number">7569</span> <span class="number">6</span>c64 <span class="number">5</span>f74 <span class="number">656</span>e <span class="number">736</span>f <span class="number">725</span>f</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<h3 id="让Tensor运行在GPU上"><a href="#让Tensor运行在GPU上" class="headerlink" title="让Tensor运行在GPU上"></a>让Tensor运行在GPU上</h3><p><strong>device概念</strong>：是Tensor的属性之一，指在设置计算机上放张量（tensor）数据的位置</p>
+<p>可以在创建tensor的时候就指定设备<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">points_gpu = torch.tensor([[<span class="number">1.0</span>, <span class="number">4.0</span>], [<span class="number">2.0</span>, <span class="number">1.0</span>], [<span class="number">3.0</span>, <span class="number">4.0</span>]], device=<span class="string">'cuda'</span>)</span><br></pre></td></tr></table></figure><br>也可以使用to()方法把tensor从CPU的内存拷贝到GPU的显存<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">points_gpu = points.to(device=<span class="string">'cuda'</span>)</span><br></pre></td></tr></table></figure><br>放置到显存后，变量的类型也会发生一些改变，变成了有cuda关键词的类型’torch.cuda.FloatTensor’</p>
+<h3 id="张量的API"><a href="#张量的API" class="headerlink" title="张量的API"></a>张量的API</h3><p>一般来说torch.method(tensor,para)和tensor.method(para)是没什么区别的，但是部分方法只有tensor才具备，这部分方法的后缀是下划线，代表原地<strong>inplace操作</strong></p>
+<p><strong>view()和reshape()的区别</strong>：</p>
+<ul>
+<li>view()只能作用于连续存储的Tensor上，对一些存储不连续的张量例如转置后的，view()无法执行</li>
+<li>reshape()可以作用于连续或非连续的Tensor上，对连续存储的与view()完全一致，非连续存储的相当于contiguous()+view()，得到的是原存储空间的拷贝，也就是说修改拷贝不会影响原张量</li>
+</ul>
+<h2 id="使用张量表示真实数据"><a href="#使用张量表示真实数据" class="headerlink" title="使用张量表示真实数据"></a>使用张量表示真实数据</h2><h3 id="表格数据"><a href="#表格数据" class="headerlink" title="表格数据"></a>表格数据</h3><p>表格数据的读取，通常有三种方式</p>
+<ol>
+<li>python自带的csv模块</li>
+<li>numpy</li>
+<li>pandas</li>
+</ol>
+<p>对于结构化的数据而言，pandas最好，但是考虑到numpy与pytorch天生的内源性适配，这里更推荐使用numpy进行读取<br>以红酒品质的数据作为练习来源<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">wine_path = <span class="string">'./winequality-white.csv'</span></span><br><span class="line">wine_numpy = np.loadtxt(wine_path, delimiter=<span class="string">';'</span>,dtype=np.float32,skiprows=<span class="number">1</span>)</span><br><span class="line">print(wine_numpy.shape)</span><br><span class="line">col_list = next(csv.reader(open(wine_path),delimiter=<span class="string">';'</span>))</span><br><span class="line">print(col_list)</span><br><span class="line">data = torch.from_numpy(wine_numpy[:,:<span class="number">-1</span>])</span><br><span class="line">target = torch.from_numpy(wine_numpy[:,<span class="number">-1</span>]).long()</span><br><span class="line">print(data.shape,target.shape)</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">(<span class="number">4898</span>, <span class="number">12</span>)</span><br><span class="line">[<span class="string">'fixed acidity'</span>, <span class="string">'volatile acidity'</span>, <span class="string">'citric acid'</span>, <span class="string">'residual sugar'</span>, <span class="string">'chlorides'</span>, <span class="string">'free sulfur dioxide'</span>, <span class="string">'total sulfur dioxide'</span>, <span class="string">'density'</span>, <span class="string">'pH'</span>, <span class="string">'sulphates'</span>, <span class="string">'alcohol'</span>, <span class="string">'quality'</span>]</span><br><span class="line">(<span class="number">4898</span>, <span class="number">11</span>) (<span class="number">4898</span>,)</span><br><span class="line"></span><br><span class="line">对target可以进行onehot编码，使用torch的scatter_原地方法，前提是target的dtype为int64（long）</span><br><span class="line">target_onehot = torch.zeros(target.shape[<span class="number">0</span>],<span class="number">10</span>)</span><br><span class="line">target_onehot.scatter_(<span class="number">1</span>,target.unsqueeze(<span class="number">1</span>),<span class="number">1.0</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="时间序列数据"><a href="#时间序列数据" class="headerlink" title="时间序列数据"></a>时间序列数据</h3><p>与表格数据类似，只是需要使用view()对维度进行转换，可能会将不同的通道作为天数，每一行作为每小时或者每分钟数据，使得其成为具有时间序列的多维数据</p>
+<h3 id="文本数据"><a href="#文本数据" class="headerlink" title="文本数据"></a>文本数据</h3><p>应用与NLP问题中。对字符串进行编码，可以从词的级别进行编码，one-hot方式面对巨大数量的词的时候是很崩溃的，类别过于大了。</p>
+<p>使用<strong>文本嵌入embedding</strong>的方式可以解决这个问题，基本思路是通过张量中元素的组合来表示语义，类似于“红色+甜+球形=苹果”这种企业级理解方式，属于一种比较特殊的编码方式吧，对于人工编码来说也需要很大的工作量。</p>
+<p>应该还有更有效率的编码方式，这里没有详谈。</p>
+<h3 id="图像数据"><a href="#图像数据" class="headerlink" title="图像数据"></a>图像数据</h3><p>使用imageio模块加载图像<br>默认读入的numpy array维度是（width <em> height </em> channel），而torch一般处理时愿意将其变为（channel <em> height </em> width）因此需要进行一个转置transpose()</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> imageio</span><br><span class="line">img_arr = imageio.imread(<span class="string">'./img.jpg'</span>)</span><br><span class="line">img = torch.from_numpy(img_arr)</span><br><span class="line">out = torch.transpose(img, <span class="number">0</span>, <span class="number">2</span>).clone()</span><br></pre></td></tr></table></figure>
+<p>注意：不加clone的话转置计算代价比较小，但是会让img和out共享内存，这个取舍由coder自己把握</p>
+<p>上述的是一张图片的读取，对于图像数据集来说，一般会有一沓图片等着你读取，这时候使用batch堆叠的方法，将多张图片放到一起比较好。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">batch = torch.zeros(<span class="number">100</span>,<span class="number">3</span>,<span class="number">576</span>,<span class="number">576</span>,dtype=torch.int8)</span><br><span class="line">data_dir = <span class="string">'../../data/chapter3/image-cats/'</span></span><br><span class="line">filenames = [name <span class="keyword">for</span> name <span class="keyword">in</span> os.listdir(data_dir) <span class="keyword">if</span> os.path.splitext(name) == <span class="string">'.png'</span>]</span><br><span class="line"><span class="keyword">for</span> i, filename <span class="keyword">in</span> enumerate(filenames):</span><br><span class="line">  img_arr = imageio.imread(filename)</span><br><span class="line">  batch[i] = torch.transpose(torch.from_numpy(img_arr), <span class="number">0</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="体积volume数据"><a href="#体积volume数据" class="headerlink" title="体积volume数据"></a>体积volume数据</h3><p>在通道（channel）维之后，你有一个额外的维——深度（depth），形成5D张量为N x C x D x H x W<br>使用imageio模块中的volread函数加载一个CT扫描样本，该函数以文件夹作为参数，将所有DICOM（Digital Imaging Communication and Storage，数字图像通信和存储）系列文件组合成一个NumPy 3D数组中<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> imageio</span><br><span class="line">dir_path = <span class="string">"../../data/chapter3/volumetric-dicom/2-LUNG 3.0  B70f-04083"</span> </span><br><span class="line">vol_arr = imageio.volread(dir_path, <span class="string">'DICOM'</span>) </span><br><span class="line">vol_arr.shape</span><br></pre></td></tr></table></figure></p>
+<h2 id="学习机制"><a href="#学习机制" class="headerlink" title="学习机制"></a>学习机制</h2><blockquote>
+<p>开普勒在没有计算机、微型计算器甚至微积分（那时这些都还没被发明出来的）的情况下估算了椭圆的偏心率和尺寸，提出了开普勒三定律。<br>这是早期通过输入输出参数来拟合模型的重要例子，某种程度上来说，机器从数据集中构建模型的思路完全可以参照多普勒当年的想法和流程。<br>本质上，开普勒必须使用一定数量的观测值来计算出曲线以尝试不同形状，然后使用计算出的曲线估计出更多位置，这是他拥有观测值的时间。然后检查这些计算出的位置是否与观测到的位置一致。</p>
+</blockquote>
+<ol>
+<li>从他的朋友Brahe那里得到了很多好的数据（费了一些周折）。</li>
+<li>试图将这些数据可视化，因为他觉得有的（数据）有些可疑。</li>
+<li>选择有可能拟合数据的最简单的模型（椭圆）。</li>
+<li>划分数据，以便处理部分数据并保留独立的数据集用来验证。</li>
+<li>从试探性的偏心率和大小开始，然后进行迭代直到模型拟合观察结果为止。</li>
+<li>根据独立的数据集验证他的模型。</li>
+<li>难以置信地回顾。</li>
+</ol>
+<p><strong>科学的历史是建立在这七个步骤之上的</strong></p>
+<h3 id="让autograd帮你计算梯度"><a href="#让autograd帮你计算梯度" class="headerlink" title="让autograd帮你计算梯度"></a>让autograd帮你计算梯度</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">model</span><span class="params">(t_u, w, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> w * t_u + b</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loss_fn</span><span class="params">(t_p, t_c)</span>:</span></span><br><span class="line">    squared_diffs = (t_p - t_c)**<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> squared_diffs.mean()</span><br><span class="line"></span><br><span class="line">params = torch.tensor([<span class="number">1.0</span>, <span class="number">0.0</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line">loss = loss_fn(model(t_u, *params), t_c)</span><br><span class="line">loss.backward()</span><br></pre></td></tr></table></figure>
+<p><img src='autograd.png' width='600' title='autograd'></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> params.grad <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    params.grad.zero_()</span><br></pre></td></tr></table></figure>
+<p><strong>WARNING</strong>: grad会在每一个tensor处<strong>累积</strong>而非储存，也意味着每次计算完成需要将grad清零</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">training_loop</span><span class="params">(n_epochs, learning_rate, params, t_u, t_c)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">1</span>, n_epochs + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> params.grad <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>: </span><br><span class="line">            params.grad.zero_() <span class="comment"># 这可以在调用backward之前在循环中的任何时候完成</span></span><br><span class="line">        t_p = model(t_u, *params)</span><br><span class="line">        loss = loss_fn(t_p, t_c)</span><br><span class="line">        loss.backward()</span><br><span class="line">        params = (params - learning_rate * params.grad).detach().requires_grad_()</span><br><span class="line">        <span class="keyword">if</span> epoch % <span class="number">500</span> == <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">'Epoch %d, Loss %f'</span> % (epoch, float(loss)))</span><br><span class="line">    <span class="keyword">return</span> params</span><br></pre></td></tr></table></figure>
+<p><em>detach()</em> 非常关键，不然每一次更新参数都会导致一直追踪到最原始的params</p>
+<blockquote>
+<p>我们重构params参数更新行：p1 = (p0 <em> lr </em> p0.grad)。这里p0是用于初始化模型的随机权重，p0.grad是通过损失函数根据p0和训练数据计算出来的。</p>
+<p>到目前为止，一切都很好。现在，你需要进行第二次迭代：p2 = (p1 <em> lr </em> p1.grad)。如你所见，p1的计算图会追踪到p0，这是有问题的，因为(a)你需要将p0保留在内存中（直到训练完成），并且(b)在反向传播时不知道应该如何分配误差。</p>
+<p>相反，应该通过调用.detatch()将新的params张量从与其更新表达式关联的计算图中分离出来。这样，params就会丢失关于生成它的相关运算的记忆。然后，你可以调用.requires<em>grad</em>()，这是一个就地（in place）操作（注意下标“_”），以重新启用张量的自动求导。现在，你可以释放旧版本params所占用的内存，并且只需通过当前权重进行反向传播。</p>
+</blockquote>
+<h3 id="优化器"><a href="#优化器" class="headerlink" title="优化器"></a>优化器</h3><p><img src='optim.png' width='600' title='optimizer'><br>在每个optim初始化的时候，输入optim关注的tensor<br>每个优化器的输入都是params或者说具有grad的张量，优化器含有zero_grad()和step()两个基本的方法<br>当输入的params有梯度属性后，调用optim.step()即可完成参数的更新<br>千万记住要在backward()之前调用optim.zero_grad(),将所有传递给优化器的Tensor的梯度清零<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">params = torch.tensor([<span class="number">1.0</span>, <span class="number">0.0</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line">learning_rate = <span class="number">1e-2</span></span><br><span class="line">optimizer = optim.SGD([params], lr=learning_rate)</span><br><span class="line">t_p = model(t_un, *params)</span><br><span class="line">loss = loss_fn(t_p, t_c)</span><br><span class="line">optimizer.zero_grad() <span class="comment"># 此调用可以在循环中更早的位置</span></span><br><span class="line">loss.backward()</span><br><span class="line">optimizer.step()</span><br></pre></td></tr></table></figure></p>
+<p><strong>torch.randperm(int max)</strong>可以生成随机的index，范围为(0, max-1)</p>
+<h3 id="不需要时关闭autograd"><a href="#不需要时关闭autograd" class="headerlink" title="不需要时关闭autograd"></a>不需要时关闭autograd</h3><blockquote>
+<p>还有一个点需要讨论：因为你永远不会对val_loss调用backward，所以为什么要构建图形？实际上，此时你完全可以将model和loss_fn当作普通函数而无需追踪计算历史。无论经过怎样的优化，追踪计算历史都会带来额外的代价，所以你应该在验证过程中避免这些代价，尤其是当模型具有数百万个参数时</p>
+</blockquote>
+<p><img src='graph.png' width='600' title='train/valid map'></p>
+<p>只使用train_loss更新params的梯度，不能使用valid_loss更新，否则就是在params中存储了这两者的梯度和，相当于把valid验证集也拿来做训练了</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">training_loop</span><span class="params">(n_epochs, optimizer, params, </span></span></span><br><span class="line"><span class="function"><span class="params">                  train_t_u, val_t_u, train_t_c, val_t_c)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">1</span>, n_epochs + <span class="number">1</span>):</span><br><span class="line">        train_t_p = model(train_t_u, *params)</span><br><span class="line">        train_loss = loss_fn(train_t_p, train_t_c)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():<span class="comment"># 上下文管理，这部分运算不开启梯度，减少计算负荷</span></span><br><span class="line">            val_t_p = model(val_t_u, *params)</span><br><span class="line">            val_loss = loss_fn(val_t_p, val_t_c)</span><br><span class="line">            <span class="keyword">assert</span> val_loss.requires_grad == <span class="literal">False</span> <span class="comment"># 检查是否关闭了val_loss张量的grad</span></span><br><span class="line"></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        train_loss.backward()</span><br><span class="line">        optimizer.step()</span><br></pre></td></tr></table></figure>
+<h2 id="构建网络模型"><a href="#构建网络模型" class="headerlink" title="构建网络模型"></a>构建网络模型</h2><h3 id="torch-nn"><a href="#torch-nn" class="headerlink" title="torch.nn"></a>torch.nn</h3><blockquote>
+<p>PyTorch有一个专门用于神经网络的完整子模块：torch.nn。该子模块包含创建各种神经网络体系结构所需的构建块。这些构建块在PyTorch术语中称为module（模块），在其他框架中称为layer（层）。</p>
+<p>PyTorch模块都是从基类nn.Module继承而来的Python类。模块可以具有一个或多个参数（Parameter）实例作为属性，这些参数就是在训练过程中需要优化的张量（在之前的线性模型中即w和b）。模块还可以具有一个或多个子模块（nn.Module的子类）属性，并且也可以追踪其参数。</p>
+</blockquote>
+<p>nn.module中含有forward()函数，是实现前向计算的函数，但是pytorch官方不建议直接调用forward函数，因为在model(x)这种操作中，不仅有forward(x)，还有一系列重要的操作，例如我不明白的hook()函数</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = model(x) <span class="comment"># right</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = model.forward(x) <span class="comment"># 不要这样做!!!</span></span><br><span class="line"></span><br><span class="line">以下代码显示了Module.call的实现（为清楚起见进行了一些简化）:</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, *input, **kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> hook <span class="keyword">in</span> self._forward_pre_hooks.values():</span><br><span class="line">        hook(self, input)</span><br><span class="line">    result = self.forward(*input, **kwargs)</span><br><span class="line">    <span class="keyword">for</span> hook <span class="keyword">in</span> self._forward_hooks.values():</span><br><span class="line">        hook_result = hook(self, input, result)</span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">    <span class="keyword">for</span> hook <span class="keyword">in</span> self._backward_hooks.values():</span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>如上所示，如果直接使用.forward（…），很多hook将无法正确调用。<br>nn.Module的子类都默认输入张量的第一维度为Batchsize<br>nn提供了一种通过nn.Sequential容器串联模块的简单方法：<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">seq_model = nn.Sequential(</span><br><span class="line">            nn.Linear(<span class="number">1</span>, <span class="number">13</span>),</span><br><span class="line">            nn.Tanh(),</span><br><span class="line">            nn.Linear(<span class="number">13</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 先创建一个空的sequential 再去add module</span></span><br><span class="line">seq_model.add_module(<span class="string">'name'</span>,nn.Linear(<span class="number">3</span>,<span class="number">1</span>))</span><br></pre></td></tr></table></figure></p>
+<h3 id="nn的子类"><a href="#nn的子类" class="headerlink" title="nn的子类"></a>nn的子类</h3><p>nn.Sequential在处理更大的网络时有点不够灵活（例如无法控制网络流向），使用nn.Module的子类更为合理<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubclassModel</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.hidden_linear = nn.Linear(<span class="number">1</span>, <span class="number">13</span>)</span><br><span class="line">        self.hidden_activation = nn.Tanh()</span><br><span class="line">        self.output_linear = nn.Linear(<span class="number">13</span>, <span class="number">1</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input)</span>:</span></span><br><span class="line">        hidden_t = self.hidden_linear(input)</span><br><span class="line">        activated_t = self.hidden_activation(hidden_t)</span><br><span class="line">        output_t = self.output_linear(activated_t)</span><br><span class="line">        <span class="keyword">return</span> output_t</span><br><span class="line"></span><br><span class="line">subclass_model = SubclassModel()</span><br></pre></td></tr></table></figure><br>当子模块作为self.attri属性加入子类后，会自动登记为子模块，类会自动访问子模块的参数</p>
+<blockquote>
+<p>回顾SubclassModel类的实现，并考虑在构造函数中登记子模块以便访问其参数的实用功能，似乎同时登记没有参数的子模块（如nn.Tanh）有点浪费，直接在forward函数中调用它们难道不是更容易吗？当然可以。</p>
+<p>PyTorch的每个nn模块都有相应的函数。“函数”一词是指“没有内部状态”或“其输出值完全由输入的参数决定”。实际上，torch.nn.functional提供了许多与nn模块对应的函数，只是所有模型参数（parameter）都作为了参数（argument）移到了函数调用中。例如，与nn.Linear对应的是nn.functional.linear，它是一个具有参数(input, weight, bias=None)的函数，即模型的权重和偏差是该函数的参数。</p>
+</blockquote>
+<p>可以不添加module，直接在forward中直接调用函数</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubclassFunctionalModel</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.hidden_linear = nn.Linear(<span class="number">1</span>, <span class="number">14</span>)</span><br><span class="line">        <span class="comment"># 去掉了nn.Tanh()</span></span><br><span class="line">        self.output_linear = nn.Linear(<span class="number">14</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input)</span>:</span></span><br><span class="line">        hidden_t = self.hidden_linear(input)</span><br><span class="line">        activated_t = torch.tanh(hidden_t) <span class="comment"># nn.Tanh对应的函数</span></span><br><span class="line">        output_t = self.output_linear(activated_t)</span><br><span class="line">        <span class="keyword">return</span> output_t</span><br><span class="line"></span><br><span class="line">func_model = SubclassFunctionalModel()</span><br><span class="line">func_model</span><br></pre></td></tr></table></figure>
+<p><strong>WARNING</strong>:尽管1.0版的torch.nn.function中仍存在诸如tanh之类的通用科学函数，但不建议使用这些API，而应使用顶级torch命名空间中的API，例如torch.tanh。更多其他函数保留在torch.nn.functional中。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/pytorch/" rel="tag"># pytorch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/17/ML2020Note-3/" rel="prev" title="ML2020Note-3">
+      <i class="fa fa-chevron-left"></i> ML2020Note-3
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/22/ML2020Note-4/" rel="next" title="ML2020Note-4">
+      ML2020Note-4 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#从Tensor开始"><span class="nav-number">1.</span> <span class="nav-text">从Tensor开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Tensor的存储结构"><span class="nav-number">1.1.</span> <span class="nav-text">Tensor的存储结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tensor数据类型"><span class="nav-number">1.2.</span> <span class="nav-text">Tensor数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与Numpy互通"><span class="nav-number">1.3.</span> <span class="nav-text">与Numpy互通</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保存与读取Tensor"><span class="nav-number">1.4.</span> <span class="nav-text">保存与读取Tensor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#让Tensor运行在GPU上"><span class="nav-number">1.5.</span> <span class="nav-text">让Tensor运行在GPU上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#张量的API"><span class="nav-number">1.6.</span> <span class="nav-text">张量的API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用张量表示真实数据"><span class="nav-number">2.</span> <span class="nav-text">使用张量表示真实数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#表格数据"><span class="nav-number">2.1.</span> <span class="nav-text">表格数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间序列数据"><span class="nav-number">2.2.</span> <span class="nav-text">时间序列数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文本数据"><span class="nav-number">2.3.</span> <span class="nav-text">文本数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像数据"><span class="nav-number">2.4.</span> <span class="nav-text">图像数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#体积volume数据"><span class="nav-number">2.5.</span> <span class="nav-text">体积volume数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习机制"><span class="nav-number">3.</span> <span class="nav-text">学习机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#让autograd帮你计算梯度"><span class="nav-number">3.1.</span> <span class="nav-text">让autograd帮你计算梯度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化器"><span class="nav-number">3.2.</span> <span class="nav-text">优化器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不需要时关闭autograd"><span class="nav-number">3.3.</span> <span class="nav-text">不需要时关闭autograd</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建网络模型"><span class="nav-number">4.</span> <span class="nav-text">构建网络模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#torch-nn"><span class="nav-number">4.1.</span> <span class="nav-text">torch.nn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nn的子类"><span class="nav-number">4.2.</span> <span class="nav-text">nn的子类</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

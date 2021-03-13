@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="针孔相机模型，若干种坐标系的转换方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="相机模型">
+<meta property="og:url" content="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="针孔相机模型，若干种坐标系的转换方法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/model.png">
+<meta property="og:image" content="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/ouv.png">
+<meta property="og:image" content="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/ouv.png">
+<meta property="og:image" content="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/core2.gif">
+<meta property="og:image" content="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/core.gif">
+<meta property="og:image" content="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/stereo.png">
+<meta property="og:image" content="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/slc.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/tof.png">
+<meta property="article:published_time" content="2021-03-06T10:41:09.000Z">
+<meta property="article:modified_time" content="2021-03-06T12:47:33.850Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="SLAM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/model.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>相机模型 | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/06/%E7%9B%B8%E6%9C%BA%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          相机模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-06 18:41:09 / 修改时间：20:47:33" itemprop="dateCreated datePublished" datetime="2021-03-06T18:41:09+08:00">2021-03-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SLAM/" itemprop="url" rel="index"><span itemprop="name">SLAM</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>针孔相机模型，若干种坐标系的转换方法<br><a id="more"></a></p>
+<h2 id="几个坐标系"><a href="#几个坐标系" class="headerlink" title="几个坐标系"></a>几个坐标系</h2><p>针孔相机模型就是小孔成像模型，通过针孔后目标在成像平面上形成了一个倒立（通常缩小）的像。</p>
+<p>借用十四讲里的图：<br><img src='model.png' width=600 title='针孔相机模型'></p>
+<p>上图描述了相机坐标系中的$P$点经转换后在图像坐标系$x’O’y’$成像的过程。</p>
+<p>需要注意，上图里$x’O’y’$图像坐标系的原点$O’$是成像平面与过光心直线的交点，下面要说的像素坐标系与图像坐标系在同一个平面上，但标度和原点不同，此图并没有画出。</p>
+<p><img src='ouv.png' width=600 title='像素坐标系'></p>
+<p>上图为从坐在相机里内向外看的视角，<strong>像素坐标系</strong>的原点在图像左上角，$u$轴向右，$v$轴向下；<strong>图像坐标系</strong>原点在过光心直线与平面交点，$x$轴向右，$y$轴向下。</p>
+<p>顺便提及，<strong>相机坐标系</strong>的原点设置在光心处，同向看去，$Z$轴朝外，$X$轴向右，$Y$轴向下。（另外俩坐标系没有Z轴）</p>
+<hr>
+<h2 id="坐标转换"><a href="#坐标转换" class="headerlink" title="坐标转换"></a>坐标转换</h2><p>相机坐标系$(X,Y,Z)$至图像坐标系$(x,y)$</p>
+<script type="math/tex; mode=display">\frac{Z}{f}=\frac{X}{x}=\frac{Y}{y}</script><p>$f$为相机焦距</p>
+<p>图像坐标系$(x,y)$至像素坐标系$(u,v)$</p>
+<script type="math/tex; mode=display">\left\{
+    \begin{array}{lr}
+    u = \alpha x + c_x & \\
+    v =  \beta y + c_y& \\
+    \end{array}
+
+    \right.</script><p>$\alpha 和 \beta$是像素每米的转换比例，$c_x 和c_y$是两个坐标系原点的平移距离</p>
+<p>再看一次</p>
+<p><img src='ouv.png' width=600 title='像素坐标系'></p>
+<p>由以上两个转换推出相机坐标系$(X,Y,Z)$至像素坐标系$(u,v)$</p>
+<script type="math/tex; mode=display">\left\{
+    \begin{array}{lr}
+    u = f_x \frac{X}{Z} + c_x & \\
+    v =  f_y \frac{Y}{Z} + c_y& \\
+    \end{array}
+
+    \right.</script><script type="math/tex; mode=display">f_x = \alpha f, \quad f_y =\beta f</script><p>使用<em>齐次坐标</em>可以将上述表达变为矩阵形式，以及再加上相机坐标系到世界坐标系的转换</p>
+<script type="math/tex; mode=display">
+\left[
+    \begin{array}{lr}
+    u\\
+    v\\
+    1\\
+    \end{array}
+    \right]
+= \frac{1}{Z}
+\left[
+    \begin{array}{lr}
+    f_x & 0 & c_x\\
+    0 & f_y & c_y\\
+    0 & 0 & 1\\
+    \end{array}
+    \right]
+
+    \left[
+    \begin{array}{lr}
+    X\\
+    Y\\
+    Z\\
+    \end{array}
+    \right]
+    =
+    \frac{1}{Z} K P_c
+    =
+    \frac{1}{Z} K(RP_w + t)
+    =
+    \frac{1}{Z} KTP_w</script><p>$K$矩阵为相机的<strong>内参矩阵</strong>，相机标定的对象就是它</p>
+<p>十四讲中说习惯会把Z乘到左边</p>
+<script type="math/tex; mode=display">Z P_{uv} = KTP_w</script><p>如果对相机坐标系下的坐标进行归一化处理，那么$Z=1$，$P_{uv}=KP_c$，即乘以内参矩阵就得到了像素坐标。</p>
+<p>所以像素坐标也被认为是对<strong>归一化平面</strong>上的坐标进行量化测量的结果。</p>
+<h2 id="针孔模型与透镜"><a href="#针孔模型与透镜" class="headerlink" title="针孔模型与透镜"></a>针孔模型与透镜</h2><p>小孔成像是将一大堆光线挡住只让“一束光”穿过去成像，凸透镜是把所有光线聚集起来成像。</p>
+<p><img src='core2.gif' width=600 title='hole'></p>
+<p>知乎上图</p>
+<p><a href="https://www.zhihu.com/question/299247177" target="_blank" rel="noopener">https://www.zhihu.com/question/299247177</a></p>
+<p><img src='core.gif' width=600 title='2zero'></p>
+<p>小孔成像可以理解为透镜成像在孔径（光圈）趋近于零的极限情况。另外当孔径趋近于零时，景深趋近于无穷，成像的亮度也趋于零。</p>
+<h2 id="双目相机模型"><a href="#双目相机模型" class="headerlink" title="双目相机模型"></a>双目相机模型</h2><p>通过同一物体在双目左右成像面的像素坐标，判断物体的距离</p>
+<p>图源十四讲</p>
+<p><img src='stereo.png' width=600 title='2zero'></p>
+<p>根据相似关系</p>
+<script type="math/tex; mode=display">\frac{z-f}{z} = \frac{b-u_L+u_R}{b}</script><p>注意$u_R$为负，进而推出$z$的大小</p>
+<script type="math/tex; mode=display">z = \frac{fb}{d}, \quad d = u_L - u_R</script><p>双目模型估计深度的难点在于，如何精确的确定左右图像的像素对应关系，计算视差$d$的难度很大</p>
+<p>双目相机由于$d$最小为1像素，所以$Z$的测量是有上限的</p>
+<h2 id="结构光与ToF相机"><a href="#结构光与ToF相机" class="headerlink" title="结构光与ToF相机"></a>结构光与ToF相机</h2><p>结构光相机向物体发射光斑或者条纹，再观察其形变来判断距离。</p>
+<p><img src='slc.jpg' width=600 title='structured light camera'></p>
+<p>ToF相机发射光线，测量返回光线的时间，来计算距离，Time of Flight。</p>
+<p><img src='tof.png' width=600 title='ToF camera'></p>
+<p>ToF相机和激光雷达有相似的地方，主动向外发射光线并用时间测距，不同的是激光雷达直接给出3D点云，ToF是给出一个RGB图像和一个深度图，不是一个3D的点云。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SLAM/" rel="tag"># SLAM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/05/%E6%9D%8E%E7%BE%A4%E5%92%8C%E6%9D%8E%E4%BB%A3%E6%95%B0/" rel="prev" title="李群和李代数">
+      <i class="fa fa-chevron-left"></i> 李群和李代数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/07/%E5%87%B8%E5%87%BD%E6%95%B0/" rel="next" title="凸函数">
+      凸函数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#几个坐标系"><span class="nav-number">1.</span> <span class="nav-text">几个坐标系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坐标转换"><span class="nav-number">2.</span> <span class="nav-text">坐标转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#针孔模型与透镜"><span class="nav-number">3.</span> <span class="nav-text">针孔模型与透镜</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双目相机模型"><span class="nav-number">4.</span> <span class="nav-text">双目相机模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构光与ToF相机"><span class="nav-number">5.</span> <span class="nav-text">结构光与ToF相机</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

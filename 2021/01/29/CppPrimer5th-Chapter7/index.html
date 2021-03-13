@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="《C++ Primer 5th》第七章中的重要知识点，第七章内容为类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CppPrimer5th-Chapter7">
+<meta property="og:url" content="http://yoursite.com/2021/01/29/CppPrimer5th-Chapter7/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="《C++ Primer 5th》第七章中的重要知识点，第七章内容为类">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-29T01:56:43.000Z">
+<meta property="article:modified_time" content="2021-01-29T13:11:56.875Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="基础知识">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/01/29/CppPrimer5th-Chapter7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CppPrimer5th-Chapter7 | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/29/CppPrimer5th-Chapter7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CppPrimer5th-Chapter7
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-29 09:56:43 / 修改时间：21:11:56" itemprop="dateCreated datePublished" datetime="2021-01-29T09:56:43+08:00">2021-01-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>《C++ Primer 5th》第七章中的重要知识点，第七章内容为类</p>
+<a id="more"></a>
+<h2 id="类的定义"><a href="#类的定义" class="headerlink" title="类的定义"></a>类的定义</h2><p><strong>定义在类内部的函数是隐式的成员函数</strong></p>
+<h3 id="const成员函数"><a href="#const成员函数" class="headerlink" title="const成员函数"></a>const成员函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">string</span> <span class="title">isbn</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> bookNo;&#125;</span><br><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">string</span> <span class="title">isbn</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> <span class="keyword">this</span>-&gt;bookNo;&#125; <span class="comment">// same</span></span><br><span class="line"><span class="comment">/***************************/</span></span><br><span class="line">调用total.isbn()等价于</span><br><span class="line">Sales_data::isbn(&amp;total); <span class="comment">// fake code</span></span><br></pre></td></tr></table></figure>
+<p>this是一个常量指针，不允许改变this的值，指向调用成员函数的对象</p>
+<p><em>const作用是修改隐式指针const的类型</em>, const是常量指针（Sales_data <em> const），并非指向常量的指针，因此无法指向常量对象，有时候就需要将const转换为指向常量的指针形式(const Sales_data </em> const)，const是隐式指针，无法直接修改类型，因此借助const成员函数的帮助</p>
+<blockquote>
+<p>C++语言的做法是允许把const关键字放在成员函数的参数列表之后，此时，紧跟在参数列表后面的const表示this是一个指向常量的指针</p>
+</blockquote>
+<p>因为this是指向常量的指针，所以常量成员函数不能改变调用它的对象的内容</p>
+<h3 id="返回this对象的成员函数"><a href="#返回this对象的成员函数" class="headerlink" title="返回this对象的成员函数"></a>返回this对象的成员函数</h3><p>完成类似于自增的函数combine，返回this对象<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Sales_data&amp; <span class="title">Sales_data::combine</span><span class="params">(<span class="keyword">const</span> Sales_data&amp; rhs)</span></span>&#123;</span><br><span class="line">    units_sold += rhs.units_sold;</span><br><span class="line">    revenue += rhs.revenue;</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>该函数一个值得关注的部分是它的返回类型和返回语句。一般来说，当我们定义的函数类似于某个内置运算符时，应该令该函数的行为尽量模仿这个运算符。内置的赋值运算符把它的左侧运算对象当成左值返回（参见4.4节，第129页），因此为了与它保持一致，combine函数必须返回引用类型（参见6.3.2节，第202页）。因为此时的左侧运算对象是一个Sales_data的对象，所以返回类型应该是Sales_data&amp;。</p>
+</blockquote>
+<h3 id="IO类不支持拷贝"><a href="#IO类不支持拷贝" class="headerlink" title="IO类不支持拷贝"></a>IO类不支持拷贝</h3><p>调用的时候需要直接使用对象引用。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">istream&amp; <span class="title">read</span><span class="params">(istream&amp; os, Sales_data&amp; item)</span></span>&#123;</span><br><span class="line">    os &gt;&gt; item.bookNo &gt;&gt; item.units_sold &gt;&gt; price;</span><br><span class="line">    item.revenue = price * item.units_sold;</span><br><span class="line">    <span class="keyword">return</span> is;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><blockquote>
+<p>在C++11新标准中，如果我们需要默认的行为，那么可以通过在参数列表后面写上= default来要求编译器生成构造函数。其中，= default既可以和声明一起出现在类的内部，也可以作为定义出现在类的外部。和其他函数一样，如果= default在类的内部，则默认构造函数是内联的；如果它在类的外部，则该成员默认情况下不是内联的。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Sales_data</span>&#123;</span></span><br><span class="line">    Sales_data() = <span class="keyword">default</span>;</span><br><span class="line">    Sales_data(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;s):bookNo(s)&#123;&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="进阶属性"><a href="#进阶属性" class="headerlink" title="进阶属性"></a>进阶属性</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Screen</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> <span class="built_in">string</span>::size_type pos; <span class="comment">// is equivalent to: using pos = string::size_type;</span></span><br><span class="line">	Screen() = <span class="keyword">default</span>; <span class="comment">// default constructor</span></span><br><span class="line">	Screen(pos h, pos w, <span class="keyword">char</span> c) : height&#123; h &#125;, width&#123; w &#125;, contents(h* w, c)&#123;&#125;;</span><br><span class="line">	<span class="function"><span class="keyword">char</span> <span class="title">get</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> contents[cursor]; &#125; <span class="comment">// implicit inline</span></span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="keyword">char</span> <span class="title">get</span><span class="params">(pos h, pos w)</span> <span class="keyword">const</span></span>; <span class="comment">// explicit inline ; overloaded function</span></span><br><span class="line">	<span class="function">Screen&amp; <span class="title">move</span><span class="params">(pos r, pos c)</span></span>;</span><br><span class="line">    <span class="function">Screen&amp; <span class="title">set</span><span class="params">(<span class="keyword">char</span> c)</span></span>; <span class="comment">// return *this</span></span><br><span class="line">    <span class="function">Screen&amp; <span class="title">set</span><span class="params">(pos, pos, <span class="keyword">char</span>)</span></span>; <span class="comment">// return *this</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	pos cursor = <span class="number">0</span>;</span><br><span class="line">	pos height = <span class="number">0</span>, width = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">string</span> contents;</span><br><span class="line">    <span class="keyword">mutable</span> <span class="keyword">size_t</span> access_ctr = <span class="number">0</span>;  <span class="comment">// mutable variable</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Screen::some_member</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;  <span class="comment">// </span></span><br><span class="line">	++access_ctr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过返回*this（Screen对象引用）可以实现move，set函数的序列化调用<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myScreen.move(<span class="number">4</span>,<span class="number">0</span>).<span class="built_in">set</span>(<span class="string">'#'</span>);</span><br></pre></td></tr></table></figure></p>
+<p><em>Warning: 一个const成员函数如果以引用的形式返回＊this，那么它的返回类型将是常量引用。</em></p>
+<p>$\color{red}{常量对象，以及常量对象的引用或指针都只能调用常量成员函数。}$</p>
+<p>一些成员函数需要有const和非const重载版本，来满足不同对象的要求。</p>
+<h2 id="构造函数初始化顺序"><a href="#构造函数初始化顺序" class="headerlink" title="构造函数初始化顺序"></a>构造函数初始化顺序</h2><p>一般而言，要求构造初始化类成员的时候按照定义顺序来，尤其是存在类成员变量互相初始化的时候。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Exp</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">    Exp(<span class="keyword">int</span> val): j&#123;val&#125;, i&#123;j&#125; &#123;&#125; <span class="comment">// wrong initialize i with unintialized value</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// i会按照定义的顺序先执行初始化，而不是按照列表初始化里的顺序来</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="委托构造函数"><a href="#委托构造函数" class="headerlink" title="委托构造函数"></a>委托构造函数</h3><p>C++11中出现的新特性，目的是减少构造函数中的代码冗余，委托构造函数可以调用其他构造函数，从而简化构造过程。将构造任务部分或者全部的交给其他构造函数。</p>
+<p>默认构造函数还是能有就有，不然在某些情形下缺少默认构造函数会报错，例如初始化vector数组的时候，会调用默认构造函数</p>
+<h3 id="聚合类与constexpr类"><a href="#聚合类与constexpr类" class="headerlink" title="聚合类与constexpr类"></a>聚合类与constexpr类</h3><p>public成员，无成员函数，都是字面值</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 基础知识</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/28/CppPrimer5th-Chapter6/" rel="prev" title="CppPrimer5th-Chapter6">
+      <i class="fa fa-chevron-left"></i> CppPrimer5th-Chapter6
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/29/CppPrimer5th-Chapter8/" rel="next" title="CppPrimer5th-Chapter8">
+      CppPrimer5th-Chapter8 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类的定义"><span class="nav-number">1.</span> <span class="nav-text">类的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#const成员函数"><span class="nav-number">1.1.</span> <span class="nav-text">const成员函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回this对象的成员函数"><span class="nav-number">1.2.</span> <span class="nav-text">返回this对象的成员函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO类不支持拷贝"><span class="nav-number">1.3.</span> <span class="nav-text">IO类不支持拷贝</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数"><span class="nav-number">2.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进阶属性"><span class="nav-number">3.</span> <span class="nav-text">进阶属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数初始化顺序"><span class="nav-number">4.</span> <span class="nav-text">构造函数初始化顺序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#委托构造函数"><span class="nav-number">4.1.</span> <span class="nav-text">委托构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚合类与constexpr类"><span class="nav-number">4.2.</span> <span class="nav-text">聚合类与constexpr类</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

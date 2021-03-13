@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="记录C++语法中的一些小问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++草稿本">
+<meta property="og:url" content="http://yoursite.com/2020/09/23/C-%E8%8D%89%E7%A8%BF%E6%9C%AC/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="记录C++语法中的一些小问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-23T01:22:27.000Z">
+<meta property="article:modified_time" content="2020-10-09T13:28:02.000Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="基础知识">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/09/23/C-%E8%8D%89%E7%A8%BF%E6%9C%AC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++草稿本 | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/23/C-%E8%8D%89%E7%A8%BF%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++草稿本
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-23 09:22:27" itemprop="dateCreated datePublished" datetime="2020-09-23T09:22:27+08:00">2020-09-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-09 21:28:02" itemprop="dateModified" datetime="2020-10-09T21:28:02+08:00">2020-10-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>记录C++语法中的一些小问题</p>
+<a id="more"></a>
+<ol>
+<li>初始化方式包括用=赋值，还有使用括号。例如 int a(1)。使用括号更加适配c++对象。</li>
+<li>为什么switch语句会使用“不加break就能一直运行所有语句”这种机制？某些情况下可以对此加以利用，可以用于检测原因字母是否存在，替代一大堆或结构。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">switch</span>(nextchar) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'a'</span>: <span class="keyword">case</span> <span class="string">'A'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'e'</span>: <span class="keyword">case</span> <span class="string">'E'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'i'</span>: <span class="keyword">case</span> <span class="string">'I'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'o'</span>: <span class="keyword">case</span> <span class="string">'O'</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'u'</span>: <span class="keyword">case</span> <span class="string">'U'</span>:</span><br><span class="line">        ++vovel_cnt;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>cin的返回值不是一个内嵌类型，而是cin对象。对于while(cin&gt;&gt;nextchar)这种结构，结束循环的条件是EOF。在windows平台输入EOF的方法为，同时按下ctrl和z键。 如果是unix/linux平台，则需要同时按下ctrl+d键。</li>
+<li>array数组的初始化数量必须用常量定义而非变量。即int s[variable]这种操作是非法的。可以留空，由编译器仔细根据初值数量判断。<strong>但是没有初始化数值又不明确数组长度的操作是非法的，编译器无法确定数组长度</strong><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a =<span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> s[a]; <span class="comment">// Error!</span></span><br></pre></td></tr></table></figure></li>
+<li>array如果定义后不初始化，则数组元素为随机值。如果初始化={}，则所有元素被初始化为0，如果初始化={1}，则第一个元素为1，其余元素为0。</li>
+<li>vector不支持={}这种初始化方式，只能逐个赋值或者用数组给他初始化，没有被初始化的元素默认值为0。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">ini</span><span class="params">(<span class="number">5</span>)</span> </span>= &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;; <span class="comment">//ERROR!!!!</span></span><br><span class="line"></span><br><span class="line">ini[<span class="number">0</span>] = <span class="number">1</span>; <span class="comment">//OK</span></span><br></pre></td></tr></table></figure></li>
+<li>vector和string都是std命名空间里的，使用时注意。</li>
+<li>指针初始化指向地址0，则等同于null指针，即什么对象都没有指向。int* p=0;<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">define <span class="literal">NULL</span> <span class="number">0</span></span><br><span class="line">完全等价===</span><br></pre></td></tr></table></figure></li>
+<li>srand()和rand()属于cstdlib库，使用时要配合time.h，使用time(NULL)或者time(0)生成srand()的种子，才能生成随机序列。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">srand(time(<span class="literal">NULL</span>))</span><br><span class="line">rand() <span class="comment">// OK</span></span><br></pre></td></tr></table></figure></li>
+<li>int[]这种写法只能在数组聚合初始化的时候使用，其余时候不等于int*。</li>
+<li>单引号表示一个字符’a’双引号代表字符串”a” = ‘a’+’\0’。类型为char和const char。<strong>两个字符类型的变量没办法直接拼接，必须至少有一个是string</strong></li>
+<li>ofstream和ifstream对象在未打开对象的时候会返回false。</li>
+<li>ifstream读取文件的时候，空格和tab都可以作为分隔符，ifstream会依次读取，逗号尝试了不能作为分隔。</li>
+<li>fstream可以满足io的读取功能，打开模式如果是ios_base::in | ios_base::app 则一开始的文件位置光标会位于文件末尾。需要使用fstream.seekg(0)重新定位光标位置到文件开头。</li>
+<li>函数参数用指针和引用都可以作为输出值，使用指针时需要检查是否为空指针，而引用要求必须是存在的对象不需进行这个检查，也就说只要编译顺利通过，引用对象是不会发生runtime error的。一般的对象引用使用const修饰，除非要修改变量内容，<strong>一般内置变量不建议使用传址机制</strong>。</li>
+<li>如果一个变量定义为了<strong>全局变量（file scope）</strong>，而又是<strong>内置类型</strong>，则它<strong>会被自动初始化为0</strong>（即使没有初始化语句）。而一个local scope里的变量除非指定初值，否则不会被初始化。</li>
+<li>函数的默认参数值必须放在不带默认值的参数的后面，这一点和python一致。</li>
+<li>在头文件声明的函数形式具有更高的可见性visibility（如头文件声明了而cpp文件没有声明默认值，以头文件为准）</li>
+<li>inline内联函数一般要在头文件里面声明。</li>
+<li>返回值不同不能让函数重载，因为在调用的时候编译器无法用返回值判断是哪个函数。</li>
+<li>function template可以重载<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="keyword">void</span> <span class="title">display</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;msg, <span class="built_in">vector</span>&lt;T&gt; vecT)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="keyword">void</span> <span class="title">display</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;msg, <span class="built_in">list</span>&lt;T&gt; vecList)</span></span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>函数返回值为 const  只有用在函数返回为引用的情况。 函数返回值引用常量表示不能将函数调用表达式作为左值使用。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span>&amp; <span class="title">mini</span><span class="params">(<span class="keyword">int</span> &amp;a,<span class="keyword">int</span> &amp;b)</span></span>;</span><br><span class="line">    |</span><br><span class="line">    v</span><br><span class="line">mini(a,b) = <span class="number">4</span>; <span class="comment">// OK, func returns a lvalue</span></span><br><span class="line"></span><br><span class="line">----------------</span><br><span class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">int</span>&amp; <span class="title">mini</span><span class="params">(<span class="keyword">int</span> &amp;a, <span class="keyword">int</span>&amp;b)</span></span>;</span><br><span class="line">    |</span><br><span class="line">    v</span><br><span class="line">mini(a,b) = <span class="number">4</span>; <span class="comment">//ERROR! function mini returns a rvalue</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>c风格字符串是字符数组，char str[]跟一般数组一样，方括号里如果不写长度，那么就必须在后面直接用字符串赋值初始化。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> str[]=<span class="string">"hello"</span>; <span class="comment">// must be initialized</span></span><br><span class="line"><span class="keyword">char</span> str[]=&#123;<span class="string">"myworld"</span>&#125;; <span class="comment">// must be initialized</span></span><br><span class="line"><span class="keyword">char</span> str[<span class="number">20</span>] = <span class="string">"abcd"</span>; <span class="comment">// initilaztion is not mandatary</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>strlen()是一个函数，sizeof是一个运算符</p>
+<ol>
+<li>sizeof 操作符的结果类型是 size_t，它在头文件中 typedef 为 unsigned int 类型。该类型保证能容纳实现所建立的最大对象的字节大小。</li>
+<li>sizeof 可以用类型做参数，strlen 只能用 char* 做参数，且必须是以 \0 结尾的</li>
+<li>数组做 sizeof 的参数不退化，传递给 strlen 就退化为指针了</li>
+<li>大部分编译程序在编译的时候就把 sizeof 计算过了，是类型或是变量的长度，这就是 sizeof(x) 可以用来定义数组维数的原因<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> str[<span class="number">20</span>]=<span class="string">"0123456789"</span>;</span><br><span class="line"><span class="keyword">int</span> a=<span class="built_in">strlen</span>(str); <span class="comment">// a=10;</span></span><br><span class="line"><span class="keyword">int</span> b=<span class="keyword">sizeof</span>(str); <span class="comment">// 而 b=20;</span></span><br></pre></td></tr></table></figure></li>
+<li>strlen 的结果要在运行的时候才能计算出来，是用来计算字符串的长度，不是类型占内存的大小</li>
+<li>sizeof 后如果是类型必须加括弧，如果是变量名可以不加括弧。这是因为 sizeof 是个操作符不是个函数<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> str[<span class="number">20</span>]=<span class="string">"0123456789"</span>;</span><br><span class="line"><span class="keyword">int</span> a=<span class="built_in">strlen</span>(str);         <span class="comment">// a=10; &gt;&gt;&gt;&gt; strlen 计算字符串的长度，以结束符 0x00 为字符串结束。</span></span><br><span class="line"><span class="keyword">int</span> b=<span class="keyword">sizeof</span>(str);         <span class="comment">// 而 b=20; &gt;&gt;&gt;&gt; sizeof 计算的则是分配的数组 str[20] 所占的内存空间的大小，不受里面存储的内容改变。</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>char[]和“char<em>”这个东西，在某些时候是可以转换的，比如printf希望获得一个“char</em>”的输入，这时候使用字符数组就会自动退化为字符指针。<strong>vs2019</strong>里面用const char<em> </em>给<em> char</em>赋值是forbidden的，例如:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span>* p = <span class="string">"world"</span>; <span class="comment">// Error </span></span><br><span class="line"><span class="keyword">char</span>* p = (<span class="keyword">char</span>*)<span class="string">"world"</span>; <span class="comment">//OK</span></span><br><span class="line"></span><br><span class="line">在c语言里用指针“初始化赋值字符串”实际上指向的是一段静态字符串地址（Readonly），不可修改。而用字符数组是copy了一份，与原有的静态字符串无关了，可以修改。</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> s[] = <span class="string">"hello"</span> ;</span><br><span class="line">then s[<span class="number">0</span>] = <span class="string">'j'</span>; <span class="comment">//legal</span></span><br><span class="line"><span class="keyword">char</span> *s = <span class="string">"hello"</span> ; </span><br><span class="line">then *s = <span class="string">"world"</span>; <span class="comment">//illegal!!</span></span><br></pre></td></tr></table></figure></li>
+<li>char<em>* 是指针的指针，与char</em>[]代表的有所区别<blockquote>
+<p>A “double star” is a pointer to a pointer.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a[]= <span class="string">"abcdefg"</span>;</span><br><span class="line"><span class="keyword">char</span>* p = a; </span><br><span class="line"><span class="keyword">char</span>** pp = &amp;p;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;*(*pp+<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">输出结果为b</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<ol>
+<li><blockquote>
+<p>There is one difference between an array name and a pointer that must be kept in mind. A pointer is a variable, so pa=a and pa++ are legal. But an array name is not a variable; constructions like a=pa and a++ areillegal.<br>——The C Programming Language by Brain W. Kernighan &amp; Dennis M. Ritchie</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> s[<span class="number">10</span>] = <span class="string">"Hello"</span>;</span><br><span class="line"><span class="keyword">char</span> b[<span class="number">15</span>] = <span class="string">"loo"</span>;</span><br><span class="line"><span class="keyword">char</span> c[<span class="number">20</span>];</span><br><span class="line"><span class="keyword">char</span>* m;</span><br><span class="line">m = c;<span class="comment">//OK</span></span><br><span class="line">m = s;<span class="comment">//OK</span></span><br><span class="line">   c = b;<span class="comment">//ERROR!!!</span></span><br><span class="line">   c = s;<span class="comment">//ERROR!!!</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>const int<em> p1 vs. int</em> const p2</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span>* p1 = &amp;a;  <span class="comment">// initialization is not mandatory </span></span><br><span class="line">    *p1 = <span class="number">5</span>; <span class="comment">// wrong</span></span><br><span class="line">    p1++;    <span class="comment">// right  </span></span><br><span class="line"></span><br><span class="line">-----------</span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">	<span class="keyword">int</span>* <span class="keyword">const</span> p2=&amp;a; <span class="comment">// must be initialized when declare</span></span><br><span class="line">	*p2 = <span class="number">5</span>;  <span class="comment">//right</span></span><br><span class="line">    p2++; <span class="comment">// Wrong</span></span><br></pre></td></tr></table></figure></li>
+<li><p><a href="https://stackoverflow.com/questions/1641957/is-an-array-name-a-pointer" target="_blank" rel="noopener">链接：数组名称是指针吗？</a>不是的，但数组名称经常退化为指针</p>
+</li>
+<li><p>cin.fail()检查cin的非法输入。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a;</span><br><span class="line"><span class="built_in">cin</span> &gt;&gt; a;</span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">cin</span>.fail()) <span class="built_in">cout</span> &lt;&lt; <span class="string">"invalid input"</span>;</span><br></pre></td></tr></table></figure></li>
+<li>function pointer有点像泛化的函数，是一种更广泛的泛化<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">用ptr指代所有参数、返回值符合要求的函数，ptr默认值<span class="number">0</span>检验是否真的调用了函数</span><br><span class="line"><span class="keyword">void</span> (*ptr)(<span class="keyword">int</span>, <span class="keyword">int</span>)=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dis</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="string">'\n'</span> &lt;&lt; b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bigdis</span><span class="params">(<span class="keyword">int</span> c, <span class="keyword">int</span> d,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">void</span> (*ptr)(<span class="keyword">int</span>, <span class="keyword">int</span>))</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (!ptr) &#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"error"</span>; <span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	ptr(c, d);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">	<span class="keyword">int</span> b = <span class="number">99</span>;</span><br><span class="line">	bigdis(a, b, dis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>函数指针还能是数组形式的！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">需要注意函数指针数组的声明需要放在函数定义之后，或者函数提前声明，否则也会有函数名未定义的问题</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dis</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"dis0"</span>; <span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="string">'\n'</span> &lt;&lt; b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dis1</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="string">'\n'</span> &lt;&lt; b;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"dis1"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dis2</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="string">'\n'</span> &lt;&lt; b;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"dis2"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> (*ptr[])(<span class="keyword">int</span>, <span class="keyword">int</span>) = &#123; dis, dis1, dis2 &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bigdis</span><span class="params">(<span class="keyword">int</span> c, <span class="keyword">int</span> d,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">void</span> (*ptr)(<span class="keyword">int</span>, <span class="keyword">int</span>))</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (!ptr) &#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"error"</span>; <span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	ptr(c, d);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">	<span class="keyword">int</span> b = <span class="number">99</span>;</span><br><span class="line">	bigdis(a, b,ptr[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>vector使用vector.at(i)函数可以访问第i个位置的元素，在使用vector指针的时候可以这么用，或者（*P）[i]也可以。vector.front()与vector.back()分别用于提取首尾元素。</p>
+</li>
+<li><p>引入头文件的时候如果用双引号那么会优先在项目目录下面找，默认是用户提供的头文件。而如果使用&lt;&gt;那么会认为是系统提供的头文件，会先去默认的磁盘目录找。</p>
+</li>
+<li><p>iterator也叫泛型指针，是对指针的一个抽象化和包装</p>
+</li>
+<li>每一个容器类型（含string）的共同操作<ol>
+<li>==equality和！=inequality运算符</li>
+<li>=赋值assignment</li>
+<li>empty(), true/false</li>
+<li>size(), num of elems</li>
+<li>clear(), clear all</li>
+<li>begin(), end(), return the iterator, the first element and the <strong>(last+1) </strong>element</li>
+<li>insert(), erase(), insert and remove</li>
+</ol>
+</li>
+<li><p>使用数组为vector初始化时，数组提供两个iterator或者说哨兵，要符合first和last的习惯，即要用数组元素第一个指针，和数组最后一个元素的再后一个指针来赋值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[] = &#123; <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">20</span> &#125;;</span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">veci</span><span class="params">(a, a + <span class="number">9</span>)</span></span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; veci.back()&lt;&lt;<span class="built_in">endl</span>; <span class="comment">// output is 20</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数对象是一个实现了调用操作符（）的对象，c++里有许多内置的函数对象，它可以替换函数指针，从而将调用某个函数的过程简化为内联，提高调用效率。某些STL算法函数只允许输入一个函数指针，而一个函数指针也只能有一个参数，一旦需求改变，还需要重新编写函数。函数对象可以利用重载调用操作符实现前述函数指针的功能，同时还可以利用对象实例化的参数改变函数的功能。</p>
+</li>
+<li><p>function object adapter可以实现“参数绑定”的功能，将某一个值绑定到函数对象的参数，感觉是使之固定的样子。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">题目：依据字符串长度排序，使用函数对象作为泛型算法**sort**的参数</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LessThan</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> s1, <span class="keyword">const</span> <span class="built_in">string</span> s2)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> s1.size() &lt; s2.size();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 关键在于sort那一句，前两个参数是要排序的迭代器，最后一个是定义的函数对象</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="function">ifstream <span class="title">infile</span><span class="params">(<span class="string">"practice.txt"</span>, ios_base::in)</span></span>;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; vecs;</span><br><span class="line">	<span class="built_in">string</span> ex[] = &#123; <span class="string">"a"</span>,<span class="string">"an"</span>, <span class="string">"or"</span>,<span class="string">"but"</span>,<span class="string">"the"</span> &#125;;</span><br><span class="line">	<span class="function"><span class="built_in">set</span>&lt;<span class="built_in">string</span>&gt; <span class="title">exset</span><span class="params">(ex, ex + <span class="number">5</span>)</span></span>;</span><br><span class="line">	<span class="built_in">string</span> tword;</span><br><span class="line">	<span class="keyword">while</span> (infile &gt;&gt; tword) &#123;</span><br><span class="line">		<span class="keyword">if</span> (exset.count(tword)) <span class="keyword">continue</span>;</span><br><span class="line">		vecs.push_back(tword);</span><br><span class="line">	&#125;</span><br><span class="line">	sort(vecs.begin(), vecs.end(),LessThan());</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;::const_iterator it = vecs.begin();</span><br><span class="line">	<span class="keyword">for</span> (; it != vecs.end(); it++)</span><br><span class="line">		<span class="built_in">cout</span>  &lt;&lt; *it&lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p>使用map来统计文章词频，使用索引方式首次加入的key会被设为默认值value</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt;words;</span><br><span class="line">	words[<span class="string">"vermeer"</span>] = <span class="number">1</span>;</span><br><span class="line">	<span class="built_in">string</span> tword;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; tword) &#123;</span><br><span class="line">		words[tword]++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查找map里是否存在某个key可以使用三种方法</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">No<span class="number">.1</span></span><br><span class="line"><span class="keyword">int</span> count = words[<span class="string">"key"</span>]; <span class="comment">// 如果不存在key，会导致words额外增加了一个条目pair class</span></span><br><span class="line">No<span class="number">.2</span></span><br><span class="line"><span class="built_in">map</span>::iterator it = words.find(<span class="string">"key"</span>); <span class="comment">// find返回一个iterator</span></span><br><span class="line">No<span class="number">.3</span></span><br><span class="line"><span class="keyword">int</span> count = words.count(<span class="string">"key"</span>) ? words[<span class="string">"key"</span>] : <span class="number">0</span> ; <span class="comment">// 先看看是否存在</span></span><br></pre></td></tr></table></figure></li>
+<li><p>$\color{red}{Iterator Inserter以及iostream Iterator没看懂}$</p>
+</li>
+<li><p>vector.emplace_back()代替vector.push_back()</p>
+</li>
+<li><p>如果想读取某一个文本文件某一行的第几个，可以用getline函数与string类的find_first_of()函数配合，进行字符串的切割。用string.substr()提取子字符串。</p>
+</li>
+<li><p>实例化对象的时候，如果想用默认的构造函数不能带括号，因为cpp为了兼容c，默认带括号的都是调用函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">SomeClass <span class="title">obj</span><span class="params">()</span></span>;<span class="comment">//ERROR!</span></span><br><span class="line">SomeClass obj; <span class="comment">//Default Constructor</span></span><br></pre></td></tr></table></figure></li>
+<li><p>copy constructor()复制构造函数的目的，需要申请堆空间的变量不能直接复制给别的对象，会出现野指针的问题。为某个class编写copy constructor了之后还有必要编写copy assignment operator。</p>
+</li>
+<li><p>const &amp; mutable</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Triangular</span>&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		<span class="comment">// const member function.</span></span><br><span class="line">		<span class="comment">// writing is forbidden</span></span><br><span class="line">		<span class="function"><span class="keyword">int</span> <span class="title">length</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> _length;&#125;</span><br><span class="line">		<span class="function"><span class="keyword">int</span> <span class="title">beg_pos</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> _beg_pos;&#125;</span><br><span class="line">		<span class="function"><span class="keyword">int</span> <span class="title">elem</span><span class="params">(<span class="keyword">int</span> pos)</span> <span class="keyword">const</span></span>;</span><br><span class="line">		<span class="comment">// non-const member function</span></span><br><span class="line">		<span class="function"><span class="keyword">bool</span> <span class="title">next</span><span class="params">(<span class="keyword">int</span> &amp;val)</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">next_reset</span><span class="params">()</span> </span>&#123; _next = _beg_pos<span class="number">-1</span>;&#125;</span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		<span class="keyword">int</span> _length;</span><br><span class="line">		<span class="keyword">int</span> _beg_pos;</span><br><span class="line">		<span class="keyword">mutable</span> <span class="keyword">int</span> _next;</span><br><span class="line">	</span><br><span class="line">		<span class="comment">//static data member</span></span><br><span class="line">		<span class="keyword">static</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; _elems;</span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="comment">// function defined outside the class must declare with keyword "const"</span></span><br><span class="line"><span class="keyword">int</span> Triangular:: elem(<span class="keyword">int</span> pos) <span class="keyword">const</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> _elems[pos<span class="number">-1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Triangular::next</span><span class="params">(<span class="keyword">int</span> &amp;value)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> ( _next &lt; _beg_pos + _length <span class="number">-1</span> )&#123;</span><br><span class="line">		value = elems[_next++];</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果一个class里面有同名函数，但一个是const，一个是non-const，那么在调用函数的时候，编译器会自动为调用者选择合适的被调用函数！</p>
+</li>
+</ol>
+<p>mutable是一种变量声明，它表示mutable变量尽管有所改变，但这种改变不影响对量的常量性，例如next函数只是移动了指针指向数组元素，本质上只是一种迭代器，对数组本身没有根本性的影响。这种变量应当允许被const函数改变。</p>
+<ol>
+<li><p>this 是个指针</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>-&gt;member</span><br><span class="line">*<span class="keyword">this</span> <span class="comment">// object</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运算符重载中，递增的前置版本参数列表为空，后置版本本来也是空的，但是为了重载，后置版本强行给加了一个int参数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> Triangular_iterator&amp; Triangular_iterator::<span class="keyword">operator</span>++()&#123;</span><br><span class="line">	++_index;</span><br><span class="line">	check_intergrity();</span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这应该是第二次看到函数参数只是一个类型名称，第一次看到是在函数指针</span></span><br><span class="line"><span class="keyword">inline</span> Triangular_iterator Triangualr_iterator::<span class="keyword">operator</span>++(<span class="keyword">int</span>)&#123;</span><br><span class="line">	Triangular_iterator tmp = *<span class="keyword">this</span>;</span><br><span class="line">	++_index;</span><br><span class="line">	check_intergrity();</span><br><span class="line">	<span class="keyword">return</span> tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>友元函数声明需要保证被声明的函数的定义在此声明之前，或者只能用友元类做整体的声明。</p>
+</li>
+<li><p>maximal munch规则，合法符号序列总是以最长的那个解释，例如</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt;后面两个尖括号必须分开，如何中间没有空格就会被解释为&gt;&gt;流符号</span><br><span class="line">a+++b会解释为a++ + b</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>面向对象风格：继承inheritance、多态polymorphism、动态绑定dynamic binding</p>
+</li>
+<li><p>protected为只有子类可以访问，子类使用时不需要区分“继承而来的成员”还是“自身定义的成员”，在派生类的构造函数中，如果基类需要构造参数，需要先完成基类的初始化。</p>
+</li>
+<li><p>基类的指针调用虚函数的时候可以调用到子类的虚函数。虚函数的解析发生在运行时，而非编译阶段。</p>
+</li>
+<li><p>如果类里面有一个reference类型的变量，那么它就需要再构造函数中初始化，且一旦初始化就不能改变引用的对象。它不能够指向空对象，这相比指针既是优点，也是缺点，优点在于它不需要进行额外的空检查，缺点在于它没有指针那么灵活。引用和指针到底用哪个需要根据具体的设计要求来灵活判断。</p>
+</li>
+<li><p><em>使用 sizeof 运算符计算对象所占用的存储空间时，不会将静态成员变量计算在内。</em></p>
+</li>
+<li><p>基类虚函数调用失效的两种情况：</p>
+<ol>
+<li>基类的constructor和destructor内，此时派生类还未构造</li>
+<li>使用基类对象而非对象的指针或引用</li>
+</ol>
+</li>
+<li><p>template类成员函数在class外的定义顺序：template<typename elemtype> keyword returnvalue classname::func() otherkeyword{}</p>
+</li>
+<li><p>为了提高效率，不论模板类型实际是啥，我们在构造函数中都是用变量引用和列表初始化。</p>
+</li>
+<li>reference to pointer？？？？？只用指针只能改变指针指向的东西，而不能改变指针自己（看到这我人都傻了，脑子不够用了）</li>
+<li>模板尖括号里面不一定要是某一个类型type，也可以是常量表达式，non-type parameter非类型参数？？？？</li>
+<li>一种catch all exception的方法：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// exception也就是一种类而已</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">catch</span>(...)&#123;</span><br><span class="line">	log_message(<span class="string">"exception of unknown type"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">catch</span>(...)&#123;</span><br><span class="line">	<span class="keyword">throw</span>; <span class="comment">// ...代表任意类型异常，我都不处理，全部throw</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>这种异常并非硬件异常。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 基础知识</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E5%90%91%E9%87%8F/" rel="prev" title="数据结构：向量">
+      <i class="fa fa-chevron-left"></i> 数据结构：向量
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/26/UNIX-LINUX%E5%A4%A7%E5%AD%A6%E6%8C%87%E5%8D%97/" rel="next" title="UNIX/LINUX大学指南">
+      UNIX/LINUX大学指南 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

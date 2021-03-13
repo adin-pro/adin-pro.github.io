@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon-m.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon.ico">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="现代控制理论是控制理论研究人员在20世纪中期所提出的一批关于控制理论问题的成果的总称。在控制理论中具有承上启下的作用-承接经典控制理论，启发后续真*现代控制理论，例如模糊控制&#x2F;鲁棒控制理论。 本文内容为现代控制理论课程的回顾和总结，第一部分为绪论和控制系统建模。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="现代控制理论（1）绪论与控制系统建模">
+<meta property="og:url" content="http://yoursite.com/2020/05/02/%E7%8E%B0%E4%BB%A3%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%EF%BC%881%EF%BC%89%E7%BB%AA%E8%AE%BA%E4%B8%8E%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1/index.html">
+<meta property="og:site_name" content="不愧是我">
+<meta property="og:description" content="现代控制理论是控制理论研究人员在20世纪中期所提出的一批关于控制理论问题的成果的总称。在控制理论中具有承上启下的作用-承接经典控制理论，启发后续真*现代控制理论，例如模糊控制&#x2F;鲁棒控制理论。 本文内容为现代控制理论课程的回顾和总结，第一部分为绪论和控制系统建模。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/05/02/%E7%8E%B0%E4%BB%A3%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%EF%BC%881%EF%BC%89%E7%BB%AA%E8%AE%BA%E4%B8%8E%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1/bode.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/05/02/%E7%8E%B0%E4%BB%A3%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%EF%BC%881%EF%BC%89%E7%BB%AA%E8%AE%BA%E4%B8%8E%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1/sys.gif">
+<meta property="article:published_time" content="2020-05-02T14:53:15.000Z">
+<meta property="article:modified_time" content="2021-03-05T08:51:21.992Z">
+<meta property="article:author" content="Adin">
+<meta property="article:tag" content="校内课程">
+<meta property="article:tag" content="控制理论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/05/02/%E7%8E%B0%E4%BB%A3%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%EF%BC%881%EF%BC%89%E7%BB%AA%E8%AE%BA%E4%B8%8E%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1/bode.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/05/02/%E7%8E%B0%E4%BB%A3%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%EF%BC%881%EF%BC%89%E7%BB%AA%E8%AE%BA%E4%B8%8E%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>现代控制理论（1）绪论与控制系统建模 | 不愧是我</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">不愧是我</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">想法和故事打包于此</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间线<span class="badge">44</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/02/%E7%8E%B0%E4%BB%A3%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%EF%BC%881%EF%BC%89%E7%BB%AA%E8%AE%BA%E4%B8%8E%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E5%BB%BA%E6%A8%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Adin">
+      <meta itemprop="description" content="nobody">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不愧是我">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          现代控制理论（1）绪论与控制系统建模
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-02 22:53:15" itemprop="dateCreated datePublished" datetime="2020-05-02T22:53:15+08:00">2020-05-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-05 16:51:21" itemprop="dateModified" datetime="2021-03-05T16:51:21+08:00">2021-03-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA/" itemprop="url" rel="index"><span itemprop="name">控制理论</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>现代控制理论是控制理论研究人员在20世纪中期所提出的一批关于控制理论问题的成果的总称。在控制理论中具有承上启下的作用-承接经典控制理论，启发后续真*现代控制理论，例如模糊控制/鲁棒控制理论。</p>
+<p>本文内容为现代控制理论课程的回顾和总结，第一部分为绪论和控制系统建模。</p>
+<a id="more"></a>
+<blockquote>
+<p><strong>大约一年后2021.3.3来更新了，这门本研互选的课最终没能在本科阶段上完，所以研一下学期我又来“重修”了哈哈哈哈</strong></p>
+</blockquote>
+<h2 id="绪论"><a href="#绪论" class="headerlink" title="绪论"></a>绪论</h2><h3 id="现代控制理论的特点和优势"><a href="#现代控制理论的特点和优势" class="headerlink" title="现代控制理论的特点和优势"></a>现代控制理论的特点和优势</h3><p>相比经典控制理论，即自动控制理论课程中所学的基于传递函数、零极点与特征根等的控制理论方法，现代控制理论具有以下特点和优势：</p>
+<ul>
+<li>数学模型方面：现代控制理论是一种<strong>使用内部描述模型的内部空间法</strong>。</li>
+<li>适用于<strong>多输入多输出系统</strong>，可以解决初值<strong>非零问题</strong>。</li>
+<li>结构特性方面：解决了是系统可控性和不确定性问题。</li>
+<li>设计方法方面：可以得到定量的，最优的控制解。</li>
+</ul>
+<blockquote>
+<p>通过目前几节课的学习（截止5-2共学习了8节课程），现代控制理论确实让我感觉相比原有经典控制理论<strong>更加科学</strong>，这种感觉来源于现代控制理论相比自控，系统的细节更为丰富（内部），能够处理MIMO，优化有据可循，而不是试凑（吐槽自控进行系统设计的方法，基本上就是试凑，瞎碰上成就用，不成就重新加个模块调个系数，令人头大）。</p>
+<p>当然，自控在处理一些简单问题时足够使用，能够简化问题</p>
+</blockquote>
+<p>现代控制理论的代表人物：庞德里亚金 别尔曼 卡尔曼</p>
+<h3 id="现代控制理论的几个模块"><a href="#现代控制理论的几个模块" class="headerlink" title="现代控制理论的几个模块"></a>现代控制理论的几个模块</h3><ul>
+<li>线性多变量理论： 能控性/能观测性，系统的极点配置，状态观测器设计和抗干扰问题（本书重点）</li>
+<li>最优控制理论： 已知数学模型，寻找最优控制函数</li>
+<li>最优估计理论： 已知数学模型，<strong>从被噪声干扰的观测数据中确定</strong>系统状态（卡尔曼滤波）</li>
+<li>系统辨识和参数估计： 基于输入输出数据辨识系统参数</li>
+</ul>
+<h3 id="自控里幅值裕度和相角裕度在说什么"><a href="#自控里幅值裕度和相角裕度在说什么" class="headerlink" title="自控里幅值裕度和相角裕度在说什么"></a>自控里幅值裕度和相角裕度在说什么</h3><p><img src='bode.jpg' width='600' title='赋值裕度和相角裕度'></p>
+<p>上面的bode图描述的是开环系统随着输入频率变化，传递函数赋值和相角的变化，即开环频率响应。</p>
+<p>幅值裕度是相角为-180度的时候，赋值距离0db的大小，比0db低为正赋值裕度；相角裕度是当赋值裕度为0db的时候，相角高于-180度的大小，比-180度大则为正相角裕度。</p>
+<p><img src='sys.gif' width='600' title='一个系统'></p>
+<p>谈论裕度时，我们必须以闭环系统为讨论基础，一个闭环的单位负反馈系统，输出会乘以-1加入到输入端。考虑一个输入的正弦信号（所有的信号都可以通过傅里叶分解变成正弦信号的集合），对于相角为-180度之前的输出信号，反馈会起到降低输入信号的副作用，而-180度的时候，反馈信号会变成对输入信号的增益（乘以-1负负得正），导致系统变成正反馈，容易产生发散，因此-180度是一个判断系统稳定性的关键性节点。</p>
+<p>为了让系统稳定，我们应该尽量保证：</p>
+<ol>
+<li>-180度时幅值增益越小越好，即db值为负的越厉害越好（即正幅值裕度）</li>
+<li>0db对应的相角应该离-180度越远越好，保证到-180度的时候，增益已经衰减了微不足道的大小，即便是正反馈也掀不起什么波浪（正相角裕度）</li>
+</ol>
+<p>用一个比喻来说，如果将-180度这个角度认为是做坏事，0度对应做好事，那么上述两条变成</p>
+<ol>
+<li>不得不做坏事的时候，要做一个能力差（幅值增益小）的坏人</li>
+<li>能力还没有变弱（0db以上）的时候，要做一个远离恶的好人（离-180度远点）</li>
+</ol>
+<p>你可能也会疑惑，只看-180度是不是太粗糙了，相角是别的角度的时候也可能产生正的增益。这种思考完全是有道理的，下面这句话对我有所启发</p>
+<blockquote>
+<p>使用增益和相位裕量是因为它们简单，而不是因为它们是稳定性的理想度量。</p>
+</blockquote>
+<p>总的来说，自控里用裕度判断稳定性还是为了简化难度，因为-180度时的正反馈作用最强，如果能保证此时的反馈不至于让系统发散，则对于系统的稳定性就有了一个比较放心的判断。</p>
+<p>更加准确判断稳定性的方法，也请看后续现代控制理论的方法！</p>
+<h3 id="如何判断我的系统是否接近0-dB，-180度？"><a href="#如何判断我的系统是否接近0-dB，-180度？" class="headerlink" title="如何判断我的系统是否接近0 dB，-180度？"></a>如何判断我的系统是否接近0 dB，-180度？</h3><p>有两个迹象：</p>
+<ol>
+<li>闭环幅度响应中的幅度较大，以及</li>
+<li>开环频率响应接近0 dB，-180度</li>
+</ol>
+<p>很容易看到较大的闭环幅度响应。大响应是任何大于6dB的值。</p>
+<p>相角裕度至少要有30度，才有可能稳定。</p>
+<h2 id="控制系统的数学模型"><a href="#控制系统的数学模型" class="headerlink" title="控制系统的数学模型"></a>控制系统的数学模型</h2><h3 id="状态空间表达式"><a href="#状态空间表达式" class="headerlink" title="状态空间表达式"></a>状态空间表达式</h3><h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><ul>
+<li>状态：能够表征系统的物理量</li>
+<li>状态变量/向量：确定系统状态所需的<strong>最小一组变量</strong>，这些变量构成一个向量，<strong>具体形式没有要求</strong></li>
+<li>状态空间：以选定的状态变量为坐标轴，生成的正交空间（状态向量所在的线性空间）</li>
+</ul>
+<p>状态空间表达式是一个方程组，简单来说包含两部分</p>
+<ul>
+<li>状态方程，描述状态变量导数与状态变量和输入的关系</li>
+<li>输出方程，描述输出量与状态变量和输入的关系</li>
+</ul>
+<p>一个例子如下：</p>
+<script type="math/tex; mode=display">
+\left[ \begin{matrix} \frac{di(t)}{dt} \\ \frac {du_c(t)}{dt} \end{matrix} \right] = \left[  \begin{matrix} -\frac{R}{L} & -\frac{1}{L} \\  \frac{1}{C}  & 0 \end{matrix}\right] \left[  \begin{matrix} i(t) \\ u_c(t)\end{matrix}\right]+\left[  \begin{matrix} \frac{1}{L} \\ 0 \end{matrix}\right] u(t)</script><p>这就是一个<strong>状态方程（组）</strong>，$i(t)$和$u_c(t)$就是两个状态变量，等式的左边是状态变量的导数，最右侧是输入量$u(t)$</p>
+<p>现在如果我们选取$u_c(t)$同时作为该系统的输出变量，那么就可以写出输出方程：</p>
+<script type="math/tex; mode=display">
+u_c(t) = [0 \quad 1] \left[ \begin{matrix} i(t) \\u_c(t)\end{matrix}\right]</script><blockquote>
+<p>毫无疑问，系统的状态变量也可以是输出量，反之亦然</p>
+</blockquote>
+<h4 id="状态空间表达式的几个特点"><a href="#状态空间表达式的几个特点" class="headerlink" title="状态空间表达式的几个特点"></a>状态空间表达式的几个特点</h4><p><strong>*形式不唯一</strong>，可以随状态变量选取而任意改变*</p>
+<ul>
+<li><p>状态方程 </p>
+<ul>
+<li>状态方程是一阶微分方程（组）；</li>
+<li>状态方程是状态空间分析法的基本数学方程；</li>
+<li>状态方程具有非唯一性；</li>
+<li>状态方程中不含有输入变量的导数</li>
+</ul>
+</li>
+<li><p>输出方程</p>
+<ul>
+<li>输出方程是代数方程（组）；</li>
+<li>输出方程是状态空间分析法的基本数学方程；</li>
+<li>输出方程具有非唯一性；</li>
+</ul>
+</li>
+</ul>
+<p>抽象化形式</p>
+<script type="math/tex; mode=display">
+\dot{X} = AX + BU \\</script><script type="math/tex; mode=display">
+Y = CX+DU</script><blockquote>
+<p>$A$系数矩阵 $B$输入矩阵 $C$输出矩阵 $D$前馈矩阵 </p>
+</blockquote>
+<h3 id="状态变量图"><a href="#状态变量图" class="headerlink" title="状态变量图"></a>状态变量图</h3><p>一种类似于传递函数系统分析时所画的图，绘制时有一些原则和思路。 状态变量图只有加法器，比例器和积分器。绘制时，先针对每一个一阶微分方程单独画（以积分器为基础），然后再依次连接这些模块。</p>
+<h3 id="建模思路"><a href="#建模思路" class="headerlink" title="建模思路"></a>建模思路</h3><ol>
+<li>确定正方向</li>
+<li>寻找可观测量与特征量</li>
+<li>利用物理规律写出方程</li>
+<li>确定输入、输出与状态变量</li>
+</ol>
+<blockquote>
+<p>没办法也不应该以微分器作为状态图中的一部分</p>
+</blockquote>
+<h2 id="列出状态空间表达式"><a href="#列出状态空间表达式" class="headerlink" title="列出状态空间表达式"></a>列出状态空间表达式</h2><p>难点主要在于等式右侧有输入变量的导数项时，需要在状态变量里增加输入项。第一次看书上一个三阶方程的处理方法时，我对设置3个状态变量没有异议，但对于为什么要加一个额外的中间变量$x_4 = \dot x_3 - \beta_3 u$不理解，感觉多引入了一个待定系数。</p>
+<p>实际试了一下，如果只用$\beta_0 \beta_1 \beta_2$三个待定系数，将状态变量x代替y的导数回代，会得到四个方程（分别与输入项的系数相等），使得问题变成超正定（未知数少于方程），有可能无解。因此有必要多设置一个待定系数，保证可以求出唯一解。</p>
+<h2 id="补充内容"><a href="#补充内容" class="headerlink" title="补充内容"></a>补充内容</h2><h3 id="非线性系统的线性化"><a href="#非线性系统的线性化" class="headerlink" title="非线性系统的线性化"></a>非线性系统的线性化</h3><h3 id="线性变化矩阵"><a href="#线性变化矩阵" class="headerlink" title="线性变化矩阵"></a>线性变化矩阵</h3>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%A0%A1%E5%86%85%E8%AF%BE%E7%A8%8B/" rel="tag"># 校内课程</a>
+              <a href="/tags/%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA/" rel="tag"># 控制理论</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/25/Coursera%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0Union-Find/" rel="prev" title="Coursera算法笔记Union-Find">
+      <i class="fa fa-chevron-left"></i> Coursera算法笔记Union-Find
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/14/%E9%9B%86%E5%90%88%E7%B1%BB%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%9C%A8JAVA%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0/" rel="next" title="集合类数据类型的迭代在JAVA中的实现">
+      集合类数据类型的迭代在JAVA中的实现 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#绪论"><span class="nav-number">1.</span> <span class="nav-text">绪论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#现代控制理论的特点和优势"><span class="nav-number">1.1.</span> <span class="nav-text">现代控制理论的特点和优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#现代控制理论的几个模块"><span class="nav-number">1.2.</span> <span class="nav-text">现代控制理论的几个模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自控里幅值裕度和相角裕度在说什么"><span class="nav-number">1.3.</span> <span class="nav-text">自控里幅值裕度和相角裕度在说什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何判断我的系统是否接近0-dB，-180度？"><span class="nav-number">1.4.</span> <span class="nav-text">如何判断我的系统是否接近0 dB，-180度？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制系统的数学模型"><span class="nav-number">2.</span> <span class="nav-text">控制系统的数学模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#状态空间表达式"><span class="nav-number">2.1.</span> <span class="nav-text">状态空间表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关概念"><span class="nav-number">2.1.1.</span> <span class="nav-text">相关概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#状态空间表达式的几个特点"><span class="nav-number">2.1.2.</span> <span class="nav-text">状态空间表达式的几个特点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态变量图"><span class="nav-number">2.2.</span> <span class="nav-text">状态变量图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建模思路"><span class="nav-number">2.3.</span> <span class="nav-text">建模思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列出状态空间表达式"><span class="nav-number">3.</span> <span class="nav-text">列出状态空间表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充内容"><span class="nav-number">4.</span> <span class="nav-text">补充内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非线性系统的线性化"><span class="nav-number">4.1.</span> <span class="nav-text">非线性系统的线性化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性变化矩阵"><span class="nav-number">4.2.</span> <span class="nav-text">线性变化矩阵</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Adin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Adin</p>
+  <div class="site-description" itemprop="description">nobody</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/adin-pro" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;adin-pro" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ding_yin@yeah.net" title="E-Mail → mailto:ding_yin@yeah.net" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Adin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
