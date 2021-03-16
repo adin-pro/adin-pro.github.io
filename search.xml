@@ -272,7 +272,7 @@ connected(1,6):true</script><div class="table-container">
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(m.find(k) == m.end()) <span class="comment">// find由前至后的寻找k，找不到则返回尾后迭代器</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"k is not in the map"</span>;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>基础知识</category>
+        <category>C++</category>
       </categories>
       <tags>
         <tag>C++</tag>
@@ -306,7 +306,7 @@ connected(1,6):true</script><div class="table-container">
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> g = bind(f, a, b, _1, c, _2);</span><br><span class="line"><span class="comment">// g函数有两个参数，f函数有五个参数，调用g的时候可以将g的参数作为f的参数传入，实际起作用的是f函数</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>基础知识</category>
+        <category>C++</category>
       </categories>
       <tags>
         <tag>C++</tag>
@@ -376,7 +376,7 @@ connected(1,6):true</script><div class="table-container">
 <p>我们首先明确（＊p）意味着p是一个指针。接着观察右边发现，指针p所指的是一个维度为4的数组；再观察左边知道，数组中的元素是整数。因此，p就是指向含有4个整数的数组的指针。</p>
 ]]></content>
       <categories>
-        <category>基础知识</category>
+        <category>C++</category>
       </categories>
       <tags>
         <tag>C++</tag>
@@ -408,7 +408,7 @@ connected(1,6):true</script><div class="table-container">
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StrBlob</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;::size_type size_type;</span><br><span class="line">	StrBlob();</span><br><span class="line">	StrBlob(<span class="built_in">initializer_list</span>&lt;<span class="built_in">string</span>&gt; il);</span><br><span class="line">	<span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> data-&gt;size(); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> data-&gt;empty(); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">( <span class="keyword">const</span> <span class="built_in">string</span> &amp;t )</span></span>&#123;data-&gt;push_back(t); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">pop_back</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="built_in">string</span> &amp; <span class="title">front</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="built_in">string</span> &amp; <span class="title">back</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">shared_ptr</span> &lt; <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; &gt;data;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">check</span><span class="params">(size_type i, <span class="keyword">const</span> <span class="built_in">string</span> &amp;msg)</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">StrBlob::StrBlob():data(make_shared&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt;())&#123;&#125;</span><br><span class="line">StrBlob::StrBlob(<span class="built_in">initializer_list</span>&lt;<span class="built_in">string</span>&gt; il): data(make_shared&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt;(il))&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StrBlob::check</span><span class="params">(size_type i, <span class="keyword">const</span> <span class="built_in">string</span> &amp;msg)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (i &gt; data-&gt;size())</span><br><span class="line">		<span class="keyword">throw</span> out_of_range(msg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> &amp; <span class="title">StrBlob::front</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	check(<span class="number">0</span>, <span class="string">"front on empty StrBlob"</span>);</span><br><span class="line">	<span class="keyword">return</span> data-&gt;front();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> &amp; <span class="title">StrBlob::back</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	check(<span class="number">0</span>, <span class="string">"back on empty StrBlob"</span>);</span><br><span class="line">	<span class="keyword">return</span> data-&gt;back();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>基础知识</category>
+        <category>C++</category>
       </categories>
       <tags>
         <tag>C++</tag>
@@ -461,7 +461,7 @@ connected(1,6):true</script><div class="table-container">
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *ip;</span><br><span class="line"><span class="keyword">char</span> *pc = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">char</span>*&gt;(ip);</span><br><span class="line"><span class="comment">// dangerous</span></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">str</span><span class="params">(pc)</span></span>;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>基础知识</category>
+        <category>C++</category>
       </categories>
       <tags>
         <tag>C++</tag>
@@ -479,7 +479,7 @@ connected(1,6):true</script><div class="table-container">
 <p><img src='what.png' width=600 title='what'></p>
 ]]></content>
       <categories>
-        <category>基础知识</category>
+        <category>C++</category>
       </categories>
       <tags>
         <tag>C++</tag>
@@ -508,7 +508,7 @@ connected(1,6):true</script><div class="table-container">
 </ol>
 ]]></content>
       <categories>
-        <category>基础知识</category>
+        <category>C++</category>
       </categories>
       <tags>
         <tag>C++</tag>
@@ -547,7 +547,7 @@ connected(1,6):true</script><div class="table-container">
 <h3 id="聚合类与constexpr类"><a href="#聚合类与constexpr类" class="headerlink" title="聚合类与constexpr类"></a>聚合类与constexpr类</h3><p>public成员，无成员函数，都是字面值</p>
 ]]></content>
       <categories>
-        <category>基础知识</category>
+        <category>C++</category>
       </categories>
       <tags>
         <tag>C++</tag>
@@ -581,7 +581,7 @@ connected(1,6):true</script><div class="table-container">
 <p>他们在顺序容器之上定义了新的接口，使之能表现地像相应的数据类型</p>
 ]]></content>
       <categories>
-        <category>基础知识</category>
+        <category>C++</category>
       </categories>
       <tags>
         <tag>C++</tag>
@@ -614,7 +614,7 @@ connected(1,6):true</script><div class="table-container">
 <h2 id="文件的输入输出"><a href="#文件的输入输出" class="headerlink" title="文件的输入输出"></a>文件的输入输出</h2><p>使用fstream进行读写</p>
 ]]></content>
       <categories>
-        <category>基础知识</category>
+        <category>C++</category>
       </categories>
       <tags>
         <tag>C++</tag>
@@ -837,6 +837,28 @@ u_{k+1} = Au_k</script><p>可以写成差分方程形式</p>
 <li>所有列元素加起来等于1</li>
 <li>所有矩阵的幂仍是马尔可夫矩阵</li>
 </ol>
+<h2 id="对称矩阵"><a href="#对称矩阵" class="headerlink" title="对称矩阵"></a>对称矩阵</h2><p>symmetric matrix</p>
+<script type="math/tex; mode=display">A^T = A</script><p>实对称矩阵有较好的性质:</p>
+<ol>
+<li>实对称矩阵的特征值都是实数</li>
+<li><strong>能够挑选出</strong>完全正交的一组特征向量，这组经过挑选得到的向量可以组成<strong>正交矩阵</strong></li>
+</ol>
+<p>从第二条可以得到对称矩阵的<strong>谱定理</strong></p>
+<script type="math/tex; mode=display">A = Q\Lambda Q^{-1}= Q\Lambda Q^T</script><p>这个定理十分重要，在物理上被叫做主轴定理</p>
+<p>根据谱定理，如果把正交矩阵写成一群列向量，则可以把上面的公式展开成n个<strong>投影矩阵</strong>的和</p>
+<script type="math/tex; mode=display">A = q_1\lambda_1q^T_1 + .... + q_n\lambda_1q^T_n</script><p>实对称矩阵还有一条比较重要的性质：矩阵主元中positive的数量等于特征值中positive的数量</p>
+<p>特征值全为正数的对称矩阵是<strong>正定矩阵</strong>中重要的一类，关于正定矩阵会在后面进行更详细的讨论</p>
+<h2 id="正定矩阵"><a href="#正定矩阵" class="headerlink" title="正定矩阵"></a>正定矩阵</h2><p>正定矩阵有几种判定的条件，正定矩阵定义在对称矩阵之上</p>
+<ol>
+<li>矩阵所有的主元大于0</li>
+<li>矩阵所有的特征值大于0</li>
+<li>矩阵的各阶主子式行列式值大于0</li>
+<li>$x^TAx$恒大于零</li>
+</ol>
+<p>第四点是比较接近<strong>正定</strong>定义的一种判定方式，它反映了以它为二次型矩阵时，f(x)函数值恒大于0的情形，进一步这个f(x)的偏导数矩阵，也就是这个矩阵A</p>
+<p>如果将f(x)进行配凑，得到二次项之和，那么每一个二次项前面的系数都是主元，这也是主元、特征值作为判定条件的原因</p>
+<p>对于非正定的矩阵，形成的二次型的图像会在原点形成一个鞍点saddle point，鞍点不同方向的梯度正负不同。而对于正定矩阵对应的二次型函数的图形，是一个抽象的bowl的形状或者说是一个抛物面。</p>
+<p>对于向量$x$维度为3的时候，bowl会抽象为一个椭球，这个椭球的主轴就是特征向量的方向，这也是上一部分<strong>主轴定理</strong>名字的由来</p>
 ]]></content>
       <categories>
         <category>数学</category>
@@ -1997,10 +2019,9 @@ s.t. \quad Ax = b \\
 <p>反过来是不成立的</p>
 ]]></content>
       <categories>
-        <category>最优化</category>
+        <category>数学</category>
       </categories>
       <tags>
-        <tag>数学</tag>
         <tag>最优化</tag>
       </tags>
   </entry>
@@ -2138,10 +2159,9 @@ B(x_c, r) = \{ x| \parallel x -x_c \parallel \le r\}</script><ul>
 <p>或者用画图的方式，大于小于零分别是向量夹角大于或者小于180度。画一画就看出来不可能同时有解。</p>
 ]]></content>
       <categories>
-        <category>最优化</category>
+        <category>数学</category>
       </categories>
       <tags>
-        <tag>数学</tag>
         <tag>最优化</tag>
       </tags>
   </entry>
@@ -2494,10 +2514,9 @@ min f(x^* + d), \quad s.t. \|d^2\| \le \Delta</script></li>
 <p>线搜索方法还要讨论算法是否收敛的问题</p>
 ]]></content>
       <categories>
-        <category>最优化</category>
+        <category>数学</category>
       </categories>
       <tags>
-        <tag>数学</tag>
         <tag>最优化</tag>
       </tags>
   </entry>
@@ -3015,6 +3034,44 @@ T(n) = T(n-1) + O(1)</script><p>备注：迭代分析的两种方法</p>
       <tags>
         <tag>基础知识</tag>
         <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代控制理论2-状态空间表达式的分析求解</title>
+    <url>/2021/03/16/%E7%8E%B0%E4%BB%A3%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA2-%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E5%88%86%E6%9E%90%E6%B1%82%E8%A7%A3/</url>
+    <content><![CDATA[<p>在建立了状态空间表达式之后，求解状态变量的过程</p>
+<a id="more"></a>
+<h2 id="线性定常系统齐次方程的求解"><a href="#线性定常系统齐次方程的求解" class="headerlink" title="线性定常系统齐次方程的求解"></a>线性定常系统齐次方程的求解</h2><p>线性齐次的表达式如下，特征为没有输入变量 $u$</p>
+<script type="math/tex; mode=display">\dot x(t)=Ax(t)</script><p>课本上对于这个问题的求解是先假设 $x(t)$ 的表达式为幂级数的和，再代回原方程求解待定系数，得到了</p>
+<script type="math/tex; mode=display">x(t) = (I + At + \frac{1}{2!}A^2t^2 + \frac{1}{3!}A^3t^3...)x(0)</script><p>前面长长的系数可以写成矩阵指数 $e^{At}$ ，这个矩阵指数也被称作状态转移矩阵 $\Phi(t)$ ，代表从0时刻的状态进行了转移</p>
+<hr>
+<h2 id="状态转移矩阵的性质"><a href="#状态转移矩阵的性质" class="headerlink" title="状态转移矩阵的性质"></a>状态转移矩阵的性质</h2><p>有几条比较重要的性质</p>
+<ol>
+<li>在 $t=0$ 时状态转移矩阵为 $I$</li>
+<li>可逆性，$\Phi(t) = (\Phi(-t))^{-1}，\Phi(t)\Phi(-t) = I$</li>
+<li>结合律，状态转移矩阵可以连乘</li>
+<li>不可交换性，连乘顺序不可改变</li>
+</ol>
+<hr>
+<h2 id="状态转移矩阵的求法"><a href="#状态转移矩阵的求法" class="headerlink" title="状态转移矩阵的求法"></a>状态转移矩阵的求法</h2><p>有四种求法，最重要的是利用拉氏变换求解</p>
+<ol>
+<li>根据定义，计算无穷幂级数，计算机也只能计算有限项的近似解</li>
+<li><p>应用拉普拉斯变换，转换到频域化简，再反变换求解</p>
+<script type="math/tex; mode=display">\Phi(t) = \mathbb{L}^{-1}((sI-A)^{-1})</script></li>
+<li><p>使用凯莱-哈密顿定理，求解n个系数，再求和</p>
+</li>
+<li><p>变换为对角阵，利用 $e^{Q\Lambda Q^{-1}} = Qe^{\Lambda} Q^{-1}$ 求解</p>
+</li>
+</ol>
+<p>第四种方法对于不能对角化的阵，处理方式与前一章相同，即约当型或者分虚实部处理</p>
+<hr>
+]]></content>
+      <categories>
+        <category>控制理论</category>
+      </categories>
+      <tags>
+        <tag>校内课程</tag>
+        <tag>控制理论</tag>
       </tags>
   </entry>
 </search>
