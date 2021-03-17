@@ -633,7 +633,7 @@ connected(1,6):true</script><div class="table-container">
 <li>求解最小二乘的矩阵</li>
 </ul>
 <a id="more"></a>
-<p>完整链接:<br><a href="/2020/09/27/MITLinearAlgebra/" title="MITLinearAlgebra">MITLinearAlgebra</a><br><a href="/2020/11/13/MITLinearAlgebra-2/" title="MITLinearAlgebra(2)">MITLinearAlgebra(2)</a><br><a href="/2020/11/13/MITLinearAlgebra-3/" title="MITLinearAlgebra(3)">MITLinearAlgebra(3)</a></p>
+<p>完整链接:<br><a href="/2020/09/27/MITLinearAlgebra/" title="MITLinearAlgebra">MITLinearAlgebra</a><br><a href="/2020/11/13/MITLinearAlgebra-2/" title="MITLinearAlgebra(2)">MITLinearAlgebra(2)</a><br><a href="/2020/11/13/MITLinearAlgebra-3/" title="MITLinearAlgebra(3)">MITLinearAlgebra(3)</a><br><a href="/2021/03/17/MITLinearAlgebra-4/" title="MITLinearAlgebra-4">MITLinearAlgebra-4</a></p>
 <h2 id="线性相关性、基、维数"><a href="#线性相关性、基、维数" class="headerlink" title="线性相关性、基、维数"></a>线性相关性、基、维数</h2><p>线性无关的是“向量组”而不是矩阵</p>
 <blockquote>
 <p>若矩阵A的m &lt; n<br>Ax=0 未知数大于方程数，存在某些自由变量，也就是存在零空间的特解，至少n-m个</p>
@@ -767,6 +767,7 @@ A^TA\hat{x}=A^Tb \\\\
 <li>马尔可夫矩阵,傅里叶级数</li>
 </ul>
 <a id="more"></a>
+<p>完整链接:<br><a href="/2020/09/27/MITLinearAlgebra/" title="MITLinearAlgebra">MITLinearAlgebra</a><br><a href="/2020/11/13/MITLinearAlgebra-2/" title="MITLinearAlgebra(2)">MITLinearAlgebra(2)</a><br><a href="/2020/11/13/MITLinearAlgebra-3/" title="MITLinearAlgebra(3)">MITLinearAlgebra(3)</a><br><a href="/2021/03/17/MITLinearAlgebra-4/" title="MITLinearAlgebra-4">MITLinearAlgebra-4</a></p>
 <h2 id="行列式与代数余子式"><a href="#行列式与代数余子式" class="headerlink" title="行列式与代数余子式"></a>行列式与代数余子式</h2><p>首先明确学习行列式的意义：为了后续计算特征值做铺垫</p>
 <p>$detA$用于表示A的行列式</p>
 <p>目前我们已知的是，行列式可以用来反映可逆性（invertibility）,行列式等于0代表矩阵(方阵)不可逆</p>
@@ -848,7 +849,7 @@ u_{k+1} = Au_k</script><p>可以写成差分方程形式</p>
 <p>根据谱定理，如果把正交矩阵写成一群列向量，则可以把上面的公式展开成n个<strong>投影矩阵</strong>的和</p>
 <script type="math/tex; mode=display">A = q_1\lambda_1q^T_1 + .... + q_n\lambda_1q^T_n</script><p>实对称矩阵还有一条比较重要的性质：矩阵主元中positive的数量等于特征值中positive的数量</p>
 <p>特征值全为正数的对称矩阵是<strong>正定矩阵</strong>中重要的一类，关于正定矩阵会在后面进行更详细的讨论</p>
-<h2 id="正定矩阵"><a href="#正定矩阵" class="headerlink" title="正定矩阵"></a>正定矩阵</h2><p>正定矩阵有几种判定的条件，正定矩阵定义在对称矩阵之上</p>
+<h2 id="正定矩阵和最小值"><a href="#正定矩阵和最小值" class="headerlink" title="正定矩阵和最小值"></a>正定矩阵和最小值</h2><p>正定矩阵有几种判定的条件，正定矩阵定义在对称矩阵之上</p>
 <ol>
 <li>矩阵所有的主元大于0</li>
 <li>矩阵所有的特征值大于0</li>
@@ -859,6 +860,12 @@ u_{k+1} = Au_k</script><p>可以写成差分方程形式</p>
 <p>如果将f(x)进行配凑，得到二次项之和，那么每一个二次项前面的系数都是主元，这也是主元、特征值作为判定条件的原因</p>
 <p>对于非正定的矩阵，形成的二次型的图像会在原点形成一个鞍点saddle point，鞍点不同方向的梯度正负不同。而对于正定矩阵对应的二次型函数的图形，是一个抽象的bowl的形状或者说是一个抛物面。</p>
 <p>对于向量$x$维度为3的时候，bowl会抽象为一个椭球，这个椭球的主轴就是特征向量的方向，这也是上一部分<strong>主轴定理</strong>名字的由来</p>
+<p>插播一部分正定矩阵的内容，正定矩阵的定义式来自于最小二乘问题 $A^TA$ ，我们想了解关于这个表达式的正定性， $A$ 是一个长方形矩阵，行数大于列数。<br>两个前置结论：</p>
+<ul>
+<li>一个正定矩阵的逆矩阵还会是正定矩阵吗？是的。逆矩阵的特征值等于原矩阵特征值的倒数，也因此保持同号，进而同样满足正定矩阵特征值都为正的判定条件。</li>
+<li>两个正定矩阵的和也仍然是正定矩阵。<br>使用正定矩阵的定义式判断$A^TA$<script type="math/tex; mode=display">
+x^T(A^TA)x = (Ax)^TAx = \|Ax\|^2 \ge 0</script></li>
+</ul>
 ]]></content>
       <categories>
         <category>数学</category>
@@ -924,7 +931,7 @@ u_{k+1} = Au_k</script><p>可以写成差分方程形式</p>
 <li>求解Ax=b</li>
 </ul>
 <a id="more"></a>
-<p>完整链接:<br><a href="/2020/09/27/MITLinearAlgebra/" title="MITLinearAlgebra">MITLinearAlgebra</a><br><a href="/2020/11/13/MITLinearAlgebra-2/" title="MITLinearAlgebra(2)">MITLinearAlgebra(2)</a><br><a href="/2020/11/13/MITLinearAlgebra-3/" title="MITLinearAlgebra(3)">MITLinearAlgebra(3)</a></p>
+<p>完整链接:<br><a href="/2020/09/27/MITLinearAlgebra/" title="MITLinearAlgebra">MITLinearAlgebra</a><br><a href="/2020/11/13/MITLinearAlgebra-2/" title="MITLinearAlgebra(2)">MITLinearAlgebra(2)</a><br><a href="/2020/11/13/MITLinearAlgebra-3/" title="MITLinearAlgebra(3)">MITLinearAlgebra(3)</a><br><a href="/2021/03/17/MITLinearAlgebra-4/" title="MITLinearAlgebra-4">MITLinearAlgebra-4</a></p>
 <h2 id="方程组的几何解释"><a href="#方程组的几何解释" class="headerlink" title="方程组的几何解释"></a>方程组的几何解释</h2><p>以三维的方程组为例(随便写的)</p>
 <script type="math/tex; mode=display">
 
@@ -3072,6 +3079,67 @@ T(n) = T(n-1) + O(1)</script><p>备注：迭代分析的两种方法</p>
       <tags>
         <tag>校内课程</tag>
         <tag>控制理论</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MITLinearAlgebra-4</title>
+    <url>/2021/03/17/MITLinearAlgebra-4/</url>
+    <content><![CDATA[<p>MIT线性代数笔记第四部分</p>
+<ul>
+<li>相似矩阵和若尔当型</li>
+<li>奇异值分解</li>
+<li>线性变换与对应矩阵</li>
+<li>基变换与图形压缩</li>
+<li>左右逆和伪逆</li>
+</ul>
+<a id="more"></a>
+<p>完整链接:<br><a href="/2020/09/27/MITLinearAlgebra/" title="MITLinearAlgebra">MITLinearAlgebra</a><br><a href="/2020/11/13/MITLinearAlgebra-2/" title="MITLinearAlgebra(2)">MITLinearAlgebra(2)</a><br><a href="/2020/11/13/MITLinearAlgebra-3/" title="MITLinearAlgebra(3)">MITLinearAlgebra(3)</a><br><a href="/2021/03/17/MITLinearAlgebra-4/" title="MITLinearAlgebra-4">MITLinearAlgebra-4</a></p>
+<h2 id="相似矩阵和若尔当型"><a href="#相似矩阵和若尔当型" class="headerlink" title="相似矩阵和若尔当型"></a>相似矩阵和若尔当型</h2><p>如果矩阵$A$的rank等于n，则严格大于零，$A^TA$具有正定性</p>
+<p>当M是可逆矩阵的时候，如果</p>
+<script type="math/tex; mode=display">B = M^{1}AM</script><p>则称B矩阵和矩阵A相似，<strong>相似矩阵具有相同的特征值！！</strong></p>
+<p>证明过程并不复杂，通过原始的特征值的定义式可以表达出</p>
+<script type="math/tex; mode=display">A x= \lambda x</script><script type="math/tex; mode=display">M^{-1}AMM^{-1} x = M^{-1}\lambda x</script><script type="math/tex; mode=display">B (M^{-1}x) = \lambda (M^{-1}x)</script><p><strong>单位矩阵的相似矩阵只有它自己</strong></p>
+<hr>
+<p>下面需要讨论无法对角化的情形，特征值出现重根，特征向量数量不足</p>
+<p>矩阵只能努力变成最像对角型的矩阵,jordan form</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+4 & 1\\
+0 & 4\\
+\end{pmatrix},
+\begin{pmatrix}
+3 & 1\\
+-1 & 5\\
+\end{pmatrix},
+\begin{pmatrix}
+4 & 0\\
+17 & 4\\
+\end{pmatrix}</script><p>这些矩阵的特征值都是重根4，只有一个特征向量，他们无法化为对角型，因为对角型将会是单位矩阵的倍数，而单位矩阵的相似矩阵只有它自己。这些矩阵中第一个的形式被认为最好，被称为约当型（若尔当型）Jordan Form。</p>
+<p>任何矩阵都可以化为 Jordan Form，其形式认为可以将所有的矩阵化为n块，n是特征向量的个数，每一块的上方是一些 1 。对于可对角化的矩阵来说，Jordan Form就是对角阵，而对于不太好的（不能对角化），Jordan Form是若干矩阵块的组合，每个矩阵块除了特征值就是1.</p>
+<p>这个描述很抽象，教授也不打算讲授如何化为Jordan Form，这并不是学习重点。</p>
+<p>线性代数的核心内容是SVD奇异值分解。</p>
+<h2 id="SVD奇异值分解"><a href="#SVD奇异值分解" class="headerlink" title="SVD奇异值分解"></a>SVD奇异值分解</h2><p>每一个矩阵都有 SVD 分解，是一种最好的分解方式，左右都是正交矩阵，中间是对角阵</p>
+<script type="math/tex; mode=display">
+A = U\Sigma V^T</script><p>即使A是一个长方阵，即使A是一个奇异矩阵，也可以完成 SVD 分解</p>
+<script type="math/tex; mode=display">A_{m \times n} = U_{m \times m} * \Sigma_{m\times n} * V^T_{n\times n}</script><p>对于非方阵，不具有特征值，而将其分解得到的两个正交矩阵可以得到特征值，我们分别称呼其为左奇异值（U）和右奇异值（V），它们反映了两组基向量。</p>
+<p>SVD的目的可以写成将一组<strong>列空间中的基向量</strong> $[v_1, v_2,…,v_r]$ ，乘以矩阵 $A$ 转化为一组<strong>行空间中的基向量</strong> $[u_1, u_2, … u_r]$ , 转换后乘以<strong>比例因子</strong> $diag([\sigma_1, \sigma_2, … \sigma_r])$</p>
+<script type="math/tex; mode=display">AV = U\Sigma</script><p>计算步骤：</p>
+<ol>
+<li>利用$AA^T$计算$U$的奇异值和奇异向量</li>
+<li>利用$A^TA$计算$V$的奇异值和奇异向量</li>
+<li>奇异值开根号, 取正数, 按照大小顺序, 由大至小放入$\Sigma$</li>
+<li>按照奇异值的顺序, 将左右奇异向量分别排列好放入$U$, $V$, 两者需要对应 $Av_i = u_i\sigma_i$</li>
+</ol>
+<blockquote>
+<p>SVD可以用于PCA主成分分解</p>
+<p>$\Lambda = S^{-1}AS$可以理解为SVD的特例</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>线性代数</tag>
       </tags>
   </entry>
 </search>
