@@ -3134,6 +3134,38 @@ A = U\Sigma V^T</script><p>即使A是一个长方阵，即使A是一个奇异矩
 <p>SVD可以用于PCA主成分分解</p>
 <p>$\Lambda = S^{-1}AS$可以理解为SVD的特例</p>
 </blockquote>
+<h2 id="线性变换"><a href="#线性变换" class="headerlink" title="线性变换"></a>线性变换</h2><p>线性变换T需要满足两条性质</p>
+<ul>
+<li>$T(u+v) = T(u) + T(v)$</li>
+<li>$T(cv) = cT(v)$</li>
+</ul>
+<p>满足这两条性质的前提下，可以推导出</p>
+<ul>
+<li>T(0) = 0</li>
+</ul>
+<p><strong>投影变换</strong>、<strong>旋转</strong>、<strong>沿坐标轴镜像</strong>都是线性变换</p>
+<p>直接对某一维度坐标不是线性变换，可以用性质简单证伪</p>
+<p>坐标的概念来源于basis，如果坐标写出来，就一定决定了一组基向量，平常写向量的时候其实默认了正交基坐标</p>
+<p>基坐标的选择不是随意的，选择正交基标准基或者特征向量是一个比较好的选择</p>
+<p><strong>线性变换事实上就是从一组基到另一组基</strong></p>
+<p>导数的求导也可以写成一种线性变换<br>从<br>$f = a + bx + cx^2$<br>到<br>$f = b + 2cx$</p>
+<p>实际上相当于基从$1, x, x^2$变成了$1,x$</p>
+<script type="math/tex; mode=display">
+A \begin{pmatrix}
+a \\
+b\\
+c
+\end{pmatrix}
+=
+\begin{pmatrix}
+b\\
+2c
+\end{pmatrix}</script><p>可以推导出对应的矩阵</p>
+<script type="math/tex; mode=display">
+A =  \begin{pmatrix}
+0 & 1 & 0\\
+0 & 0 & 2
+\end{pmatrix}</script><p>逆线性变换就对应逆矩阵，矩阵的乘积等同于连续线性变换，矩阵的乘法正是来自于线性变换</p>
 ]]></content>
       <categories>
         <category>数学</category>
