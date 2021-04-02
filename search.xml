@@ -1767,7 +1767,7 @@ L(\theta) = f_\theta(x^1)f_\theta(x^2)...f_\theta(x^N)</script><p><strong>Likeli
 <p><strong>WARNING</strong>:尽管1.0版的torch.nn.function中仍存在诸如tanh之类的通用科学函数，但不建议使用这些API，而应使用顶级torch命名空间中的API，例如torch.tanh。更多其他函数保留在torch.nn.functional中。</p>
 ]]></content>
       <categories>
-        <category>基础知识</category>
+        <category>机器学习</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -3172,6 +3172,21 @@ A =  \begin{pmatrix}
       </categories>
       <tags>
         <tag>线性代数</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>operator :: in python</title>
+    <url>/2021/04/02/operator-in-python/</url>
+    <content><![CDATA[<p>运算符::的作用</p>
+<a id="more"></a>
+<p> :: 可以看作对切片的一种扩展，::前面的数字代表起始位置，后面的数字代表步长，步长为正则向后遍历，步长为负则向前遍历</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>l = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[:<span class="number">1</span>]</span><br><span class="line">[<span class="number">1</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[::<span class="number">1</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">1</span>::<span class="number">2</span>]</span><br><span class="line">[<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">1</span>::<span class="number">3</span>]</span><br><span class="line">[<span class="number">2</span>, <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">2</span>::<span class="number">3</span>]</span><br><span class="line">[<span class="number">3</span>, <span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">2</span>::<span class="number">-1</span>]</span><br><span class="line">[<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">2</span>::<span class="number">-2</span>]</span><br><span class="line">[<span class="number">3</span>, <span class="number">1</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[::<span class="number">-2</span>]</span><br><span class="line">[<span class="number">7</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>基础知识</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
 </search>

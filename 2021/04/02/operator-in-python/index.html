@@ -20,21 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="凸优化问题的求解方法">
+  <meta name="description" content="运算符::的作用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="凸优化问题">
-<meta property="og:url" content="http://yoursite.com/2021/03/07/%E5%87%B8%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:title" content="operator :: in python">
+<meta property="og:url" content="http://yoursite.com/2021/04/02/operator-in-python/index.html">
 <meta property="og:site_name" content="不愧是我">
-<meta property="og:description" content="凸优化问题的求解方法">
+<meta property="og:description" content="运算符::的作用">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-03-07T06:06:30.000Z">
-<meta property="article:modified_time" content="2021-03-07T06:51:19.141Z">
+<meta property="article:published_time" content="2021-04-02T12:43:02.000Z">
+<meta property="article:modified_time" content="2021-04-02T12:46:03.887Z">
 <meta property="article:author" content="Adin">
-<meta property="article:tag" content="数学">
-<meta property="article:tag" content="最优化">
+<meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2021/03/07/%E5%87%B8%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98/">
+<link rel="canonical" href="http://yoursite.com/2021/04/02/operator-in-python/">
 
 
 <script id="page-configurations">
@@ -47,7 +46,7 @@
   };
 </script>
 
-  <title>凸优化问题 | 不愧是我</title>
+  <title>operator :: in python | 不愧是我</title>
   
 
 
@@ -191,7 +190,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/07/%E5%87%B8%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/02/operator-in-python/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -204,7 +203,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          凸优化问题
+          operator :: in python
         </h1>
 
         <div class="post-meta">
@@ -215,7 +214,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-07 14:06:30 / 修改时间：14:51:19" itemprop="dateCreated datePublished" datetime="2021-03-07T14:06:30+08:00">2021-03-07</time>
+              <time title="创建时间：2021-04-02 20:43:02 / 修改时间：20:46:03" itemprop="dateCreated datePublished" datetime="2021-04-02T20:43:02+08:00">2021-04-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -223,7 +222,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">最优化</span></a>
+                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
                 </span>
             </span>
 
@@ -238,49 +237,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>凸优化问题的求解方法</p>
+        <p>运算符::的作用</p>
 <a id="more"></a>
-<h2 id="凸优化问题的表述"><a href="#凸优化问题的表述" class="headerlink" title="凸优化问题的表述"></a>凸优化问题的表述</h2><script type="math/tex; mode=display">
-min \quad f(x) \\
-s.t. \quad g_i(x)\le 0 , i=1...m\\
-\qquad h_j(x)=0, j =1,...n</script><p>成为凸优化问题的条件：</p>
-<ol>
-<li>$f(x)$是凸函数</li>
-<li>$g(x)$是凸函数</li>
-<li>$h(x)$是线性函数</li>
-</ol>
-<p>有时乍一看某个问题不是凸优化，但是通过等价转换后可以变成凸优化问题</p>
-<hr>
-<h2 id="凸优化问题的特点"><a href="#凸优化问题的特点" class="headerlink" title="凸优化问题的特点"></a>凸优化问题的特点</h2><ol>
-<li><p><strong>局部最优解就是全局最优解</strong></p>
-</li>
-<li><p>全局最优解$x^* \in S$的等价条件：</p>
-</li>
-</ol>
-<script type="math/tex; mode=display">\bigtriangledown f(x^*)^T(x-x^*)\ge 0, \forall x \in S</script><p>可以用上一章凸函数的性质证明</p>
-<blockquote>
-<ol>
-<li>等价于$f(y)\ge f(x)+\bigtriangledown f(x)^T(y-x)$.在图形上为凸函数在任意点的切面上方。</li>
-</ol>
-</blockquote>
-<script type="math/tex; mode=display">f(x)\ge f(x^*)+\bigtriangledown f(x^*)^T(x-x^*)\ge f(x^*)</script><p>最优点的梯度向量可以作为超平面的法向量，该超平面就是一个凸集的支撑平面</p>
-<hr>
-<h2 id="几种特殊凸问题的最优化条件"><a href="#几种特殊凸问题的最优化条件" class="headerlink" title="几种特殊凸问题的最优化条件"></a>几种特殊凸问题的最优化条件</h2><ol>
-<li>无约束凸优化的最优点充分必要条件：</li>
-</ol>
-<script type="math/tex; mode=display">\bigtriangledown f(x^*)=0</script><ol>
-<li>等式约束凸优化问题$min{f(x) | Ax = b}$</li>
-</ol>
-<p>$\bigtriangledown f(x^*)$在A矩阵的行向量空间里</p>
-<ol>
-<li>非负约束$min{f(x) | x \ge 0}$:</li>
-</ol>
-<script type="math/tex; mode=display">\bigtriangledown f(x^*)x^* = 0, x^*\ge 0, \bigtriangledown f(x^*) \ge 0</script><hr>
-<h2 id="线性规划问题-LP"><a href="#线性规划问题-LP" class="headerlink" title="线性规划问题 LP"></a>线性规划问题 LP</h2><h3 id="通用解法"><a href="#通用解法" class="headerlink" title="通用解法"></a>通用解法</h3><script type="math/tex; mode=display">min\quad c^Tx \\
-s.t. \quad Ax = b \\
-\qquad x \ge 0</script><p>去找集合的极点，依次判断每个极点是不是最优点即可</p>
-<h3 id="可以转换为线性规划的问题"><a href="#可以转换为线性规划的问题" class="headerlink" title="可以转换为线性规划的问题"></a>可以转换为线性规划的问题</h3><h4 id="分式线性规划"><a href="#分式线性规划" class="headerlink" title="分式线性规划"></a>分式线性规划</h4><h4 id="最小化绝对值函数"><a href="#最小化绝对值函数" class="headerlink" title="最小化绝对值函数"></a>最小化绝对值函数</h4><h4 id="最小化多面体函数"><a href="#最小化多面体函数" class="headerlink" title="最小化多面体函数"></a>最小化多面体函数</h4><hr>
-<h2 id="二次规划问题-QP"><a href="#二次规划问题-QP" class="headerlink" title="二次规划问题 QP"></a>二次规划问题 QP</h2>
+<p> :: 可以看作对切片的一种扩展，::前面的数字代表起始位置，后面的数字代表步长，步长为正则向后遍历，步长为负则向前遍历</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>l = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[:<span class="number">1</span>]</span><br><span class="line">[<span class="number">1</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[::<span class="number">1</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">1</span>::<span class="number">2</span>]</span><br><span class="line">[<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">1</span>::<span class="number">3</span>]</span><br><span class="line">[<span class="number">2</span>, <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">2</span>::<span class="number">3</span>]</span><br><span class="line">[<span class="number">3</span>, <span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">2</span>::<span class="number">-1</span>]</span><br><span class="line">[<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">2</span>::<span class="number">-2</span>]</span><br><span class="line">[<span class="number">3</span>, <span class="number">1</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[::<span class="number">-2</span>]</span><br><span class="line">[<span class="number">7</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -289,8 +250,7 @@ s.t. \quad Ax = b \\
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"># 数学</a>
-              <a href="/tags/%E6%9C%80%E4%BC%98%E5%8C%96/" rel="tag"># 最优化</a>
+              <a href="/tags/python/" rel="tag"># python</a>
           </div>
 
         
@@ -299,13 +259,10 @@ s.t. \quad Ax = b \\
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/03/07/%E5%87%B8%E5%87%BD%E6%95%B0/" rel="prev" title="凸函数">
-      <i class="fa fa-chevron-left"></i> 凸函数
+    <a href="/2021/03/17/MITLinearAlgebra-4/" rel="prev" title="MITLinearAlgebra-4">
+      <i class="fa fa-chevron-left"></i> MITLinearAlgebra-4
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/03/10/%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96/" rel="next" title="无约束优化">
-      无约束优化 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -364,7 +321,6 @@ s.t. \quad Ax = b \\
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#凸优化问题的表述"><span class="nav-number">1.</span> <span class="nav-text">凸优化问题的表述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#凸优化问题的特点"><span class="nav-number">2.</span> <span class="nav-text">凸优化问题的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几种特殊凸问题的最优化条件"><span class="nav-number">3.</span> <span class="nav-text">几种特殊凸问题的最优化条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性规划问题-LP"><span class="nav-number">4.</span> <span class="nav-text">线性规划问题 LP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通用解法"><span class="nav-number">4.1.</span> <span class="nav-text">通用解法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可以转换为线性规划的问题"><span class="nav-number">4.2.</span> <span class="nav-text">可以转换为线性规划的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分式线性规划"><span class="nav-number">4.2.1.</span> <span class="nav-text">分式线性规划</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最小化绝对值函数"><span class="nav-number">4.2.2.</span> <span class="nav-text">最小化绝对值函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最小化多面体函数"><span class="nav-number">4.2.3.</span> <span class="nav-text">最小化多面体函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二次规划问题-QP"><span class="nav-number">5.</span> <span class="nav-text">二次规划问题 QP</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
