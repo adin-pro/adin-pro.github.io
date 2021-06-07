@@ -1,0 +1,6 @@
+删除.deploy_git文件夹;
+输入git config --global core.autocrlf false
+然后，依次执行：
+hexo clean
+hexo g
+hexo d

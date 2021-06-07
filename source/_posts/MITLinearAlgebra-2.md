@@ -21,6 +21,7 @@ MIT线性代数笔记的第二部分
 {% post_link MITLinearAlgebra %}
 {% post_link MITLinearAlgebra-2 %}
 {% post_link MITLinearAlgebra-3 %}
+{% post_link MITLinearAlgebra-4 %}
 
 
 ## 线性相关性、基、维数
@@ -74,7 +75,7 @@ all 3 by 3 matrices组成矩阵空间M，里面的矩阵满足加法和数乘，
 
 **一个规律**
 $$
-dim(S\cap U)+ dim(S+U) = dim(S)+dim(U)\\
+dim(S\cap U)+ dim(S+U) = dim(S)+dim(U)\\[4px]
 3+9 = 6+6\\
 $$
 扩展到各种函数的组合，他们都是广义的向量
@@ -82,15 +83,15 @@ $$
 ### 秩1矩阵
 
 就像积木的基本组成，但是两个秩1矩阵相加不能得到一个确定维度的矩阵，可能秩为1，可能秩为2
-
-S = all v in R^4 with v1+v2+v3+v4=0(各分量相加为0)
-那么S的维度是3
-S = nullspace of A=[1 1 1 1], rank(A)=1=r
-Rank(N(A))=n-r=3
-dim C(A) = 1
-dim C(A^T) = 1
+$$
+S = all v in R^4 with v1+v2+v3+v4=0(各分量相加为0)\\\\
+那么S的维度是3\\\\
+S = nullspace of A=[1 1 1 1], rank(A)=1=r\\\\
+Rank(N(A))=n-r=3\\\\
+dim C(A) = 1\\\\
+dim C(A^T) = 1\\\\
 dim N(A^T)=0
-
+$$
 ### 小世界图
 图graph是点和边的集合，可以用矩阵来表示图的连接
 small world小世界是说六度空间理论
@@ -165,12 +166,12 @@ A^TA是对称矩阵, 有可能是可逆矩阵,是求解这种无解问题的答�
 <img src='1dproj.bmp' width='600' title='一维投影情况'>
 
 $$
-向量B投影至向量A所在直线 \\
-E = B - P 为误差向量\\
-P = Ax, x是标量\\
-由于E与A垂直或者说正交\\
-E^{T}A=0 \rightarrow (B-Ax)^{T}A=0 \\
- B^{T}A - xA^{T}A = 0 \rightarrow x = \frac{B^{T}A}{A^{T}A}\\
+向量B投影至向量A所在直线 \\[4px]
+E = B - P 为误差向量\\[4px]
+P = Ax, x是标量\\[4px]
+由于E与A垂直或者说正交\\[4px]
+E^{T}A=0 \rightarrow (B-Ax)^{T}A=0 \\[4px]
+ B^{T}A - xA^{T}A = 0 \rightarrow x = \frac{B^{T}A}{A^{T}A}\\[4px]
  P = xA = Ax = A\frac{A^TB}{A^TA} = Proj*B
 $$
 对一维场景来说$A^TB=B^TA$，并且可以用投影矩阵$Proj$来与向量$B$相乘得到投影的量
@@ -181,8 +182,8 @@ $$
 
 这里$A_1$和$A_2$两个向量组成了平面，$B$向量要投影到这个平面空间里，按照上述的一维正交情况，假设投影后的向量$P$用$A1，A2$表示为$P = c_1A_1+c_2A_2$,我们可以迅速写出如下方程
 $$
-A1^{T}(B-(c_1A_1+c_2A_2))=0\\
-A2^{T}(B-(c_1A_1+c_2A_2))=0\\
+A1^{T}(B-(c_1A_1+c_2A_2))=0\\\\
+A2^{T}(B-(c_1A_1+c_2A_2))=0\\\\
 $$
 以上两个向量正交的表达化成矩阵形式可以用平面对应的列空间的矩阵A来表示
 $$
@@ -209,7 +210,7 @@ $$
 
 正交矩阵(符号为Q, orthogonal matrix)能够带来很多优良的性质,比如说当Q是一个方阵的时候$Q^TQ=I$, 再比如Q的投影矩阵是$Q(Q^TQ)^{-1}Q^T = QQ^T$, 形式会比较简单, 再比如对于$Ax=b$A是瘦长矩阵时, 如果A是一个正交矩阵, 两边可以左乘A转置, 左边可以直接化为单位矩阵
 $$
-A^TA\hat{x}=A^Tb \\
+A^TA\hat{x}=A^Tb \\\\
 \hat{x} = A^Tb
 $$
 同时, $\hat{x}$在第$i$个维度上的投影就等于$q_i^{T}b$

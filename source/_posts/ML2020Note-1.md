@@ -4,7 +4,7 @@ mathjax: true
 date: 2020-09-29 19:54:53
 tags:
 - MachineLearning
-categories: 机器学习与实践
+categories: 机器学习
 ---
 
 李宏毅老师2020年机器学习课程的一点学习笔记，作为重新学习机器学习的开始吧。
